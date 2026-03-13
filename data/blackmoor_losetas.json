@@ -1,0 +1,219 @@
+{
+  "version": "1.0",
+  "descripcion": "Catálogo de losetas de Blackmoor Hall con efectos codificados. Las losetas genéricas aparecen en todos los casos; las específicas solo en el caso indicado.",
+  "losetas": [
+    {
+      "id": "salon_principal",
+      "nombre": "Salón Principal",
+      "tipo": "C",
+      "imagen": "Salon_principal_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "zona_segura_con_pnj" },
+        { "tipo": "al_descansar", "atributo": "TEM", "modificador": 1 }
+      ]
+    },
+    {
+      "id": "vestibulo",
+      "nombre": "Vestíbulo",
+      "tipo": "C",
+      "imagen": "Vestibulo_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "al_descansar", "atributo": "FOR", "modificador": 1 }
+      ]
+    },
+    {
+      "id": "biblioteca",
+      "nombre": "Biblioteca",
+      "tipo": "C",
+      "imagen": "Biblioteca_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "mod_prueba", "atributo": "INT", "modificador": -1 },
+        { "tipo": "al_explorar", "alerta": 1 }
+      ]
+    },
+    {
+      "id": "despacho",
+      "nombre": "Despacho",
+      "tipo": "P",
+      "imagen": "Despacho_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "al_explorar_primera_vez", "atributo": "INT", "modificador": -1 },
+        { "tipo": "al_explorar_con_pnj", "atributo": "TEM", "modificador": -1 }
+      ]
+    },
+    {
+      "id": "cocina",
+      "nombre": "Cocina",
+      "tipo": "P",
+      "imagen": "Cocina_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "mod_prueba", "atributo": "INT", "modificador": -1 },
+        { "tipo": "al_explorar", "alerta": 1 },
+        { "tipo": "al_explorar_con_pnj", "atributo": "TEM", "modificador": -1 }
+      ]
+    },
+    {
+      "id": "hab_invitados",
+      "nombre": "Hab. de Invitados",
+      "tipo": "P",
+      "imagen": "Habitacion_de_Invitados_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "al_explorar", "alerta": 1 },
+        { "tipo": "al_explorar_con_pnj", "atributo": "TEM", "modificador": -1 }
+      ]
+    },
+    {
+      "id": "hab_servicio",
+      "nombre": "Hab. del Servicio",
+      "tipo": "P",
+      "imagen": "Habitacion_del_servicio_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "al_explorar", "alerta": 1 },
+        { "tipo": "al_explorar_con_pnj", "atributo": "TEM", "modificador": -1 }
+      ]
+    },
+    {
+      "id": "galeria_retratos",
+      "nombre": "Galería de Retratos",
+      "tipo": "C",
+      "imagen": "Galeria_de_retratos_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "primera_visita", "atributo": "TEM", "modificador": -1 }
+      ]
+    },
+    {
+      "id": "salon_musica",
+      "nombre": "Salón de Música",
+      "tipo": "C",
+      "imagen": "Salon_de_musica_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "al_interrogar", "sospecha_pnj": 1 }
+      ]
+    },
+    {
+      "id": "capilla",
+      "nombre": "Capilla",
+      "tipo": "S",
+      "imagen": "Capilla_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "mod_prueba", "atributo": "TEM", "modificador": -1 }
+      ]
+    },
+    {
+      "id": "jardin",
+      "nombre": "Jardín",
+      "tipo": "E",
+      "imagen": "JardinP.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "no_descansar" },
+        { "tipo": "al_entrar", "atributo": "FOR", "modificador": -1 },
+        { "tipo": "al_explorar", "alerta": 0, "anula_alerta_base": true }
+      ]
+    },
+    {
+      "id": "cobertizo",
+      "nombre": "Cobertizo",
+      "tipo": "E",
+      "imagen": "Cobertizo_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "no_descansar" }
+      ]
+    },
+    {
+      "id": "sotano",
+      "nombre": "Sótano",
+      "tipo": "!",
+      "imagen": "Sotano_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "no_descansar" },
+        { "tipo": "al_entrar", "atributo": "FOR", "modificador": -1 },
+        { "tipo": "mod_prueba", "atributo": "INT", "modificador": 1 },
+        { "tipo": "mod_prueba", "atributo": "TEM", "modificador": 1 }
+      ]
+    },
+    {
+      "id": "pasadizos",
+      "nombre": "Pasadizos",
+      "tipo": "!",
+      "imagen": "Pasadizos_P.png",
+      "caso": null,
+      "efectos": [
+        { "tipo": "no_descansar" },
+        {
+          "tipo": "al_entrar_prueba",
+          "atributo": "FOR",
+          "dificultad": 3,
+          "fallo": { "atributo": "FOR", "modificador": -2 },
+          "exento": ["mayordomo"]
+        },
+        { "tipo": "movimiento_especial", "id": "pasadizos_any_tile" }
+      ]
+    },
+    {
+      "id": "sala_relojeria",
+      "nombre": "Sala de Relojería",
+      "tipo": "C",
+      "imagen": "Sala_de_Relojeria_P.png",
+      "caso": 4,
+      "efectos": [
+        { "tipo": "mod_prueba", "atributo": "INT", "modificador": -1 },
+        { "tipo": "al_explorar", "alerta": 1 }
+      ]
+    },
+    {
+      "id": "escenario",
+      "nombre": "Escenario",
+      "tipo": "C",
+      "imagen": "Escenario_P.png",
+      "caso": 5,
+      "efectos": [
+        { "tipo": "mod_prueba", "atributo": "INT", "modificador": -1 }
+      ]
+    },
+    {
+      "id": "bambalinas",
+      "nombre": "Bambalinas",
+      "tipo": "P",
+      "imagen": "Bambalinas_P.png",
+      "caso": 5,
+      "efectos": [
+        { "tipo": "al_explorar_con_pnj", "atributo": "TEM", "modificador": -1 }
+      ]
+    },
+    {
+      "id": "camerinos",
+      "nombre": "Camerinos",
+      "tipo": "P",
+      "imagen": "Camerinos_P.png",
+      "caso": 5,
+      "efectos": [
+        { "tipo": "al_explorar_con_pnj", "atributo": "TEM", "modificador": -1 },
+        { "tipo": "al_explorar_con_pnj", "alerta": 1 }
+      ]
+    },
+    {
+      "id": "sala_utileria",
+      "nombre": "Sala de Utilería",
+      "tipo": "C",
+      "imagen": "Sala_de_Utileria_P.png",
+      "caso": 5,
+      "efectos": [
+        { "tipo": "mod_prueba", "atributo": "INT", "modificador": -1 },
+        { "tipo": "al_explorar", "alerta": 1 }
+      ]
+    }
+  ]
+}

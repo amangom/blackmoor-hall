@@ -1,0 +1,507 @@
+{
+  "id": "caso_1",
+  "titulo": "La Muerte de Lord Ashworth",
+  "escena_crimen": "despacho",
+  "punto_inicio": "salon_principal",
+  "variantes_disponibles": [
+    "A",
+    "B",
+    "C"
+  ],
+  "premisa": "Habéis sido invitados a Blackmoor Hall, la mansión de Lord Edmund Ashworth, para una velada con motivo de su 60 cumpleaños. Sois viejos conocidos de la familia, cada uno con vuestra propia historia ligada a los Ashworth. La cena transcurre con normalidad hasta que, poco después de las diez, Lord Ashworth se desploma sobre la mesa de su despacho. El Dr. Marsh, médico de la familia, lo declara muerto: fallo cardíaco. Pero la expresión del Lord no es de dolor. Es de terror absoluto. Y en su mano crispada sujeta un botón de puño con las iniciales «C.M.» grabadas. La tormenta ruge fuera. Las líneas están cortadas. La policía no llegará hasta el amanecer. Si esto no fue un accidente, el asesino está entre los presentes.",
+  "objetivo": "Descubrir la verdadera causa de la muerte de Lord Ashworth y señalar al responsable antes del amanecer.",
+  "losetas_cerradas_inicial": [
+    {
+      "id": "hab_invitados",
+      "dificultad_for": 4
+    },
+    {
+      "id": "sotano",
+      "dificultad_for": 5
+    }
+  ],
+  "herramienta_ganzua": "cobertizo",
+  "comun": {
+    "pnj": [
+      {
+        "id": "marsh",
+        "nombre": "Dr. Elias Marsh",
+        "rol": "Médico de la familia",
+        "numero": 1,
+        "imagen": "Doctor.png",
+        "atributos": {
+          "FOR": 2,
+          "INT": 4,
+          "TEM": 3
+        },
+        "posicion_inicial": "despacho",
+        "movimiento": {
+          "anochecer_medianoche": "salon_principal",
+          "medianoche_madrugada": "sotano",
+          "patrulla": false
+        },
+        "sospecha_max": 5,
+        "inmune_sospecha": false,
+        "reacciones": {
+          "1": {
+            "subtipo": "continuo",
+            "texto": "Marsh se ajusta las gafas y os mira por encima de la montura. «Soy médico, no sospechoso. Pero si insistís en tratarme como tal, mis respuestas serán acordes.»",
+            "efectos": [
+              {
+                "tipo": "sin_efecto"
+              }
+            ]
+          },
+          "2": {
+            "subtipo": "continuo",
+            "texto": "Marsh cierra su maletín con un chasquido seco. «Disculpad. Necesito revisar unas notas.»",
+            "efectos": [
+              {
+                "tipo": "movimiento_puertas"
+              }
+            ]
+          },
+          "3": {
+            "subtipo": "continuo",
+            "texto": "Marsh se limpia las gafas con lentitud estudiada. Responde, pero sus frases son más cortas, más clínicas. Cada pregunta le cierra un poco más.",
+            "efectos": [
+              {
+                "tipo": "mod_interrogatorio_propio",
+                "modificador": 1,
+                "atributo": null
+              }
+            ]
+          },
+          "4": {
+            "subtipo": "inmediato",
+            "texto": "Marsh recoge su maletín sin mediar palabra. «Tengo que verificar algo.» Se dirige al Sótano con paso firme. Su frialdad resulta perturbadora.",
+            "efectos": [
+              {
+                "tipo": "atributo_jugadores_presentes",
+                "atributo": "TEM",
+                "modificador": -1
+              },
+              {
+                "tipo": "mover_a_loseta",
+                "destino": "sotano"
+              }
+            ]
+          },
+          "5": {
+            "subtipo": "inmediato",
+            "texto": null,
+            "efectos": [
+              {
+                "tipo": "bloqueo_interrogatorio"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "harold",
+        "nombre": "Harold Ashworth",
+        "rol": "Hijo y heredero del Lord",
+        "numero": 2,
+        "imagen": null,
+        "atributos": {
+          "FOR": 3,
+          "INT": 2,
+          "TEM": 2
+        },
+        "posicion_inicial": "salon_principal",
+        "movimiento": {
+          "anochecer_medianoche": "hab_invitados",
+          "medianoche_madrugada": {
+            "condicion": {
+              "sospecha_min": 3
+            },
+            "destino": "jardin",
+            "fallback": null
+          },
+          "patrulla": false
+        },
+        "sospecha_max": 5,
+        "inmune_sospecha": false,
+        "reacciones": {
+          "1": {
+            "subtipo": "continuo",
+            "texto": "Harold da un trago largo y os mira con resentimiento. «Ya empezáis. Igual que mi padre. Siempre culpando al mismo.»",
+            "efectos": [
+              {
+                "tipo": "sin_efecto"
+              }
+            ]
+          },
+          "2": {
+            "subtipo": "continuo",
+            "texto": "Harold se levanta con el vaso en la mano. «Necesito aire. No me sigáis.»",
+            "efectos": [
+              {
+                "tipo": "movimiento_puertas"
+              }
+            ]
+          },
+          "3": {
+            "subtipo": "continuo",
+            "texto": "Harold se sirve otro whisky con manos temblorosas. Está más vulnerable que nunca, pero su amargura es contagiosa. «Todos me señaláis. Como mi padre.»",
+            "efectos": [
+              {
+                "tipo": "mod_interrogatorio_propio",
+                "modificador": -1,
+                "atributo": "TEM"
+              },
+              {
+                "tipo": "mod_atributo_al_interrogar",
+                "atributo": "TEM",
+                "modificador": -1,
+                "objetivo": "interrogador"
+              }
+            ]
+          },
+          "4": {
+            "subtipo": "inmediato",
+            "texto": "Harold se levanta tambaleándose. «No pienso quedarme aquí a que me acuséis.» Intenta salir de la mansión.",
+            "efectos": [
+              {
+                "tipo": "prueba_para_detener",
+                "atributo": "FOR",
+                "dificultad": 3,
+                "fallo": [
+                  {
+                    "tipo": "retirar_token",
+                    "reaparece_en": "jardin",
+                    "reaparece_cuando": "inicio_siguiente_ronda"
+                  }
+                ]
+              }
+            ]
+          },
+          "5": {
+            "subtipo": "inmediato",
+            "texto": null,
+            "efectos": [
+              {
+                "tipo": "bloqueo_interrogatorio"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "catherine",
+        "nombre": "Catherine Ashworth",
+        "rol": "Hija del Lord",
+        "numero": 3,
+        "imagen": null,
+        "atributos": {
+          "FOR": 1,
+          "INT": 3,
+          "TEM": 4
+        },
+        "posicion_inicial": "biblioteca",
+        "movimiento": {
+          "anochecer_medianoche": "despacho",
+          "medianoche_madrugada": "galeria_retratos",
+          "patrulla": false
+        },
+        "sospecha_max": 5,
+        "inmune_sospecha": false,
+        "reacciones": {
+          "1": {
+            "subtipo": "continuo",
+            "texto": "Catherine entrecierra los ojos. «Sé lo que estáis haciendo. Elegid mejor vuestras batallas.» Sigue respondiendo, pero su tono se ha enfriado.",
+            "efectos": [
+              {
+                "tipo": "sin_efecto"
+              }
+            ]
+          },
+          "2": {
+            "subtipo": "continuo",
+            "texto": "Catherine recoge sus cosas sin prisa. «No voy a quedarme aquí sentada esperando la siguiente insinuación.»",
+            "efectos": [
+              {
+                "tipo": "movimiento_puertas"
+              }
+            ]
+          },
+          "3": {
+            "subtipo": "continuo",
+            "texto": "Catherine os observa con una calma gélida. Sigue respondiendo, pero pesa cada palabra. «Elegid bien vuestras preguntas. No tengo paciencia infinita.»",
+            "efectos": [
+              {
+                "tipo": "mod_interrogatorio_propio",
+                "modificador": 1,
+                "atributo": null
+              }
+            ]
+          },
+          "4": {
+            "subtipo": [
+              "inmediato",
+              "continuo"
+            ],
+            "texto": "Catherine se levanta sin prisa. «He terminado por ahora.» Se dirige a la Biblioteca. No cierra la puerta, pero su actitud deja claro que cada palabra habrá que arrancársela.",
+            "efectos_inmediatos": [
+              {
+                "tipo": "atributo_jugadores_presentes",
+                "atributo": "TEM",
+                "modificador": -1
+              },
+              {
+                "tipo": "mover_a_loseta",
+                "destino": "biblioteca"
+              }
+            ],
+            "efectos_continuos": [
+              {
+                "tipo": "mod_interrogatorio_propio",
+                "modificador": 2,
+                "atributo": null,
+                "reemplaza_nivel": 3
+              }
+            ]
+          },
+          "5": {
+            "subtipo": "inmediato",
+            "texto": null,
+            "efectos": [
+              {
+                "tipo": "bloqueo_interrogatorio"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "hobbes",
+        "nombre": "Hobbes",
+        "rol": "Mayordomo de Blackmoor Hall",
+        "numero": 4,
+        "imagen": "Mayordomo.png",
+        "atributos": {
+          "FOR": 2,
+          "INT": 3,
+          "TEM": 4
+        },
+        "posicion_inicial": "vestibulo",
+        "movimiento": {
+          "anochecer_medianoche": null,
+          "medianoche_madrugada": null,
+          "patrulla": true
+        },
+        "sospecha_max": 5,
+        "inmune_sospecha": false,
+        "reacciones": {
+          "1": {
+            "subtipo": "continuo",
+            "texto": "Hobbes cuadra los hombros casi imperceptiblemente. Su rostro no cambia, pero sus respuestas se vuelven más medidas, más formales.",
+            "efectos": [
+              {
+                "tipo": "sin_efecto"
+              }
+            ]
+          },
+          "2": {
+            "subtipo": "continuo",
+            "texto": "Hobbes se excusa con una leve inclinación. «Si me disculpan, hay asuntos de la casa que requieren mi atención.»",
+            "efectos": [
+              {
+                "tipo": "movimiento_puertas"
+              }
+            ]
+          },
+          "3": {
+            "subtipo": "continuo",
+            "texto": "Hobbes sigue respondiendo, pero algo ha cambiado. Sus respuestas son más vagas, más cuidadosas. Cuarenta años de lealtad pesan más que cualquier interrogatorio.",
+            "efectos": [
+              {
+                "tipo": "mod_interrogatorio_propio",
+                "modificador": 1,
+                "atributo": null
+              }
+            ]
+          },
+          "4": {
+            "subtipo": "inmediato",
+            "texto": "⚠ Hobbes baja la voz: «Hay algo que no os he dicho. Justo antes de la cena, uno de vosotros me pidió que le acompañara a revisar la plata del comedor de abajo. Estuve fuera quince minutos. Cuando volví, el Lord ya estaba solo con su copa. Alguien me apartó a propósito.»",
+            "efectos": [
+              {
+                "tipo": "activar_implicado"
+              }
+            ]
+          },
+          "5": {
+            "subtipo": "inmediato",
+            "texto": null,
+            "efectos": [
+              {
+                "tipo": "bloqueo_interrogatorio"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "pemberton",
+        "nombre": "Mrs. Pemberton",
+        "rol": "Cocinera",
+        "numero": 5,
+        "imagen": null,
+        "atributos": {
+          "FOR": 3,
+          "INT": 2,
+          "TEM": 3
+        },
+        "posicion_inicial": "cocina",
+        "movimiento": {
+          "anochecer_medianoche": "cocina",
+          "medianoche_madrugada": "cocina",
+          "patrulla": false
+        },
+        "sospecha_max": 5,
+        "inmune_sospecha": false,
+        "reacciones": {
+          "1": {
+            "subtipo": "continuo",
+            "texto": "Pemberton baja la mirada y se retuerce el delantal. «Solo soy la cocinera. No sé por qué me hacéis tantas preguntas.»",
+            "efectos": [
+              {
+                "tipo": "sin_efecto"
+              }
+            ]
+          },
+          "2": {
+            "subtipo": "continuo",
+            "texto": "Pemberton se levanta con los ojos húmedos. «Tengo que... tengo cosas que hacer. Dejadme un momento.»",
+            "efectos": [
+              {
+                "tipo": "movimiento_puertas"
+              }
+            ]
+          },
+          "3": {
+            "subtipo": "continuo",
+            "texto": "Pemberton se derrumba. Entre sollozos, parece dispuesta a hablar de lo que sea. «Preguntad, preguntad. Ya da todo igual.»",
+            "efectos": [
+              {
+                "tipo": "mod_interrogatorio_propio",
+                "modificador": -1,
+                "atributo": "TEM"
+              }
+            ]
+          },
+          "4": {
+            "subtipo": [
+              "inmediato",
+              "continuo"
+            ],
+            "texto": "Pemberton sufre un ataque de nervios. Cuando se calma, ya no le quedan fuerzas para resistirse. Cooperará con todo lo que le pidáis.",
+            "efectos_inmediatos": [
+              {
+                "tipo": "atributo_jugadores_presentes",
+                "atributo": "TEM",
+                "modificador": -1
+              }
+            ],
+            "efectos_continuos": [
+              {
+                "tipo": "mod_interrogatorio_propio",
+                "modificador": -2,
+                "atributo": null,
+                "reemplaza_nivel": 3
+              }
+            ]
+          },
+          "5": {
+            "subtipo": "inmediato",
+            "texto": null,
+            "efectos": [
+              {
+                "tipo": "bloqueo_interrogatorio"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "whitfield",
+        "nombre": "Rev. Whitfield",
+        "rol": "Párroco local",
+        "numero": 6,
+        "imagen": null,
+        "atributos": {
+          "FOR": 2,
+          "INT": 3,
+          "TEM": 3
+        },
+        "posicion_inicial": "capilla",
+        "movimiento": {
+          "anochecer_medianoche": "capilla",
+          "medianoche_madrugada": "capilla",
+          "patrulla": false
+        },
+        "sospecha_max": 3,
+        "inmune_sospecha": false,
+        "reacciones": {
+          "1": {
+            "subtipo": "continuo",
+            "texto": "Whitfield acaricia la cruz que lleva al cuello y cierra brevemente los ojos. «Proseguid. Pero recordad que hay cosas que un párroco no puede revelar.»",
+            "efectos": [
+              {
+                "tipo": "sin_efecto"
+              }
+            ]
+          },
+          "2": {
+            "subtipo": "continuo",
+            "texto": "Whitfield se pone en pie despacio. «Necesito un momento de oración. Perdonad.»",
+            "efectos": [
+              {
+                "tipo": "movimiento_puertas"
+              }
+            ]
+          },
+          "3": {
+            "subtipo": "continuo",
+            "texto": "Whitfield cierra los ojos. «No puedo romper el secreto de confesión. Pero puedo deciros esto: alguien en esta casa cargaba un peso terrible antes de esta noche. No el peso de un crimen. El de una decisión.»",
+            "efectos": [
+              {
+                "tipo": "mod_interrogatorio_contexto",
+                "modificador": -1,
+                "loseta": "capilla"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "declaraciones_espontaneas": {
+      "catherine": "Catherine está pálida pero serena. «Mi padre no murió de un fallo cardíaco. Lo sé porque ya he visto esto antes. Mi madre murió igual. Y el Dr. Marsh certificó ambas muertes. No confiéis en su diagnóstico.»",
+      "marsh": "Marsh se limpia las gafas con manos firmes. «Fallo cardíaco. Lord Ashworth tenía antecedentes: hipertensión, arritmias. Le había advertido muchas veces que moderase la bebida y las emociones. Es una tragedia, pero no una sorpresa médica.» Pausa. «El botón de puño... no sé de quién es.»",
+      "harold": "Harold se sirve otro whisky. «Mi padre estaba enfermo. Todo el mundo lo sabía. No entiendo por qué me miráis así.» Silencio tenso. «Sí, teníamos diferencias. ¿Qué padre e hijo no las tienen?»",
+      "hobbes": "Hobbes permanece de pie junto a la puerta. «Sirvo a esta familia desde antes de que nacieran los hijos del Lord. He visto nacer y morir en esta casa. Solo diré esto: el Lord tenía miedo esta noche. No de morir. De alguien.»",
+      "pemberton": "Mrs. Pemberton se retuerce las manos. «La cena era normal. Todo fresco, todo preparado por mí como siempre. El Lord cenó bien. Repitió de sopa. La copa de vino se la serví yo misma.» Pausa nerviosa. «Bueno... la segunda copa se la sirvió otra persona.»",
+      "whitfield": "El reverendo cierra su Biblia. «Lord Ashworth vino a verme la semana pasada. Me pidió que rezase por él. No por su salud. Por su alma. Dijo que había tomado decisiones de las que se arrepentía y que quería enmendarlas antes de que fuera demasiado tarde.» Silencio. «No puedo deciros más.»"
+    },
+    "registros_especiales": [
+      {
+        "id": "registro_hab_invitados_pista1",
+        "referencia": "§1-1H",
+        "loseta": "hab_invitados",
+        "descripcion": "Buscar un gemelo que haga par con el botón C.M. (pista #1)",
+        "requiere_loseta_abierta": true,
+        "atributo": "INT",
+        "dificultad": 1,
+        "exito": "Se encuentra el gemelo del botón. Confirma la identidad del propietario.",
+        "fracaso": "No se encuentra nada relevante entre las pertenencias."
+      }
+    ],
+    "implicado": {
+      "testigo": "hobbes",
+      "umbral": 4,
+      "num_cartas": 6
+    }
+  }
+}

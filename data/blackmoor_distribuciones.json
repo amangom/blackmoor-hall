@@ -1,0 +1,2024 @@
+{
+  "version": "1.0",
+  "descripcion": "Distribuciones de losetas y puertas para Blackmoor Hall. 3 distribuciones por caso (Estándar, Intermedio, Difícil). Las coordenadas col/fila definen la posición de cada loseta en la cuadrícula de renderizado.",
+  "casos": {
+    "1": [
+      {
+        "id": "dist_1",
+        "caso": 1,
+        "caso_titulo": "La Muerte de Lord Ashworth",
+        "nombre": "La Mansión Clásica",
+        "dificultad": "Estándar",
+        "num_puertas": 16,
+        "losetas": {
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Cobertizo": {
+            "col": 2,
+            "fila": 0
+          },
+          "Capilla": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Galería Retratos": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 1
+          },
+          "Biblioteca": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 1,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 2,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 3
+          },
+          "Hab. Servicio": {
+            "col": 2,
+            "fila": 3
+          },
+          "Sótano": {
+            "col": 3,
+            "fila": 3
+          }
+        },
+        "conexiones": [
+          [
+            "Jardín",
+            "Cobertizo"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Capilla",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Galería Retratos"
+          ],
+          [
+            "Galería Retratos",
+            "Hab. Invitados"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Galería Retratos",
+            "Despacho"
+          ],
+          [
+            "Biblioteca",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Despacho"
+          ],
+          [
+            "Despacho",
+            "Salón de Música"
+          ],
+          [
+            "Biblioteca",
+            "Pasadizos"
+          ],
+          [
+            "Salón Principal",
+            "Cocina"
+          ],
+          [
+            "Despacho",
+            "Hab. Servicio"
+          ],
+          [
+            "Pasadizos",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Hab. Servicio"
+          ],
+          [
+            "Hab. Servicio",
+            "Sótano"
+          ]
+        ]
+      },
+      {
+        "id": "dist_2",
+        "caso": 1,
+        "caso_titulo": "La Muerte de Lord Ashworth",
+        "nombre": "El Ala Oeste",
+        "dificultad": "Intermedio",
+        "num_puertas": 15,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Hab. Servicio": {
+            "col": 0,
+            "fila": 1
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 1
+          },
+          "Sótano": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 1,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 2,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Biblioteca": {
+            "col": 1,
+            "fila": 3
+          },
+          "Capilla": {
+            "col": 2,
+            "fila": 3
+          },
+          "Galería Retratos": {
+            "col": 3,
+            "fila": 3
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Cobertizo",
+            "Hab. Servicio"
+          ],
+          [
+            "Jardín",
+            "Cocina"
+          ],
+          [
+            "Hab. Servicio",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Hab. Invitados"
+          ],
+          [
+            "Hab. Servicio",
+            "Sótano"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Sótano",
+            "Salón de Música"
+          ],
+          [
+            "Salón de Música",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Despacho"
+          ],
+          [
+            "Salón Principal",
+            "Capilla"
+          ],
+          [
+            "Despacho",
+            "Galería Retratos"
+          ],
+          [
+            "Pasadizos",
+            "Biblioteca"
+          ],
+          [
+            "Biblioteca",
+            "Capilla"
+          ]
+        ]
+      },
+      {
+        "id": "dist_3",
+        "caso": 1,
+        "caso_titulo": "La Muerte de Lord Ashworth",
+        "nombre": "La Noche Cerrada",
+        "dificultad": "Difícil",
+        "num_puertas": 14,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Cocina": {
+            "col": 2,
+            "fila": 0
+          },
+          "Galería Retratos": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Salón Principal": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Servicio": {
+            "col": 3,
+            "fila": 1
+          },
+          "Biblioteca": {
+            "col": 0,
+            "fila": 2
+          },
+          "Capilla": {
+            "col": 1,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 2,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 1,
+            "fila": 3
+          },
+          "Sótano": {
+            "col": 2,
+            "fila": 3
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 3
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Jardín",
+            "Cocina"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Cocina",
+            "Salón Principal"
+          ],
+          [
+            "Galería Retratos",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Despacho"
+          ],
+          [
+            "Biblioteca",
+            "Capilla"
+          ],
+          [
+            "Capilla",
+            "Despacho"
+          ],
+          [
+            "Despacho",
+            "Salón de Música"
+          ],
+          [
+            "Capilla",
+            "Pasadizos"
+          ],
+          [
+            "Pasadizos",
+            "Sótano"
+          ],
+          [
+            "Salón Principal",
+            "Hab. Servicio"
+          ],
+          [
+            "Sótano",
+            "Hab. Invitados"
+          ]
+        ]
+      }
+    ],
+    "2": [
+      {
+        "id": "dist_4",
+        "caso": 2,
+        "caso_titulo": "El Fantasma de la Galería",
+        "nombre": "El Rescate Accesible",
+        "dificultad": "Estándar",
+        "num_puertas": 16,
+        "losetas": {
+          "Jardín": {
+            "col": 0,
+            "fila": 0
+          },
+          "Cobertizo": {
+            "col": 1,
+            "fila": 0
+          },
+          "Capilla": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 2,
+            "fila": 1
+          },
+          "Salón de Música": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 1,
+            "fila": 2
+          },
+          "Galería Retratos": {
+            "col": 2,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 3
+          },
+          "Biblioteca": {
+            "col": 2,
+            "fila": 3
+          },
+          "Hab. Servicio": {
+            "col": 3,
+            "fila": 3
+          },
+          "Sótano": {
+            "col": 0,
+            "fila": 4
+          }
+        },
+        "conexiones": [
+          [
+            "Jardín",
+            "Cobertizo"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Cobertizo",
+            "Hab. Invitados"
+          ],
+          [
+            "Capilla",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Hab. Invitados"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Salón de Música",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Galería Retratos"
+          ],
+          [
+            "Galería Retratos",
+            "Despacho"
+          ],
+          [
+            "Salón de Música",
+            "Pasadizos"
+          ],
+          [
+            "Salón Principal",
+            "Cocina"
+          ],
+          [
+            "Galería Retratos",
+            "Biblioteca"
+          ],
+          [
+            "Despacho",
+            "Hab. Servicio"
+          ],
+          [
+            "Pasadizos",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Biblioteca"
+          ],
+          [
+            "Biblioteca",
+            "Sótano"
+          ]
+        ]
+      },
+      {
+        "id": "dist_5",
+        "caso": 2,
+        "caso_titulo": "El Fantasma de la Galería",
+        "nombre": "Muros y Secretos",
+        "dificultad": "Intermedio",
+        "num_puertas": 16,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Hab. Servicio": {
+            "col": 0,
+            "fila": 1
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 1
+          },
+          "Sótano": {
+            "col": 0,
+            "fila": 2
+          },
+          "Capilla": {
+            "col": 1,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 2,
+            "fila": 2
+          },
+          "Galería Retratos": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Biblioteca": {
+            "col": 1,
+            "fila": 3
+          },
+          "Salón de Música": {
+            "col": 2,
+            "fila": 3
+          },
+          "Despacho": {
+            "col": 3,
+            "fila": 3
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Cobertizo",
+            "Hab. Servicio"
+          ],
+          [
+            "Jardín",
+            "Cocina"
+          ],
+          [
+            "Hab. Servicio",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Hab. Invitados"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Sótano",
+            "Capilla"
+          ],
+          [
+            "Capilla",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Galería Retratos"
+          ],
+          [
+            "Salón Principal",
+            "Salón de Música"
+          ],
+          [
+            "Galería Retratos",
+            "Despacho"
+          ],
+          [
+            "Pasadizos",
+            "Biblioteca"
+          ],
+          [
+            "Biblioteca",
+            "Salón de Música"
+          ],
+          [
+            "Hab. Servicio",
+            "Sótano"
+          ],
+          [
+            "Capilla",
+            "Biblioteca"
+          ]
+        ]
+      },
+      {
+        "id": "dist_6",
+        "caso": 2,
+        "caso_titulo": "El Fantasma de la Galería",
+        "nombre": "Contra el Reloj",
+        "dificultad": "Difícil",
+        "num_puertas": 15,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Despacho": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Cocina": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Servicio": {
+            "col": 3,
+            "fila": 1
+          },
+          "Galería Retratos": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 1,
+            "fila": 2
+          },
+          "Capilla": {
+            "col": 2,
+            "fila": 2
+          },
+          "Sótano": {
+            "col": 3,
+            "fila": 2
+          },
+          "Biblioteca": {
+            "col": 0,
+            "fila": 3
+          },
+          "Salón de Música": {
+            "col": 1,
+            "fila": 3
+          },
+          "Pasadizos": {
+            "col": 2,
+            "fila": 3
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 3
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Cobertizo",
+            "Despacho"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Despacho",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Hab. Servicio"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Cocina",
+            "Capilla"
+          ],
+          [
+            "Galería Retratos",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Capilla"
+          ],
+          [
+            "Capilla",
+            "Sótano"
+          ],
+          [
+            "Galería Retratos",
+            "Biblioteca"
+          ],
+          [
+            "Biblioteca",
+            "Salón de Música"
+          ],
+          [
+            "Salón de Música",
+            "Pasadizos"
+          ],
+          [
+            "Sótano",
+            "Hab. Invitados"
+          ]
+        ]
+      }
+    ],
+    "3": [
+      {
+        "id": "dist_7",
+        "caso": 3,
+        "caso_titulo": "El Secreto del Sótano",
+        "nombre": "La Excavación",
+        "dificultad": "Estándar",
+        "num_puertas": 16,
+        "losetas": {
+          "Jardín": {
+            "col": 0,
+            "fila": 0
+          },
+          "Cobertizo": {
+            "col": 1,
+            "fila": 0
+          },
+          "Capilla": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Galería Retratos": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 1
+          },
+          "Salón de Música": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 1,
+            "fila": 2
+          },
+          "Sótano": {
+            "col": 2,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 3
+          },
+          "Biblioteca": {
+            "col": 2,
+            "fila": 3
+          },
+          "Hab. Servicio": {
+            "col": 3,
+            "fila": 3
+          }
+        },
+        "conexiones": [
+          [
+            "Jardín",
+            "Cobertizo"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Cobertizo",
+            "Galería Retratos"
+          ],
+          [
+            "Capilla",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Galería Retratos"
+          ],
+          [
+            "Galería Retratos",
+            "Hab. Invitados"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Galería Retratos",
+            "Sótano"
+          ],
+          [
+            "Salón de Música",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Sótano"
+          ],
+          [
+            "Sótano",
+            "Despacho"
+          ],
+          [
+            "Salón Principal",
+            "Cocina"
+          ],
+          [
+            "Sótano",
+            "Biblioteca"
+          ],
+          [
+            "Despacho",
+            "Hab. Servicio"
+          ],
+          [
+            "Pasadizos",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Biblioteca"
+          ]
+        ]
+      },
+      {
+        "id": "dist_8",
+        "caso": 3,
+        "caso_titulo": "El Secreto del Sótano",
+        "nombre": "Treinta Años Enterrados",
+        "dificultad": "Intermedio",
+        "num_puertas": 16,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Galería Retratos": {
+            "col": 2,
+            "fila": 0
+          },
+          "Hab. Servicio": {
+            "col": 0,
+            "fila": 1
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 1
+          },
+          "Salón de Música": {
+            "col": 0,
+            "fila": 2
+          },
+          "Capilla": {
+            "col": 1,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 2,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Biblioteca": {
+            "col": 1,
+            "fila": 3
+          },
+          "Sótano": {
+            "col": 2,
+            "fila": 3
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Jardín",
+            "Galería Retratos"
+          ],
+          [
+            "Cobertizo",
+            "Hab. Servicio"
+          ],
+          [
+            "Jardín",
+            "Cocina"
+          ],
+          [
+            "Hab. Servicio",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Hab. Invitados"
+          ],
+          [
+            "Galería Retratos",
+            "Vestíbulo"
+          ],
+          [
+            "Salón de Música",
+            "Capilla"
+          ],
+          [
+            "Capilla",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Despacho"
+          ],
+          [
+            "Capilla",
+            "Pasadizos"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Biblioteca",
+            "Sótano"
+          ],
+          [
+            "Biblioteca",
+            "Salón Principal"
+          ],
+          [
+            "Cocina",
+            "Capilla"
+          ]
+        ]
+      },
+      {
+        "id": "dist_9",
+        "caso": 3,
+        "caso_titulo": "El Secreto del Sótano",
+        "nombre": "El Muro Sellado",
+        "dificultad": "Difícil",
+        "num_puertas": 15,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Galería Retratos": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Cocina": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Servicio": {
+            "col": 3,
+            "fila": 1
+          },
+          "Despacho": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 1,
+            "fila": 2
+          },
+          "Capilla": {
+            "col": 2,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 3,
+            "fila": 2
+          },
+          "Hab. Invitados": {
+            "col": 0,
+            "fila": 3
+          },
+          "Biblioteca": {
+            "col": 1,
+            "fila": 3
+          },
+          "Sótano": {
+            "col": 2,
+            "fila": 3
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 4
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Cobertizo",
+            "Galería Retratos"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Galería Retratos",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Hab. Servicio"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Cocina",
+            "Capilla"
+          ],
+          [
+            "Despacho",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Capilla"
+          ],
+          [
+            "Capilla",
+            "Salón de Música"
+          ],
+          [
+            "Biblioteca",
+            "Sótano"
+          ],
+          [
+            "Biblioteca",
+            "Pasadizos"
+          ],
+          [
+            "Hab. Invitados",
+            "Despacho"
+          ],
+          [
+            "Biblioteca",
+            "Salón Principal"
+          ]
+        ]
+      }
+    ],
+    "4": [
+      {
+        "id": "dist_10",
+        "caso": 4,
+        "caso_titulo": "El Reloj de Medianoche",
+        "nombre": "La Inauguración",
+        "dificultad": "Estándar",
+        "num_puertas": 17,
+        "losetas": {
+          "Jardín": {
+            "col": 0,
+            "fila": 0
+          },
+          "Cobertizo": {
+            "col": 1,
+            "fila": 0
+          },
+          "Capilla": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Galería Retratos": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 1
+          },
+          "Sala Relojería": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 1,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 2,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Biblioteca": {
+            "col": 1,
+            "fila": 3
+          },
+          "Cocina": {
+            "col": 2,
+            "fila": 3
+          },
+          "Hab. Servicio": {
+            "col": 3,
+            "fila": 3
+          },
+          "Sótano": {
+            "col": 0,
+            "fila": 4
+          }
+        },
+        "conexiones": [
+          [
+            "Jardín",
+            "Cobertizo"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Cobertizo",
+            "Galería Retratos"
+          ],
+          [
+            "Capilla",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Galería Retratos"
+          ],
+          [
+            "Galería Retratos",
+            "Hab. Invitados"
+          ],
+          [
+            "Vestíbulo",
+            "Salón de Música"
+          ],
+          [
+            "Galería Retratos",
+            "Salón Principal"
+          ],
+          [
+            "Sala Relojería",
+            "Salón de Música"
+          ],
+          [
+            "Salón de Música",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Despacho"
+          ],
+          [
+            "Salón de Música",
+            "Biblioteca"
+          ],
+          [
+            "Salón Principal",
+            "Cocina"
+          ],
+          [
+            "Despacho",
+            "Hab. Servicio"
+          ],
+          [
+            "Pasadizos",
+            "Biblioteca"
+          ],
+          [
+            "Biblioteca",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Sótano"
+          ]
+        ]
+      },
+      {
+        "id": "dist_11",
+        "caso": 4,
+        "caso_titulo": "El Reloj de Medianoche",
+        "nombre": "El Museo Nocturno",
+        "dificultad": "Intermedio",
+        "num_puertas": 18,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Hab. Servicio": {
+            "col": 0,
+            "fila": 1
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 1
+          },
+          "Sótano": {
+            "col": 0,
+            "fila": 2
+          },
+          "Capilla": {
+            "col": 1,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 2,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Biblioteca": {
+            "col": 1,
+            "fila": 3
+          },
+          "Sala Relojería": {
+            "col": 2,
+            "fila": 3
+          },
+          "Galería Retratos": {
+            "col": 3,
+            "fila": 3
+          },
+          "Despacho": {
+            "col": 0,
+            "fila": 4
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Cobertizo",
+            "Hab. Servicio"
+          ],
+          [
+            "Jardín",
+            "Cocina"
+          ],
+          [
+            "Hab. Servicio",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Hab. Invitados"
+          ],
+          [
+            "Hab. Servicio",
+            "Sótano"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Sótano",
+            "Capilla"
+          ],
+          [
+            "Capilla",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Salón de Música"
+          ],
+          [
+            "Salón Principal",
+            "Sala Relojería"
+          ],
+          [
+            "Salón de Música",
+            "Galería Retratos"
+          ],
+          [
+            "Pasadizos",
+            "Biblioteca"
+          ],
+          [
+            "Biblioteca",
+            "Sala Relojería"
+          ],
+          [
+            "Sala Relojería",
+            "Despacho"
+          ],
+          [
+            "Capilla",
+            "Biblioteca"
+          ],
+          [
+            "Hab. Servicio",
+            "Sótano"
+          ]
+        ]
+      },
+      {
+        "id": "dist_12",
+        "caso": 4,
+        "caso_titulo": "El Reloj de Medianoche",
+        "nombre": "Medianoche",
+        "dificultad": "Difícil",
+        "num_puertas": 15,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Capilla": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Galería Retratos": {
+            "col": 2,
+            "fila": 1
+          },
+          "Sala Relojería": {
+            "col": 3,
+            "fila": 1
+          },
+          "Biblioteca": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 1,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 2,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 3
+          },
+          "Hab. Servicio": {
+            "col": 2,
+            "fila": 3
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 3
+          },
+          "Sótano": {
+            "col": 0,
+            "fila": 4
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Capilla",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Galería Retratos"
+          ],
+          [
+            "Galería Retratos",
+            "Sala Relojería"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Galería Retratos",
+            "Salón de Música"
+          ],
+          [
+            "Biblioteca",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Salón de Música"
+          ],
+          [
+            "Salón de Música",
+            "Despacho"
+          ],
+          [
+            "Salón Principal",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Hab. Servicio"
+          ],
+          [
+            "Hab. Servicio",
+            "Sótano"
+          ],
+          [
+            "Biblioteca",
+            "Pasadizos"
+          ],
+          [
+            "Despacho",
+            "Hab. Invitados"
+          ]
+        ]
+      }
+    ],
+    "5": [
+      {
+        "id": "dist_13",
+        "caso": 5,
+        "caso_titulo": "El Último Acto",
+        "nombre": "Telón Abierto",
+        "dificultad": "Estándar",
+        "num_puertas": 18,
+        "losetas": {
+          "Jardín": {
+            "col": 0,
+            "fila": 0
+          },
+          "Cobertizo": {
+            "col": 1,
+            "fila": 0
+          },
+          "Vestíbulo": {
+            "col": 0,
+            "fila": 1
+          },
+          "Salón Principal": {
+            "col": 1,
+            "fila": 1
+          },
+          "Escenario": {
+            "col": 2,
+            "fila": 1
+          },
+          "Bambalinas": {
+            "col": 3,
+            "fila": 1
+          },
+          "Biblioteca": {
+            "col": 0,
+            "fila": 2
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 2,
+            "fila": 2
+          },
+          "Camerinos": {
+            "col": 3,
+            "fila": 2
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 3
+          },
+          "Hab. Servicio": {
+            "col": 1,
+            "fila": 3
+          },
+          "Despacho": {
+            "col": 2,
+            "fila": 3
+          },
+          "Sala Utilería": {
+            "col": 3,
+            "fila": 3
+          },
+          "Hab. Invitados": {
+            "col": 0,
+            "fila": 4
+          }
+        },
+        "conexiones": [
+          [
+            "Jardín",
+            "Cobertizo"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Escenario"
+          ],
+          [
+            "Escenario",
+            "Bambalinas"
+          ],
+          [
+            "Escenario",
+            "Salón de Música"
+          ],
+          [
+            "Salón Principal",
+            "Cocina"
+          ],
+          [
+            "Bambalinas",
+            "Camerinos"
+          ],
+          [
+            "Biblioteca",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Salón de Música"
+          ],
+          [
+            "Salón de Música",
+            "Camerinos"
+          ],
+          [
+            "Biblioteca",
+            "Pasadizos"
+          ],
+          [
+            "Cocina",
+            "Hab. Servicio"
+          ],
+          [
+            "Salón de Música",
+            "Despacho"
+          ],
+          [
+            "Camerinos",
+            "Sala Utilería"
+          ],
+          [
+            "Pasadizos",
+            "Hab. Servicio"
+          ],
+          [
+            "Hab. Servicio",
+            "Despacho"
+          ],
+          [
+            "Despacho",
+            "Hab. Invitados"
+          ]
+        ]
+      },
+      {
+        "id": "dist_14",
+        "caso": 5,
+        "caso_titulo": "El Último Acto",
+        "nombre": "Entre Bastidores",
+        "dificultad": "Intermedio",
+        "num_puertas": 18,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Hab. Servicio": {
+            "col": 0,
+            "fila": 1
+          },
+          "Cocina": {
+            "col": 1,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Invitados": {
+            "col": 3,
+            "fila": 1
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 2
+          },
+          "Biblioteca": {
+            "col": 1,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 2,
+            "fila": 2
+          },
+          "Despacho": {
+            "col": 3,
+            "fila": 2
+          },
+          "Salón de Música": {
+            "col": 0,
+            "fila": 3
+          },
+          "Escenario": {
+            "col": 1,
+            "fila": 3
+          },
+          "Bambalinas": {
+            "col": 2,
+            "fila": 3
+          },
+          "Camerinos": {
+            "col": 0,
+            "fila": 4
+          },
+          "Sala Utilería": {
+            "col": 1,
+            "fila": 4
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Cobertizo",
+            "Hab. Servicio"
+          ],
+          [
+            "Jardín",
+            "Cocina"
+          ],
+          [
+            "Hab. Servicio",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Hab. Invitados"
+          ],
+          [
+            "Hab. Servicio",
+            "Pasadizos"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Pasadizos",
+            "Biblioteca"
+          ],
+          [
+            "Biblioteca",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Despacho"
+          ],
+          [
+            "Biblioteca",
+            "Salón de Música"
+          ],
+          [
+            "Salón Principal",
+            "Escenario"
+          ],
+          [
+            "Escenario",
+            "Bambalinas"
+          ],
+          [
+            "Salón de Música",
+            "Escenario"
+          ],
+          [
+            "Escenario",
+            "Camerinos"
+          ],
+          [
+            "Camerinos",
+            "Sala Utilería"
+          ],
+          [
+            "Hab. Invitados",
+            "Despacho"
+          ]
+        ]
+      },
+      {
+        "id": "dist_15",
+        "caso": 5,
+        "caso_titulo": "El Último Acto",
+        "nombre": "El Último Ensayo",
+        "dificultad": "Difícil",
+        "num_puertas": 16,
+        "losetas": {
+          "Cobertizo": {
+            "col": 0,
+            "fila": 0
+          },
+          "Jardín": {
+            "col": 1,
+            "fila": 0
+          },
+          "Hab. Invitados": {
+            "col": 0,
+            "fila": 1
+          },
+          "Vestíbulo": {
+            "col": 1,
+            "fila": 1
+          },
+          "Cocina": {
+            "col": 2,
+            "fila": 1
+          },
+          "Hab. Servicio": {
+            "col": 3,
+            "fila": 1
+          },
+          "Despacho": {
+            "col": 0,
+            "fila": 2
+          },
+          "Salón Principal": {
+            "col": 1,
+            "fila": 2
+          },
+          "Escenario": {
+            "col": 2,
+            "fila": 2
+          },
+          "Bambalinas": {
+            "col": 3,
+            "fila": 2
+          },
+          "Biblioteca": {
+            "col": 0,
+            "fila": 3
+          },
+          "Salón de Música": {
+            "col": 1,
+            "fila": 3
+          },
+          "Sala Utilería": {
+            "col": 2,
+            "fila": 3
+          },
+          "Pasadizos": {
+            "col": 0,
+            "fila": 4
+          },
+          "Camerinos": {
+            "col": 1,
+            "fila": 4
+          }
+        },
+        "conexiones": [
+          [
+            "Cobertizo",
+            "Jardín"
+          ],
+          [
+            "Jardín",
+            "Vestíbulo"
+          ],
+          [
+            "Hab. Invitados",
+            "Vestíbulo"
+          ],
+          [
+            "Vestíbulo",
+            "Cocina"
+          ],
+          [
+            "Cocina",
+            "Hab. Servicio"
+          ],
+          [
+            "Vestíbulo",
+            "Salón Principal"
+          ],
+          [
+            "Cocina",
+            "Escenario"
+          ],
+          [
+            "Despacho",
+            "Salón Principal"
+          ],
+          [
+            "Salón Principal",
+            "Escenario"
+          ],
+          [
+            "Escenario",
+            "Bambalinas"
+          ],
+          [
+            "Salón Principal",
+            "Biblioteca"
+          ],
+          [
+            "Escenario",
+            "Salón de Música"
+          ],
+          [
+            "Biblioteca",
+            "Salón de Música"
+          ],
+          [
+            "Salón de Música",
+            "Sala Utilería"
+          ],
+          [
+            "Biblioteca",
+            "Pasadizos"
+          ],
+          [
+            "Salón de Música",
+            "Camerinos"
+          ]
+        ]
+      }
+    ]
+  }
+}

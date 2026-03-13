@@ -1,0 +1,519 @@
+{
+  "caso_id": "caso_1",
+  "pistas": {
+    "pista_1": {
+      "nombre": "El botón de puño",
+      "metodos": [
+        {
+          "id": "p1-pnj",
+          "tipo": "pnj_cualquiera",
+          "descripcion": "Preguntar a los PNJ quién tiene las iniciales C.M.",
+          "atributo": "INT",
+          "dificultad": 3
+        },
+        {
+          "id": "p1-loseta",
+          "tipo": "loseta",
+          "loseta_id": "hab_invitados",
+          "loseta_nombre": "Hab. de Invitados",
+          "descripcion": "Buscar en la Hab. de Invitados un gemelo que haga par",
+          "atributo": "INT",
+          "dificultad": 1,
+          "requiere_loseta_abierta": true,
+          "exito_variante": {
+            "texto_comun": "Entre las maletas de Harold y los efectos personales del Dr. Marsh, encontráis el maletín médico de Marsh. Dentro hay un estuche de terciopelo para gemelos de plata con las iniciales C.M.",
+            "A": {
+              "texto": "El estuche contiene un solo gemelo. El hueco del segundo está vacío. El gemelo presente es idéntico al encontrado en la mano del Lord: plata maciza, iniciales C.M., misma manufactura. Al Dr. Marsh le falta un gemelo.",
+              "efectos": [
+                {
+                  "tipo": "sospecha_pnj",
+                  "pnj": "marsh",
+                  "valor": 1
+                }
+              ]
+            },
+            "B": {
+              "texto": "El estuche contiene un solo gemelo. El hueco del segundo está vacío. El gemelo presente es idéntico al encontrado en la mano del Lord: plata maciza, iniciales C.M., misma manufactura. Pero hay un detalle: el interior del maletín tiene arañazos recientes en el cierre, como si alguien lo hubiera abierto a la fuerza o con prisa. Al Dr. Marsh le falta un gemelo.",
+              "efectos": [
+                {
+                  "tipo": "sospecha_pnj",
+                  "pnj": "marsh",
+                  "valor": 1
+                }
+              ]
+            },
+            "C": {
+              "texto": "El estuche contiene dos gemelos completos. Ambos son de plata con las iniciales C.M. Al Dr. Marsh no le falta ninguno. El botón encontrado en la mano del Lord no pertenece a este par. Existe otro juego de gemelos C.M. en Blackmoor Hall.",
+              "efectos": [
+                {
+                  "tipo": "sospecha_pnj",
+                  "pnj": "marsh",
+                  "valor": -1,
+                  "condicional": "si_tiene"
+                },
+                {
+                  "tipo": "sospecha_pnj",
+                  "pnj": "catherine",
+                  "valor": 1
+                }
+              ]
+            }
+          },
+          "fracaso_texto": "Registráis la habitación de forma superficial pero no localizáis nada relevante entre las pertenencias. Podéis volver a intentarlo.",
+          "fracaso_reintento": true
+        },
+        {
+          "id": "p1-ind",
+          "tipo": "individual",
+          "descripcion": "Examinar el botón como joya (factura, joyero, antigüedad)",
+          "atributo": "INT",
+          "dificultad": 4
+        }
+      ],
+      "color": "roja"
+    },
+    "pista_2": {
+      "nombre": "Plantas junto a la despensa",
+      "metodos": [
+        {
+          "id": "p2-ind",
+          "tipo": "individual",
+          "descripcion": "Identificar la planta",
+          "atributo": "INT",
+          "dificultad": 5,
+          "doctor_dif": 3
+        },
+        {
+          "id": "p2-pnj",
+          "tipo": "pnj",
+          "pnj_id": "pemberton",
+          "pnj_nombre": "Pemberton",
+          "descripcion": "Preguntar a Pemberton qué plantas usa",
+          "atributo": "TEM",
+          "dificultad": 3,
+          "efecto_adicional": {
+            "tipo": "sospecha_pnj",
+            "pnj": "pemberton",
+            "valor": 1
+          }
+        },
+        {
+          "id": "p2-loseta",
+          "tipo": "loseta",
+          "loseta_id": "biblioteca",
+          "loseta_nombre": "Biblioteca",
+          "descripcion": "Buscar un libro de botánica en la Biblioteca",
+          "atributo": "INT",
+          "dificultad": 3
+        }
+      ],
+      "color": "roja"
+    },
+    "pista_3": {
+      "nombre": "Documento en el escritorio",
+      "metodos": [
+        {
+          "id": "p3-ind",
+          "tipo": "individual",
+          "descripcion": "Leer el documento completo",
+          "atributo": "INT",
+          "dificultad": 4
+        },
+        {
+          "id": "p3-pnj-hobbes",
+          "tipo": "pnj",
+          "pnj_id": "hobbes",
+          "pnj_nombre": "Hobbes",
+          "descripcion": "Preguntar a Hobbes si el Lord tenía asuntos legales pendientes",
+          "atributo": "TEM",
+          "dificultad": 4
+        },
+        {
+          "id": "p3-pnj-whitfield",
+          "tipo": "pnj",
+          "pnj_id": "whitfield",
+          "pnj_nombre": "Whitfield",
+          "descripcion": "Preguntar a Whitfield, confidente del Lord",
+          "atributo": "TEM",
+          "dificultad": 3
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_4": {
+      "nombre": "Cartas en la Biblioteca",
+      "metodos": [
+        {
+          "id": "p4-ind",
+          "tipo": "individual",
+          "descripcion": "Leer las cartas (correspondencia privada)",
+          "atributo": "INT",
+          "dificultad": 4,
+          "efecto_adicional": {
+            "tipo": "alerta",
+            "valor": 1
+          }
+        },
+        {
+          "id": "p4-pnj-harold",
+          "tipo": "pnj",
+          "pnj_id": "harold",
+          "pnj_nombre": "Harold",
+          "descripcion": "Preguntar a Harold directamente",
+          "atributo": "TEM",
+          "dificultad": 3
+        },
+        {
+          "id": "p4-pnj-hobbes",
+          "tipo": "pnj",
+          "pnj_id": "hobbes",
+          "pnj_nombre": "Hobbes",
+          "descripcion": "Preguntar a Hobbes si conoce las finanzas de la familia",
+          "atributo": "TEM",
+          "dificultad": 4
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_5": {
+      "nombre": "Certificado en la Capilla",
+      "metodos": [
+        {
+          "id": "p5-ind",
+          "tipo": "individual",
+          "descripcion": "Leer el certificado completo",
+          "atributo": "INT",
+          "dificultad": 4,
+          "doctor_automatico": true
+        },
+        {
+          "id": "p5-pnj-catherine",
+          "tipo": "pnj",
+          "pnj_id": "catherine",
+          "pnj_nombre": "Catherine",
+          "descripcion": "Preguntar a Catherine por qué hay un documento médico en la Capilla",
+          "atributo": "TEM",
+          "dificultad": 2
+        },
+        {
+          "id": "p5-pnj-whitfield",
+          "tipo": "pnj",
+          "pnj_id": "whitfield",
+          "pnj_nombre": "Whitfield",
+          "descripcion": "Preguntar a Whitfield qué guarda en su misal",
+          "atributo": "TEM",
+          "dificultad": 3,
+          "doctor_automatico": true
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_6": {
+      "nombre": "Cuaderno oculto",
+      "metodos": [
+        {
+          "id": "p6-ind",
+          "tipo": "individual",
+          "descripcion": "Leer el cuaderno completo",
+          "atributo": "INT",
+          "dificultad": 5
+        },
+        {
+          "id": "p6-pnj-catherine",
+          "tipo": "pnj",
+          "pnj_id": "catherine",
+          "pnj_nombre": "Catherine",
+          "descripcion": "Preguntar a Catherine si es suyo",
+          "atributo": "TEM",
+          "dificultad": 3,
+          "dificultad_condicional": {
+            "condicion": "sospecha_pnj_gte",
+            "pnj": "catherine",
+            "umbral": 2,
+            "dificultad": 4
+          }
+        },
+        {
+          "id": "p6-ind2",
+          "tipo": "individual",
+          "descripcion": "Comparar la letra con otros documentos de la casa",
+          "atributo": "INT",
+          "dificultad": 4
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_7": {
+      "nombre": "Nota en la Capilla",
+      "metodos": [
+        {
+          "id": "p7-pnj-whitfield",
+          "tipo": "pnj",
+          "pnj_id": "whitfield",
+          "pnj_nombre": "Whitfield",
+          "descripcion": "Preguntar a Whitfield directamente",
+          "atributo": "TEM",
+          "dificultad": 4,
+          "dificultad_en_loseta": {
+            "loseta_id": "capilla",
+            "dificultad": 3
+          }
+        },
+        {
+          "id": "p7-auto",
+          "tipo": "automatico",
+          "descripcion": "Comparar la letra con el documento del escritorio (Pista #3)",
+          "condicion_automatico": {
+            "tipo": "pista_descubierta",
+            "pista_id": "pista_3"
+          }
+        },
+        {
+          "id": "p7-ind",
+          "tipo": "individual",
+          "descripcion": "Comparar la letra con el documento del escritorio (Pista #3 no disponible)",
+          "atributo": "INT",
+          "dificultad": 4,
+          "oculto_si": {
+            "pista_descubierta": "pista_3"
+          }
+        },
+        {
+          "id": "p7-pnj-hobbes",
+          "tipo": "pnj",
+          "pnj_id": "hobbes",
+          "pnj_nombre": "Hobbes",
+          "descripcion": "Preguntar a Hobbes quién escribía así",
+          "atributo": "TEM",
+          "dificultad": 3
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_8": {
+      "nombre": "Informe de auditoría",
+      "metodos": [
+        {
+          "id": "p8-ind",
+          "tipo": "individual",
+          "descripcion": "Analizar las cuentas",
+          "atributo": "INT",
+          "dificultad": 5
+        },
+        {
+          "id": "p8-pnj-hobbes",
+          "tipo": "pnj",
+          "pnj_id": "hobbes",
+          "pnj_nombre": "Hobbes",
+          "descripcion": "Preguntar a Hobbes si sabe de irregularidades en la casa",
+          "atributo": "TEM",
+          "dificultad": 4
+        },
+        {
+          "id": "p8-pnj-pemberton",
+          "tipo": "pnj",
+          "pnj_id": "pemberton",
+          "pnj_nombre": "Pemberton",
+          "descripcion": "Confrontar a Pemberton con el cuaderno",
+          "atributo": "TEM",
+          "dificultad": 3,
+          "efecto_adicional": {
+            "tipo": "sospecha_pnj",
+            "pnj": "pemberton",
+            "valor": 2
+          }
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_9": {
+      "nombre": "La segunda copa",
+      "metodos": [
+        {
+          "id": "p9-ind",
+          "tipo": "individual",
+          "descripcion": "Analizar los restos",
+          "atributo": "INT",
+          "dificultad": 6,
+          "doctor_dif": 4
+        },
+        {
+          "id": "p9-pnj-pemberton",
+          "tipo": "pnj",
+          "pnj_id": "pemberton",
+          "pnj_nombre": "Pemberton",
+          "descripcion": "Preguntar a Pemberton sobre las copas de la cena",
+          "atributo": "TEM",
+          "dificultad": 3
+        },
+        {
+          "id": "p9-ind2",
+          "tipo": "individual",
+          "descripcion": "Recoger los fragmentos y olerlos",
+          "atributo": "INT",
+          "dificultad": 5
+        }
+      ],
+      "color": "roja"
+    },
+    "pista_10": {
+      "nombre": "Frasco vacío",
+      "metodos": [
+        {
+          "id": "p10-ind",
+          "tipo": "individual",
+          "descripcion": "Analizar el residuo",
+          "atributo": "INT",
+          "dificultad": 6,
+          "doctor_dif": 4
+        },
+        {
+          "id": "p10-auto",
+          "tipo": "automatico",
+          "descripcion": "Comparar con las plantas (Pista #2 ya interpretada → mismo compuesto)",
+          "condicion_automatico": {
+            "tipo": "pista_interpretada",
+            "pista_id": "pista_2"
+          }
+        },
+        {
+          "id": "p10-pnj-marsh",
+          "tipo": "pnj",
+          "pnj_id": "marsh",
+          "pnj_nombre": "Dr. Marsh",
+          "descripcion": "Preguntar a Marsh si reconoce el frasco",
+          "atributo": "TEM",
+          "dificultad": 4
+        }
+      ],
+      "color": "roja"
+    },
+    "pista_11": {
+      "nombre": "Correspondencia",
+      "metodos": [
+        {
+          "id": "p11-ind",
+          "tipo": "individual",
+          "descripcion": "Leer el francés",
+          "atributo": "INT",
+          "dificultad": 5,
+          "institutriz_automatico": true
+        },
+        {
+          "id": "p11-pnj-pemberton",
+          "tipo": "pnj",
+          "pnj_id": "pemberton",
+          "pnj_nombre": "Pemberton",
+          "descripcion": "Preguntar a Pemberton sobre las cartas",
+          "atributo": "TEM",
+          "dificultad": 3,
+          "efecto_adicional": {
+            "tipo": "sospecha_pnj",
+            "pnj": "pemberton",
+            "valor": 1
+          }
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_12": {
+      "nombre": "Marcas en la puerta del Despacho",
+      "metodos": [
+        {
+          "id": "p12-ind",
+          "tipo": "individual",
+          "descripcion": "Examinar las marcas con detalle",
+          "atributo": "INT",
+          "dificultad": 5
+        },
+        {
+          "id": "p12-pnj-hobbes",
+          "tipo": "pnj",
+          "pnj_id": "hobbes",
+          "pnj_nombre": "Hobbes",
+          "descripcion": "Preguntar a Hobbes si alguien ha forzado la puerta",
+          "atributo": "TEM",
+          "dificultad": 3
+        },
+        {
+          "id": "p12-ind2",
+          "tipo": "individual",
+          "descripcion": "Reconstruir físicamente cómo se hicieron las marcas",
+          "atributo": "FOR",
+          "dificultad": 4
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_13": {
+      "nombre": "Póliza de seguro",
+      "metodos": [
+        {
+          "id": "p13-ind",
+          "tipo": "individual",
+          "descripcion": "Leer el contenido",
+          "atributo": "INT",
+          "dificultad": 4
+        },
+        {
+          "id": "p13-pnj-harold",
+          "tipo": "pnj",
+          "pnj_id": "harold",
+          "pnj_nombre": "Harold",
+          "descripcion": "Confrontar a Harold con el sobre",
+          "atributo": "TEM",
+          "dificultad": 4,
+          "efecto_adicional": {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        },
+        {
+          "id": "p13-pnj-hobbes",
+          "tipo": "pnj",
+          "pnj_id": "hobbes",
+          "pnj_nombre": "Hobbes",
+          "descripcion": "Preguntar a Hobbes si el Lord tenía seguros importantes",
+          "atributo": "TEM",
+          "dificultad": 3
+        }
+      ],
+      "color": "azul"
+    },
+    "pista_14": {
+      "nombre": "Restos en el parterre",
+      "color": "roja",
+      "metodos": [
+        {
+          "id": "p14-examen",
+          "tipo": "inspeccion",
+          "descripcion": "Examinar los residuos del trapo",
+          "atributo": "INT",
+          "dificultad": 4,
+          "efecto_adicional": null,
+          "efecto_fracaso": null,
+          "ref_libro": null,
+          "bonus_personaje": {
+            "doctor": -2
+          }
+        },
+        {
+          "id": "p14-jardinero",
+          "tipo": "pnj",
+          "pnj_id": "pemberton",
+          "descripcion": "Confrontar a quien cuida el jardín",
+          "atributo": "TEM",
+          "dificultad": 4,
+          "efecto_adicional": {
+            "tipo": "sospecha_pnj",
+            "pnj": "pemberton",
+            "valor": 1
+          },
+          "efecto_fracaso": null,
+          "ref_libro": null
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,331 @@
+{
+  "caso_1": {
+    "marsh": {
+      "1": {
+        "subtipo": "continuo",
+        "texto": "Marsh se ajusta las gafas y os mira por encima de la montura. «Soy médico, no sospechoso. Pero si insistís en tratarme como tal, mis respuestas serán acordes.»",
+        "efectos": [
+          {
+            "tipo": "sin_efecto"
+          }
+        ]
+      },
+      "2": {
+        "subtipo": "continuo",
+        "texto": "Marsh cierra su maletín con un chasquido seco. «Disculpad. Necesito revisar unas notas.»",
+        "efectos": [
+          {
+            "tipo": "movimiento_puertas"
+          }
+        ]
+      },
+      "3": {
+        "subtipo": "continuo",
+        "texto": "Marsh se limpia las gafas con lentitud estudiada. Responde, pero sus frases son más cortas, más clínicas. Cada pregunta le cierra un poco más.",
+        "efectos": [
+          {
+            "tipo": "mod_interrogatorio_propio",
+            "modificador": 1,
+            "atributo": null
+          }
+        ]
+      },
+      "4": {
+        "subtipo": "inmediato",
+        "texto": "Marsh recoge su maletín sin mediar palabra. «Tengo que verificar algo.» Se dirige al Sótano con paso firme. Su frialdad resulta perturbadora.",
+        "efectos": [
+          {
+            "tipo": "atributo_jugadores_presentes",
+            "atributo": "TEM",
+            "modificador": -1
+          },
+          {
+            "tipo": "mover_a_loseta",
+            "destino": "sotano"
+          }
+        ]
+      },
+      "5": {
+        "subtipo": "inmediato",
+        "texto": null,
+        "efectos": [
+          {
+            "tipo": "bloqueo_interrogatorio"
+          }
+        ]
+      }
+    },
+    "harold": {
+      "1": {
+        "subtipo": "continuo",
+        "texto": "Harold da un trago largo y os mira con resentimiento. «Ya empezáis. Igual que mi padre. Siempre culpando al mismo.»",
+        "efectos": [
+          {
+            "tipo": "sin_efecto"
+          }
+        ]
+      },
+      "2": {
+        "subtipo": "continuo",
+        "texto": "Harold se levanta con el vaso en la mano. «Necesito aire. No me sigáis.»",
+        "efectos": [
+          {
+            "tipo": "movimiento_puertas"
+          }
+        ]
+      },
+      "3": {
+        "subtipo": "continuo",
+        "texto": "Harold se sirve otro whisky con manos temblorosas. Está más vulnerable que nunca, pero su amargura es contagiosa. «Todos me señaláis. Como mi padre.»",
+        "efectos": [
+          {
+            "tipo": "mod_interrogatorio_propio",
+            "modificador": -1,
+            "atributo": "TEM"
+          },
+          {
+            "tipo": "mod_atributo_al_interrogar",
+            "atributo": "TEM",
+            "modificador": -1,
+            "objetivo": "interrogador"
+          }
+        ]
+      },
+      "4": {
+        "subtipo": "inmediato",
+        "texto": "Harold se levanta tambaleándose. «No pienso quedarme aquí a que me acuséis.» Intenta salir de la mansión.",
+        "efectos": [
+          {
+            "tipo": "prueba_para_detener",
+            "atributo": "FOR",
+            "dificultad": 3,
+            "fallo": [
+              {
+                "tipo": "retirar_token",
+                "reaparece_en": "jardin",
+                "reaparece_cuando": "inicio_siguiente_ronda"
+              }
+            ]
+          }
+        ]
+      },
+      "5": {
+        "subtipo": "inmediato",
+        "texto": null,
+        "efectos": [
+          {
+            "tipo": "bloqueo_interrogatorio"
+          }
+        ]
+      }
+    },
+    "catherine": {
+      "1": {
+        "subtipo": "continuo",
+        "texto": "Catherine entrecierra los ojos. «Sé lo que estáis haciendo. Elegid mejor vuestras batallas.» Sigue respondiendo, pero su tono se ha enfriado.",
+        "efectos": [
+          {
+            "tipo": "sin_efecto"
+          }
+        ]
+      },
+      "2": {
+        "subtipo": "continuo",
+        "texto": "Catherine recoge sus cosas sin prisa. «No voy a quedarme aquí sentada esperando la siguiente insinuación.»",
+        "efectos": [
+          {
+            "tipo": "movimiento_puertas"
+          }
+        ]
+      },
+      "3": {
+        "subtipo": "continuo",
+        "texto": "Catherine os observa con una calma gélida. Sigue respondiendo, pero pesa cada palabra. «Elegid bien vuestras preguntas. No tengo paciencia infinita.»",
+        "efectos": [
+          {
+            "tipo": "mod_interrogatorio_propio",
+            "modificador": 1,
+            "atributo": null
+          }
+        ]
+      },
+      "4": {
+        "subtipo": [
+          "inmediato",
+          "continuo"
+        ],
+        "texto": "Catherine se levanta sin prisa. «He terminado por ahora.» Se dirige a la Biblioteca. No cierra la puerta, pero su actitud deja claro que cada palabra habrá que arrancársela.",
+        "efectos_inmediatos": [
+          {
+            "tipo": "atributo_jugadores_presentes",
+            "atributo": "TEM",
+            "modificador": -1
+          },
+          {
+            "tipo": "mover_a_loseta",
+            "destino": "biblioteca"
+          }
+        ],
+        "efectos_continuos": [
+          {
+            "tipo": "mod_interrogatorio_propio",
+            "modificador": 2,
+            "atributo": null,
+            "reemplaza_nivel": 3
+          }
+        ]
+      },
+      "5": {
+        "subtipo": "inmediato",
+        "texto": null,
+        "efectos": [
+          {
+            "tipo": "bloqueo_interrogatorio"
+          }
+        ]
+      }
+    },
+    "hobbes": {
+      "1": {
+        "subtipo": "continuo",
+        "texto": "Hobbes cuadra los hombros casi imperceptiblemente. Su rostro no cambia, pero sus respuestas se vuelven más medidas, más formales.",
+        "efectos": [
+          {
+            "tipo": "sin_efecto"
+          }
+        ]
+      },
+      "2": {
+        "subtipo": "continuo",
+        "texto": "Hobbes se excusa con una leve inclinación. «Si me disculpan, hay asuntos de la casa que requieren mi atención.»",
+        "efectos": [
+          {
+            "tipo": "movimiento_puertas"
+          }
+        ]
+      },
+      "3": {
+        "subtipo": "continuo",
+        "texto": "Hobbes sigue respondiendo, pero algo ha cambiado. Sus respuestas son más vagas, más cuidadosas. Cuarenta años de lealtad pesan más que cualquier interrogatorio.",
+        "efectos": [
+          {
+            "tipo": "mod_interrogatorio_propio",
+            "modificador": 1,
+            "atributo": null
+          }
+        ]
+      },
+      "4": {
+        "subtipo": "inmediato",
+        "texto": "⚠ Hobbes baja la voz: «Hay algo que no os he dicho. Justo antes de la cena, uno de vosotros me pidió que le acompañara a revisar la plata del comedor de abajo. Estuve fuera quince minutos. Cuando volví, el Lord ya estaba solo con su copa. Alguien me apartó a propósito.»",
+        "efectos": [
+          {
+            "tipo": "activar_implicado"
+          }
+        ]
+      },
+      "5": {
+        "subtipo": "inmediato",
+        "texto": null,
+        "efectos": [
+          {
+            "tipo": "bloqueo_interrogatorio"
+          }
+        ]
+      }
+    },
+    "pemberton": {
+      "1": {
+        "subtipo": "continuo",
+        "texto": "Pemberton baja la mirada y se retuerce el delantal. «Solo soy la cocinera. No sé por qué me hacéis tantas preguntas.»",
+        "efectos": [
+          {
+            "tipo": "sin_efecto"
+          }
+        ]
+      },
+      "2": {
+        "subtipo": "continuo",
+        "texto": "Pemberton se levanta con los ojos húmedos. «Tengo que... tengo cosas que hacer. Dejadme un momento.»",
+        "efectos": [
+          {
+            "tipo": "movimiento_puertas"
+          }
+        ]
+      },
+      "3": {
+        "subtipo": "continuo",
+        "texto": "Pemberton se derrumba. Entre sollozos, parece dispuesta a hablar de lo que sea. «Preguntad, preguntad. Ya da todo igual.»",
+        "efectos": [
+          {
+            "tipo": "mod_interrogatorio_propio",
+            "modificador": -1,
+            "atributo": "TEM"
+          }
+        ]
+      },
+      "4": {
+        "subtipo": [
+          "inmediato",
+          "continuo"
+        ],
+        "texto": "Pemberton sufre un ataque de nervios. Cuando se calma, ya no le quedan fuerzas para resistirse. Cooperará con todo lo que le pidáis.",
+        "efectos_inmediatos": [
+          {
+            "tipo": "atributo_jugadores_presentes",
+            "atributo": "TEM",
+            "modificador": -1
+          }
+        ],
+        "efectos_continuos": [
+          {
+            "tipo": "mod_interrogatorio_propio",
+            "modificador": -2,
+            "atributo": null,
+            "reemplaza_nivel": 3
+          }
+        ]
+      },
+      "5": {
+        "subtipo": "inmediato",
+        "texto": null,
+        "efectos": [
+          {
+            "tipo": "bloqueo_interrogatorio"
+          }
+        ]
+      }
+    },
+    "whitfield": {
+      "1": {
+        "subtipo": "continuo",
+        "texto": "Whitfield acaricia la cruz que lleva al cuello y cierra brevemente los ojos. «Proseguid. Pero recordad que hay cosas que un párroco no puede revelar.»",
+        "efectos": [
+          {
+            "tipo": "sin_efecto"
+          }
+        ]
+      },
+      "2": {
+        "subtipo": "continuo",
+        "texto": "Whitfield se pone en pie despacio. «Necesito un momento de oración. Perdonad.»",
+        "efectos": [
+          {
+            "tipo": "movimiento_puertas"
+          }
+        ]
+      },
+      "3": {
+        "subtipo": "continuo",
+        "texto": "Whitfield cierra los ojos. «No puedo romper el secreto de confesión. Pero puedo deciros esto: alguien en esta casa cargaba un peso terrible antes de esta noche. No el peso de un crimen. El de una decisión.»",
+        "efectos": [
+          {
+            "tipo": "mod_interrogatorio_contexto",
+            "modificador": -1,
+            "loseta": "capilla"
+          }
+        ]
+      }
+    }
+  }
+}

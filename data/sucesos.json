@@ -1,0 +1,953 @@
+{
+  "sucesos": [
+    {
+      "id": "corriente_de_aire",
+      "titulo": "Corriente de aire",
+      "fase": "anochecer",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros.",
+      "mecanica": "El jugador con más Temple elige una loseta adyacente a la suya. Nadie puede entrar ni salir de esa loseta hasta final de la próxima ronda. Colocad un token de bloqueo como recordatorio.",
+      "texto_completo": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros. El jugador con más Temple elige una loseta adyacente a la suya. Nadie puede entrar ni salir de esa loseta hasta final de la próxima ronda. Colocad un token de bloqueo como recordatorio.",
+      "efectos": [
+        {
+          "tipo": "bloqueo_loseta_adyacente",
+          "selector": "jugador_max_tem"
+        }
+      ]
+    },
+    {
+      "id": "crujido_sospechoso",
+      "titulo": "Crujido sospechoso",
+      "fase": "anochecer",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Un crujido inquietante en las tablas del suelo. Todos se sobresaltan y miran a su alrededor.",
+      "mecanica": "+1 Alerta. Todos los jugadores en la loseta con más jugadores deben descartar 1 carta de Resolución al azar.",
+      "texto_completo": "Un crujido inquietante en las tablas del suelo. Todos se sobresaltan y miran a su alrededor. +1 Alerta. Todos los jugadores en la loseta con más jugadores deben descartar 1 carta de Resolución al azar.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        },
+        {
+          "tipo": "loseta_mas_jugadores",
+          "efecto_sobre_jugadores": [
+            {
+              "tipo": "carta_resolucion",
+              "modificador": -1,
+              "descripcion": "descarta 1 carta de Resolución"
+            }
+          ],
+          "descripcion_efecto": "cada jugador presente descarta 1 carta de Resolución"
+        }
+      ]
+    },
+    {
+      "id": "lluvia_intensa",
+      "titulo": "Lluvia intensa",
+      "fase": "anochecer",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "La tormenta arrecia con fuerza. El agua golpea los cristales y el viento aúlla entre los árboles.",
+      "mecanica": "+1 dificultad a todas las pruebas en el Jardín hasta final de la próxima ronda. Los PNJ en el Jardín se refugian: se mueven a la loseta adyacente más cercana al Salón Principal.",
+      "texto_completo": "La tormenta arrecia con fuerza. El agua golpea los cristales y el viento aúlla entre los árboles. +1 dificultad a todas las pruebas en el Jardín hasta final de la próxima ronda. Los PNJ en el Jardín se refugian: se mueven a la loseta adyacente más cercana al Salón Principal.",
+      "efectos": [
+        {
+          "tipo": "pnj_refugio_exterior",
+          "loseta_exterior": "jardin",
+          "destino_objetivo": "salon_principal"
+        }
+      ]
+    },
+    {
+      "id": "hobbes_hace_ronda",
+      "titulo": "Hobbes hace ronda",
+      "fase": "anochecer",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "",
+      "mecanica": "Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Si algún jugador está en una loseta Privada (P): +1 Alerta (Hobbes desaprueba la intrusión). Si nadie está en zona privada: sin efecto.",
+      "texto_completo": "Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Si algún jugador está en una loseta Privada (P): +1 Alerta (Hobbes desaprueba la intrusión). Si nadie está en zona privada: sin efecto.",
+      "efectos": [
+        {
+          "tipo": "alerta_si_zona_privada"
+        }
+      ]
+    },
+    {
+      "id": "miradas_acusadoras",
+      "titulo": "Miradas acusadoras",
+      "fase": "anochecer",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables.",
+      "mecanica": "Se activa 1 PNJ: +1 Sospecha.",
+      "texto_completo": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables. Se activa 1 PNJ: +1 Sospecha.",
+      "efectos": [
+        {
+          "tipo": "sospecha_activar",
+          "valor": 1
+        }
+      ]
+    },
+    {
+      "id": "pnj_nervioso",
+      "titulo": "PNJ nervioso",
+      "fase": "medianoche",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Uno de los sospechosos no puede más con la presión. Entra en pánico y huye de los investigadores.",
+      "mecanica": "El PNJ con mayor Sospecha entra en pánico y huye a la loseta más alejada de los jugadores. Si un jugador está en la misma loseta que el PNJ: puede hacer FOR dif. 3 para impedirlo (no gasta acción).",
+      "texto_completo": "Uno de los sospechosos no puede más con la presión. Entra en pánico y huye de los investigadores. El PNJ con mayor Sospecha entra en pánico y huye a la loseta más alejada de los jugadores. Si un jugador está en la misma loseta que el PNJ: puede hacer FOR dif. 3 para impedirlo (no gasta acción).",
+      "efectos": [
+        {
+          "tipo": "pnj_huida_mayor_sospecha",
+          "prueba_impedirlo": {
+            "atributo": "FOR",
+            "dificultad": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "sospecha_cruzada",
+      "titulo": "Sospecha cruzada",
+      "fase": "medianoche",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "La tensión entre los sospechosos estalla. Uno señala a otro con el dedo y le acusa abiertamente.",
+      "mecanica": "El PNJ con mayor Sospecha acusa públicamente al PNJ con menor Sospecha: +1 Sospecha al acusado. Si hay empate en cualquiera de los dos, los jugadores eligen.",
+      "texto_completo": "La tensión entre los sospechosos estalla. Uno señala a otro con el dedo y le acusa abiertamente. El PNJ con mayor Sospecha acusa públicamente al PNJ con menor Sospecha: +1 Sospecha al acusado. Si hay empate en cualquiera de los dos, los jugadores eligen.",
+      "efectos": [
+        {
+          "tipo": "sospecha_cruzada"
+        }
+      ]
+    },
+    {
+      "id": "apagon",
+      "titulo": "Apagón",
+      "fase": "medianoche",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Las velas se apagan de golpe en una habitación. La oscuridad envuelve a quien esté dentro.",
+      "mecanica": "El jugador con menos Temple elige cuál. Hasta final de la próxima ronda: +1 dificultad INT y −1 dificultad FOR en esa loseta (la oscuridad favorece la acción física).",
+      "texto_completo": "Las velas se apagan de golpe en una habitación. La oscuridad envuelve a quien esté dentro. El jugador con menos Temple elige cuál. Hasta final de la próxima ronda: +1 dificultad INT y −1 dificultad FOR en esa loseta (la oscuridad favorece la acción física).",
+      "efectos": [
+        {
+          "tipo": "loseta_mas_jugadores",
+          "efecto_sobre_jugadores": [
+            {
+              "atributo": "INT",
+              "modificador": -1,
+              "descripcion": "+1 dificultad INT"
+            },
+            {
+              "atributo": "FOR",
+              "modificador": -1,
+              "descripcion": "−1 FOR (desorientación)"
+            }
+          ],
+          "descripcion_efecto": "hasta final de la próxima ronda: +1 dificultad INT y −1 FOR"
+        }
+      ]
+    },
+    {
+      "id": "movimiento_general",
+      "titulo": "Movimiento general",
+      "fase": "medianoche",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Un ruido alarmante desde el Salón Principal pone en alerta a todos los habitantes de la mansión.",
+      "mecanica": "Todos los PNJ se mueven 1 loseta hacia el Salón (por el camino más corto). Si un PNJ ya está en el Salón, no se mueve.",
+      "texto_completo": "Un ruido alarmante desde el Salón Principal pone en alerta a todos los habitantes de la mansión. Todos los PNJ se mueven 1 loseta hacia el Salón (por el camino más corto). Si un PNJ ya está en el Salón, no se mueve.",
+      "efectos": [
+        {
+          "tipo": "mover_todos_hacia",
+          "destino": "salon_principal"
+        }
+      ]
+    },
+    {
+      "id": "cerrojo_echado",
+      "titulo": "Cerrojo echado",
+      "fase": "medianoche",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Se oye un portazo lejano seguido del chasquido de un cerrojo. Alguien no quiere visitas.",
+      "mecanica": "La loseta con PNJ más alejada de los jugadores queda CERRADA (se coloca token de cerradura). FOR 4 para forzar (+1 Alerta). Se puede usar Herramienta para abrir sin Alerta.",
+      "texto_completo": "Se oye un portazo lejano seguido del chasquido de un cerrojo. Alguien no quiere visitas. La loseta con PNJ más alejada de los jugadores queda CERRADA (se coloca token de cerradura). FOR 4 para forzar (+1 Alerta). Se puede usar Herramienta para abrir sin Alerta.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        }
+      ]
+    },
+    {
+      "id": "rumores_en_la_oscuridad",
+      "titulo": "Rumores en la oscuridad",
+      "fase": "medianoche",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Se oyen cuchicheos entre los sospechosos. Alguien está acusando a alguien, pero no podéis distinguir las voces.",
+      "mecanica": "Se activa 1 PNJ: +1 Sospecha. Si ese PNJ tiene Sospecha ≥2: además +1 Alerta.",
+      "texto_completo": "Se oyen cuchicheos entre los sospechosos. Alguien está acusando a alguien, pero no podéis distinguir las voces. Se activa 1 PNJ: +1 Sospecha. Si ese PNJ tiene Sospecha ≥2: además +1 Alerta.",
+      "efectos": [
+        {
+          "tipo": "sospecha_activar",
+          "valor": 1
+        },
+        {
+          "tipo": "alerta_si_sospecha",
+          "umbral": 2,
+          "valor": 1
+        }
+      ]
+    },
+    {
+      "id": "confesion_parcial",
+      "titulo": "Confesión parcial",
+      "fase": "madrugada",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "La presión de la noche hace efecto. Un sospechoso busca a los investigadores con la mirada.",
+      "mecanica": "El PNJ con Sospecha ≥3 ofrece su siguiente interrogatorio con pista a dificultad −2. A cambio: −1 Sospecha. Si ningún PNJ tiene Sospecha ≥3: sin efecto.",
+      "texto_completo": "La presión de la noche hace efecto. Un sospechoso busca a los investigadores con la mirada. El PNJ con Sospecha ≥3 ofrece su siguiente interrogatorio con pista a dificultad −2. A cambio: −1 Sospecha. Si ningún PNJ tiene Sospecha ≥3: sin efecto.",
+      "efectos": [
+        {
+          "tipo": "sospecha_bajar",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "evidencia_alterada",
+      "titulo": "Evidencia alterada",
+      "fase": "madrugada",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Alguien ha manipulado la escena durante la noche. Algo no está como lo dejasteis.",
+      "mecanica": "Si quedan cartas de Secreto sin descubrir: la próxima exploración en cualquier loseta tiene +1 dificultad. Si no quedan cartas: sin efecto.",
+      "texto_completo": "Alguien ha manipulado la escena durante la noche. Algo no está como lo dejasteis. Si quedan cartas de Secreto sin descubrir: la próxima exploración en cualquier loseta tiene +1 dificultad. Si no quedan cartas: sin efecto.",
+      "efectos": [
+        {
+          "tipo": "dificultad_exploracion_global",
+          "valor": 1,
+          "condicion": "secretos_sin_descubrir"
+        }
+      ]
+    },
+    {
+      "id": "ultimo_recurso",
+      "titulo": "Último recurso",
+      "fase": "madrugada",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "La desesperación se apodera de la mansión. Un sospechoso se acerca ofreciendo su ayuda.",
+      "mecanica": "Si Alerta ≥8: el PNJ con menor Sospecha ofrece ayuda activa. Acompaña a 1 jugador hasta final de ronda: +1 a todas sus pruebas. Si Alerta <8: sin efecto.",
+      "texto_completo": "La desesperación se apodera de la mansión. Un sospechoso se acerca ofreciendo su ayuda. Si Alerta ≥8: el PNJ con menor Sospecha ofrece ayuda activa. Acompaña a 1 jugador hasta final de ronda: +1 a todas sus pruebas. Si Alerta <8: sin efecto.",
+      "efectos": [
+        {
+          "tipo": "ayuda_pnj_menor_sospecha",
+          "condicion_alerta_min": 8
+        }
+      ]
+    },
+    {
+      "id": "amanecer_cercano",
+      "titulo": "Amanecer cercano",
+      "fase": "madrugada",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "El cielo empieza a clarear por el este. El tiempo se agota y la policía llegará pronto.",
+      "mecanica": "Todos los jugadores −1 Temple. Si ningún jugador formula acusación en la próxima ronda: +2 Alerta adicional.",
+      "texto_completo": "El cielo empieza a clarear por el este. El tiempo se agota y la policía llegará pronto. Todos los jugadores −1 Temple. Si ningún jugador formula acusación en la próxima ronda: +2 Alerta adicional.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 2
+        },
+        {
+          "tipo": "atributo_jugadores",
+          "atributo": "TEM",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "la_presion_estalla",
+      "titulo": "La presión estalla",
+      "fase": "madrugada",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "La noche interminable pasa factura. Uno de los sospechosos pierde la compostura y monta una escena.",
+      "mecanica": "Se activa 1 PNJ: +1 Sospecha. Además, todos los jugadores en la loseta de ese PNJ: −1 Temple.",
+      "texto_completo": "La noche interminable pasa factura. Uno de los sospechosos pierde la compostura y monta una escena. Se activa 1 PNJ: +1 Sospecha. Además, todos los jugadores en la loseta de ese PNJ: −1 Temple.",
+      "efectos": [
+        {
+          "tipo": "sospecha_activar",
+          "valor": 1
+        },
+        {
+          "tipo": "atributo_jugadores",
+          "atributo": "TEM",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "relampago",
+      "titulo": "Relámpago",
+      "fase": "anochecer",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "Un rayo ilumina la mansión y se apagan las velas en la habitación más concurrida.",
+      "mecanica": "La loseta con más jugadores pierde la luz. Hasta final de la próxima ronda: −1 dificultad FOR y +1 dificultad INT en esa loseta.",
+      "texto_completo": "Un rayo ilumina la mansión y se apagan las velas en la habitación más concurrida. La loseta con más jugadores (empate: los jugadores eligen) pierde la luz. Hasta final de la próxima ronda: −1 dificultad FOR y +1 dificultad INT en esa loseta.",
+      "efectos": [
+        {
+          "tipo": "loseta_mas_jugadores",
+          "efecto_sobre_jugadores": [
+            {
+              "atributo": "INT",
+              "modificador": -1,
+              "descripcion": "+1 dificultad INT (sin luz)"
+            },
+            {
+              "atributo": "FOR",
+              "modificador": 1,
+              "descripcion": "−1 dificultad FOR (sin luz)"
+            }
+          ],
+          "descripcion_efecto": "hasta final de la próxima ronda: −1 dif. FOR y +1 dif. INT"
+        }
+      ]
+    },
+    {
+      "id": "harold_bebe",
+      "titulo": "Harold bebe",
+      "fase": "anochecer",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "",
+      "mecanica": "Harold se sirve otro whisky con mano temblorosa. El alcohol le está soltando la lengua. Hasta final de la próxima ronda: −1 dificultad TEM para interrogar a Harold. Si un jugador fracasa al interrogarle en este periodo: +1 Alerta.",
+      "texto_completo": "Harold se sirve otro whisky con mano temblorosa. El alcohol le está soltando la lengua. Hasta final de la próxima ronda: −1 dificultad TEM para interrogar a Harold. Si un jugador fracasa al interrogarle en este periodo: +1 Alerta.",
+      "efectos": [
+        {
+          "tipo": "buff_interrogacion",
+          "pnj": "harold",
+          "atributo": "TEM",
+          "modificador_dificultad": -1,
+          "duracion_rondas": 1,
+          "alerta_si_fracaso": true,
+          "nota": "Solo +1 Alerta si un jugador fracasa al interrogar a Harold durante este periodo"
+        }
+      ]
+    },
+    {
+      "id": "el_viento_azota",
+      "titulo": "El viento azota",
+      "fase": "anochecer",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "Una puerta se cierra de golpe por la fuerza del viento. El estruendo sobresalta a todos.",
+      "mecanica": "+1 Alerta. La app elige al azar un PNJ activo y lo mueve a una loseta adyacente aleatoria.",
+      "texto_completo": "Una puerta se cierra de golpe por la fuerza del viento. El estruendo sobresalta a todos. +1 Alerta. La app elige al azar un PNJ activo y lo mueve a una loseta adyacente aleatoria.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        },
+        {
+          "tipo": "pnj_movimiento_aleatorio"
+        }
+      ]
+    },
+    {
+      "id": "catherine_investiga",
+      "titulo": "Catherine investiga",
+      "fase": "medianoche",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "",
+      "mecanica": "Catherine se mueve con determinación hacia una habitación que esconde secretos. Catherine se mueve a una loseta con carta de Secreto no descubierta. La carta queda DESCUBIERTA (sin prueba). Si otorga Pista, se coloca como DESCUBIERTA sin interpretar.",
+      "texto_completo": "Catherine se mueve con determinación hacia una habitación que esconde secretos. Catherine se mueve a una loseta con carta de Secreto no descubierta. La carta queda DESCUBIERTA (sin prueba). Si otorga Pista, se coloca como DESCUBIERTA sin interpretar.",
+      "efectos": [
+        {
+          "tipo": "pnj_descubre_secreto",
+          "pnj": "catherine"
+        }
+      ]
+    },
+    {
+      "id": "marsh_examina_al_lord",
+      "titulo": "Marsh examina al Lord",
+      "fase": "medianoche",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "El Dr. Marsh insiste en examinar de nuevo el cuerpo del Lord. ¿Busca algo o intenta ocultar algo?",
+      "mecanica": "Si ningún jugador está en el Despacho: Marsh altera el cuerpo. +1 dificultad a las pistas #9 y #10 si no están descubiertas. Si hay jugador en el Despacho: sin efecto (Marsh finge un examen rutinario).",
+      "texto_completo": "El Dr. Marsh insiste en examinar de nuevo el cuerpo del Lord. ¿Busca algo o intenta ocultar algo? Si ningún jugador está en el Despacho: Marsh altera el cuerpo. +1 dificultad a las pistas #9 y #10 si no están descubiertas. Si hay jugador en el Despacho: sin efecto (Marsh finge un examen rutinario).",
+      "efectos": [
+        {
+          "tipo": "marsh_altera_cuerpo",
+          "loseta_condicion": "despacho",
+          "pistas_afectadas": [
+            "pista_9",
+            "pista_10"
+          ],
+          "dificultad_extra": 1
+        }
+      ]
+    },
+    {
+      "id": "puerta_bloqueada",
+      "titulo": "Puerta bloqueada",
+      "fase": "medianoche",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "Se oye un crujido seco. Una puerta se ha atascado, impidiendo el paso.",
+      "mecanica": "La loseta con PNJ más cercana a un jugador queda bloqueada: nadie puede entrar ni salir hasta final de la próxima ronda. Colocad un token de bloqueo. FOR 3 para despejar (+1 Alerta si falla). Se puede usar Herramienta.",
+      "texto_completo": "Se oye un crujido seco. Una puerta se ha atascado, impidiendo el paso. La loseta con PNJ más cercana a un jugador queda bloqueada: nadie puede entrar ni salir hasta final de la próxima ronda. Colocad un token de bloqueo. FOR 3 para despejar (+1 Alerta si falla). Se puede usar Herramienta.",
+      "efectos": [
+        {
+          "tipo": "bloqueo_loseta_pnj_cercano"
+        },
+        {
+          "tipo": "alerta",
+          "valor": 1
+        }
+      ]
+    },
+    {
+      "id": "confesion_nocturna",
+      "titulo": "Confesión nocturna",
+      "fase": "medianoche",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "En la quietud de la noche, uno de los sospechosos busca a alguien en quien confiar.",
+      "mecanica": "El PNJ con mayor Sospecha busca al jugador más cercano. −1 Sospecha de ese PNJ. A cambio, el PNJ da su siguiente respuesta de interrogatorio a −2 dificultad.",
+      "texto_completo": "En la quietud de la noche, uno de los sospechosos busca a alguien en quien confiar. El PNJ con mayor Sospecha busca al jugador más cercano. −1 Sospecha de ese PNJ. A cambio, el PNJ da su siguiente respuesta de interrogatorio a −2 dificultad.",
+      "efectos": [
+        {
+          "tipo": "sospecha_bajar",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "harold_destruye_pruebas",
+      "titulo": "Harold destruye pruebas",
+      "fase": "madrugada",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "",
+      "mecanica": "Harold va al Despacho con paso decidido. Parece que quiere destruir algo antes de que amanezca. Harold va al Despacho a quemar el testamento. Si ningún jugador está allí y la pista #3 no está descubierta: pista #3 destruida permanentemente. Si hay jugador: FOR dif. 4 para detenerle.",
+      "texto_completo": "Harold va al Despacho con paso decidido. Parece que quiere destruir algo antes de que amanezca. Harold va al Despacho a quemar el testamento. Si ningún jugador está allí y la pista #3 no está descubierta: pista #3 destruida permanentemente. Si hay jugador: FOR dif. 4 para detenerle.",
+      "efectos": [
+        {
+          "tipo": "harold_destruye_testamento",
+          "destino": "despacho",
+          "pista_objetivo": "pista_3",
+          "prueba_detener": {
+            "atributo": "FOR",
+            "dificultad": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "hobbes_confiesa",
+      "titulo": "Hobbes confiesa",
+      "fase": "madrugada",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "",
+      "mecanica": "Hobbes busca al investigador más cercano con expresión grave. Tiene algo que decir. Hobbes busca al jugador más cercano. Revela: «El Lord cambió la cerradura del Despacho la semana pasada.» −1 dificultad para interpretar pista #12. Si #12 ya está interpretada: sin efecto.",
+      "texto_completo": "Hobbes busca al investigador más cercano con expresión grave. Tiene algo que decir. Hobbes busca al jugador más cercano. Revela: «El Lord cambió la cerradura del Despacho la semana pasada.» −1 dificultad para interpretar pista #12. Si #12 ya está interpretada: sin efecto.",
+      "efectos": [
+        {
+          "tipo": "hobbes_revela_cerradura",
+          "pista_afectada": "pista_12",
+          "dificultad_mod": -1
+        }
+      ]
+    },
+    {
+      "id": "el_reloj_da_las_cinco",
+      "titulo": "El reloj da las cinco",
+      "fase": "madrugada",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "Las campanadas del reloj de péndulo retumban en la mansión. El amanecer está cada vez más cerca.",
+      "mecanica": "+1 Alerta. Si la Alerta ya es ≥7: además, todos los jugadores −1 Temple. Última oportunidad para formular acusación.",
+      "texto_completo": "Las campanadas del reloj de péndulo retumban en la mansión. El amanecer está cada vez más cerca. +1 Alerta. Si la Alerta ya es ≥7: además, todos los jugadores −1 Temple. Última oportunidad para formular acusación.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        },
+        {
+          "tipo": "atributo_jugadores",
+          "atributo": "TEM",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "nervios",
+      "titulo": "Nervios",
+      "fase": "madrugada",
+      "tipo": "caso_1",
+      "caso": 1,
+      "narrativa": "La tensión es insoportable. Todos sienten el peso de la noche y la urgencia del amanecer.",
+      "mecanica": "Todos los jugadores −1 Temple. Los PNJ con Sospecha 3+ se encierran en su loseta actual: TEM dificultad igual al TEM del PNJ para convencerles de hablar.",
+      "texto_completo": "La tensión es insoportable. Todos sienten el peso de la noche y la urgencia del amanecer. Todos los jugadores −1 Temple. Los PNJ con Sospecha 3+ se encierran en su loseta actual: TEM dificultad igual al TEM del PNJ para convencerles de hablar.",
+      "efectos": [
+        {
+          "tipo": "atributo_jugadores",
+          "atributo": "TEM",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "apagon_2",
+      "titulo": "Apagón",
+      "fase": "anochecer",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "Las luces parpadean y se apagan en una habitación. Alguien ahoga un grito. Los jugadores eligen una loseta. Hasta final de la próxima ronda: −1 FOR y +1 dificultad INT en esa loseta.",
+      "mecanica": "Las luces parpadean y se apagan en una habitación. Alguien ahoga un grito. Los jugadores eligen una loseta. Hasta final de la próxima ronda: −1 FOR y +1 dificultad INT en esa loseta.",
+      "texto_completo": "Las luces parpadean y se apagan en una habitación. Alguien ahoga un grito. Los jugadores eligen una loseta. Hasta final de la próxima ronda: −1 FOR y +1 dificultad INT en esa loseta.",
+      "efectos": [
+        {
+          "tipo": "atributo_jugadores",
+          "atributo": "FOR",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "drummond_nervioso",
+      "titulo": "Drummond nervioso",
+      "fase": "anochecer",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "Drummond grita el nombre de Vivienne en la Galería. Su desesperación es evidente.",
+      "mecanica": "+1 Alerta. Si alguien le calma (TEM dif. 2): Drummond revela un detalle sobre los últimos movimientos de Vivienne.",
+      "texto_completo": "Drummond grita el nombre de Vivienne en la Galería. Su desesperación es evidente. +1 Alerta. Si alguien le calma (TEM dif. 2): Drummond revela un detalle sobre los últimos movimientos de Vivienne.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        }
+      ]
+    },
+    {
+      "id": "margaret_registra",
+      "titulo": "Margaret registra",
+      "fase": "anochecer",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "Margaret busca entre los equipajes en la Hab. de Invitados con prisa sospechosa.",
+      "mecanica": "Si un jugador la sorprende allí: Margaret justifica que buscaba «pruebas contra Blackwood». +1 Sospecha Margaret.",
+      "texto_completo": "Margaret busca entre los equipajes en la Hab. de Invitados con prisa sospechosa. Si un jugador la sorprende allí: Margaret justifica que buscaba «pruebas contra Blackwood». +1 Sospecha Margaret.",
+      "efectos": []
+    },
+    {
+      "id": "nora_oye_algo",
+      "titulo": "Nora oye algo",
+      "fase": "anochecer",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "Nora se acerca al jugador más cercano, pálida como la cera. «He oído un golpe bajo el suelo.» Nora señala hacia los Pasadizos o la Hab. del Servicio. −1 dificultad para la próxima exploración en esas losetas.",
+      "mecanica": "Nora se acerca al jugador más cercano, pálida como la cera. «He oído un golpe bajo el suelo.» Nora señala hacia los Pasadizos o la Hab. del Servicio. −1 dificultad para la próxima exploración en esas losetas.",
+      "texto_completo": "Nora se acerca al jugador más cercano, pálida como la cera. «He oído un golpe bajo el suelo.» Nora señala hacia los Pasadizos o la Hab. del Servicio. −1 dificultad para la próxima exploración en esas losetas.",
+      "efectos": []
+    },
+    {
+      "id": "vivienne_se_debilita",
+      "titulo": "Vivienne se debilita",
+      "fase": "medianoche",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "El tiempo corre. Si Vivienne sigue desaparecida, las consecuencias serán irreversibles. Recordatorio de urgencia: si Vivienne no es encontrada antes de la ronda 10, muere. La resolución máxima baja un nivel. El tiempo se agota.",
+      "mecanica": "El tiempo corre. Si Vivienne sigue desaparecida, las consecuencias serán irreversibles. Recordatorio de urgencia: si Vivienne no es encontrada antes de la ronda 10, muere. La resolución máxima baja un nivel. El tiempo se agota.",
+      "texto_completo": "El tiempo corre. Si Vivienne sigue desaparecida, las consecuencias serán irreversibles. Recordatorio de urgencia: si Vivienne no es encontrada antes de la ronda 10, muere. La resolución máxima baja un nivel. El tiempo se agota.",
+      "efectos": []
+    },
+    {
+      "id": "blackwood_miente",
+      "titulo": "Blackwood miente",
+      "fase": "medianoche",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "Blackwood afirma haber estado en el Salón toda la noche. Su tono es demasiado calmado.",
+      "mecanica": "Si un jugador le contradice con una pista que demuestre lo contrario: +2 Sospecha Blackwood. Si no: sin efecto.",
+      "texto_completo": "Blackwood afirma haber estado en el Salón toda la noche. Su tono es demasiado calmado. Si un jugador le contradice con una pista que demuestre lo contrario: +2 Sospecha Blackwood. Si no: sin efecto.",
+      "efectos": []
+    },
+    {
+      "id": "hale_desaparece",
+      "titulo": "Hale desaparece",
+      "fase": "medianoche",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "Hale abandona su loseta sin explicación y se esfuma durante un rato. Hale se retira del tablero durante 1 ronda. Cuando reaparece (en la misma loseta), está «más nervioso que antes». +1 Sospecha Hale.",
+      "mecanica": "Hale abandona su loseta sin explicación y se esfuma durante un rato. Hale se retira del tablero durante 1 ronda. Cuando reaparece (en la misma loseta), está «más nervioso que antes». +1 Sospecha Hale.",
+      "texto_completo": "Hale abandona su loseta sin explicación y se esfuma durante un rato. Hale se retira del tablero durante 1 ronda. Cuando reaparece (en la misma loseta), está «más nervioso que antes». +1 Sospecha Hale.",
+      "efectos": []
+    },
+    {
+      "id": "drummond_confiesa",
+      "titulo": "Drummond confiesa",
+      "fase": "madrugada",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "Drummond no puede más. Si se le ha presionado lo suficiente, confiesa entre lágrimas.",
+      "mecanica": "Si Sospecha Drummond ≥3: Drummond confiesa su amor secreto por Vivienne. No es culpable, pero aporta información sobre quién la vio por última vez. −1 Sospecha Drummond.",
+      "texto_completo": "Drummond no puede más. Si se le ha presionado lo suficiente, confiesa entre lágrimas. Si Sospecha Drummond ≥3: Drummond confiesa su amor secreto por Vivienne. No es culpable, pero aporta información sobre quién la vio por última vez. −1 Sospecha Drummond.",
+      "efectos": [
+        {
+          "tipo": "sospecha_bajar",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "vivienne_agoniza",
+      "titulo": "Vivienne agoniza",
+      "fase": "madrugada",
+      "tipo": "caso_2",
+      "caso": 2,
+      "narrativa": "",
+      "mecanica": "Si Vivienne sigue sin aparecer, su estado empeora drásticamente. Si Vivienne no ha sido encontrada: la resolución máxima posible se reduce 1 nivel adicional. +1 Alerta (la tensión es palpable).",
+      "texto_completo": "Si Vivienne sigue sin aparecer, su estado empeora drásticamente. Si Vivienne no ha sido encontrada: la resolución máxima posible se reduce 1 nivel adicional. +1 Alerta (la tensión es palpable).",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        }
+      ]
+    },
+    {
+      "id": "farrow_nervioso",
+      "titulo": "Farrow nervioso",
+      "fase": "anochecer",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "Farrow evita el Sótano ostensiblemente, desviando la mirada cada vez que se menciona.",
+      "mecanica": "Si un jugador le pregunta: «No me gusta ese lugar. Nunca me gustó.» +1 Sospecha Farrow. Si nadie le pregunta: sin efecto mecánico.",
+      "texto_completo": "Farrow evita el Sótano ostensiblemente, desviando la mirada cada vez que se menciona. Si un jugador le pregunta: «No me gusta ese lugar. Nunca me gustó.» +1 Sospecha Farrow. Si nadie le pregunta: sin efecto mecánico.",
+      "efectos": []
+    },
+    {
+      "id": "catherine_recuerda",
+      "titulo": "Catherine recuerda",
+      "fase": "anochecer",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "",
+      "mecanica": "Catherine menciona en voz alta que su padre hablaba de «secretos familiares enterrados». −1 dificultad para la próxima exploración en el Sótano o la Biblioteca.",
+      "texto_completo": "Catherine menciona en voz alta que su padre hablaba de «secretos familiares enterrados». −1 dificultad para la próxima exploración en el Sótano o la Biblioteca.",
+      "efectos": []
+    },
+    {
+      "id": "whitfield_reza",
+      "titulo": "Whitfield reza",
+      "fase": "anochecer",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "",
+      "mecanica": "Whitfield se retira a la Capilla a rezar en silencio. Su rostro refleja una culpa antigua. Whitfield no puede ser interrogado hasta final de la próxima ronda. Cualquier jugador que esté en la Capilla obtiene −1 dificultad TEM hasta entonces.",
+      "texto_completo": "Whitfield se retira a la Capilla a rezar en silencio. Su rostro refleja una culpa antigua. Whitfield no puede ser interrogado hasta final de la próxima ronda. Cualquier jugador que esté en la Capilla obtiene −1 dificultad TEM hasta entonces.",
+      "efectos": []
+    },
+    {
+      "id": "hobbes_protege",
+      "titulo": "Hobbes protege",
+      "fase": "anochecer",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "",
+      "mecanica": "Hobbes se planta frente al Sótano e impide el paso sin dar explicaciones. FOR 3 o TEM 3 para convencerle de que se aparte. Si se falla: no se puede entrar al Sótano hasta final de la próxima ronda.",
+      "texto_completo": "Hobbes se planta frente al Sótano e impide el paso sin dar explicaciones. FOR 3 o TEM 3 para convencerle de que se aparte. Si se falla: no se puede entrar al Sótano hasta final de la próxima ronda.",
+      "efectos": []
+    },
+    {
+      "id": "el_sotano_cruje",
+      "titulo": "El sótano cruje",
+      "fase": "medianoche",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "Ruidos extraños resuenan desde el Sótano. Crujidos, como si algo se moviera tras el muro.",
+      "mecanica": "Todos los jugadores −1 Temple por la inquietud.",
+      "texto_completo": "Ruidos extraños resuenan desde el Sótano. Crujidos, como si algo se moviera tras el muro. Todos los jugadores −1 Temple por la inquietud.",
+      "efectos": [
+        {
+          "tipo": "atributo_jugadores",
+          "atributo": "TEM",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "farrow_confiesa",
+      "titulo": "Farrow confiesa",
+      "fase": "medianoche",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "",
+      "mecanica": "Si Farrow ha sido suficientemente presionado, admite algo entre susurros. Si Sospecha Farrow ≥3: Farrow admite que su tía Abigail desapareció hace 30 años en esta casa. −1 Sospecha Farrow. Si Sospecha <3: sin efecto.",
+      "texto_completo": "Si Farrow ha sido suficientemente presionado, admite algo entre susurros. Si Sospecha Farrow ≥3: Farrow admite que su tía Abigail desapareció hace 30 años en esta casa. −1 Sospecha Farrow. Si Sospecha <3: sin efecto.",
+      "efectos": [
+        {
+          "tipo": "sospecha_bajar",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "documentos_ocultos",
+      "titulo": "Documentos ocultos",
+      "fase": "medianoche",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "Alguien ha estado moviendo papeles en el Despacho durante la noche.",
+      "mecanica": "+1 dificultad a la próxima exploración en el Despacho (la escena está alterada).",
+      "texto_completo": "Alguien ha estado moviendo papeles en el Despacho durante la noche. +1 dificultad a la próxima exploración en el Despacho (la escena está alterada).",
+      "efectos": []
+    },
+    {
+      "id": "la_verdad_enterrada",
+      "titulo": "La verdad enterrada",
+      "fase": "madrugada",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "Los jugadores están cerca de descubrir qué oculta el Sótano de Blackmoor Hall.",
+      "mecanica": "Si los jugadores tienen 3+ pistas interpretadas: se revela que los huesos son de alguien conocido de la familia. Se desbloquea una línea de interrogatorio adicional con Greaves.",
+      "texto_completo": "Los jugadores están cerca de descubrir qué oculta el Sótano de Blackmoor Hall. Si los jugadores tienen 3+ pistas interpretadas: se revela que los huesos son de alguien conocido de la familia. Se desbloquea una línea de interrogatorio adicional con Greaves.",
+      "efectos": []
+    },
+    {
+      "id": "whitfield_colapsa",
+      "titulo": "Whitfield colapsa",
+      "fase": "madrugada",
+      "tipo": "caso_3",
+      "caso": 3,
+      "narrativa": "",
+      "mecanica": "Si Whitfield ha sido suficientemente presionado, su conciencia se quiebra. Si Sospecha Whitfield ≥4: Whitfield sufre una crisis de conciencia y rompe a llorar. Revela información crucial sobre la noche de la desaparición. −2 Sospecha Whitfield. Si <4: sin efecto.",
+      "texto_completo": "Si Whitfield ha sido suficientemente presionado, su conciencia se quiebra. Si Sospecha Whitfield ≥4: Whitfield sufre una crisis de conciencia y rompe a llorar. Revela información crucial sobre la noche de la desaparición. −2 Sospecha Whitfield. Si <4: sin efecto.",
+      "efectos": []
+    },
+    {
+      "id": "el_automata_se_mueve",
+      "titulo": "El autómata se mueve",
+      "fase": "anochecer",
+      "tipo": "caso_4",
+      "caso": 4,
+      "narrativa": "El autómata hace un movimiento inesperado, como si alguien lo hubiera activado en secreto.",
+      "mecanica": "Todos los jugadores −1 Temple por la impresión. +1 Alerta.",
+      "texto_completo": "El autómata hace un movimiento inesperado, como si alguien lo hubiera activado en secreto. Todos los jugadores −1 Temple por la impresión. +1 Alerta.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        },
+        {
+          "tipo": "atributo_jugadores",
+          "atributo": "TEM",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "voss_inspecciona",
+      "titulo": "Voss inspecciona",
+      "fase": "anochecer",
+      "tipo": "caso_4",
+      "caso": 4,
+      "narrativa": "Voss se acerca al autómata «buscando daños en el mecanismo». Sus manos trabajan rápido.",
+      "mecanica": "Si un jugador le observa (INT dif. 3): nota que Voss manipula algo dentro. +1 Sospecha Voss. Si nadie observa: sin efecto.",
+      "texto_completo": "Voss se acerca al autómata «buscando daños en el mecanismo». Sus manos trabajan rápido. Si un jugador le observa (INT dif. 3): nota que Voss manipula algo dentro. +1 Sospecha Voss. Si nadie observa: sin efecto.",
+      "efectos": []
+    },
+    {
+      "id": "crane_nervioso",
+      "titulo": "Crane nervioso",
+      "fase": "anochecer",
+      "tipo": "caso_4",
+      "caso": 4,
+      "narrativa": "Crane evita la Sala de Relojería y se mueve a la loseta más alejada de ella.",
+      "mecanica": "Si un jugador le pregunta: «Algo no está bien con el mecanismo. No voy a volver ahí.» +1 Sospecha Crane.",
+      "texto_completo": "Crane evita la Sala de Relojería y se mueve a la loseta más alejada de ella. Si un jugador le pregunta: «Algo no está bien con el mecanismo. No voy a volver ahí.» +1 Sospecha Crane.",
+      "efectos": []
+    },
+    {
+      "id": "el_reloj_se_detiene",
+      "titulo": "El reloj se detiene",
+      "fase": "medianoche",
+      "tipo": "caso_4",
+      "caso": 4,
+      "narrativa": "El gran reloj de la Sala de Relojería se para a medianoche exacta. El mecanismo ha sido saboteado.",
+      "mecanica": "+1 Alerta. −1 dificultad para la próxima exploración en la Sala de Relojería.",
+      "texto_completo": "El gran reloj de la Sala de Relojería se para a medianoche exacta. El mecanismo ha sido saboteado. +1 Alerta. −1 dificultad para la próxima exploración en la Sala de Relojería.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        }
+      ]
+    },
+    {
+      "id": "voss_miente",
+      "titulo": "Voss miente",
+      "fase": "medianoche",
+      "tipo": "caso_4",
+      "caso": 4,
+      "narrativa": "Voss da información que contradice algo que dijo antes. Su expresión le delata.",
+      "mecanica": "Si un jugador le confronta con la inconsistencia (INT dif. 3): +2 Sospecha Voss. Si nadie lo nota: sin efecto.",
+      "texto_completo": "Voss da información que contradice algo que dijo antes. Su expresión le delata. Si un jugador le confronta con la inconsistencia (INT dif. 3): +2 Sospecha Voss. Si nadie lo nota: sin efecto.",
+      "efectos": []
+    },
+    {
+      "id": "el_automata_revela",
+      "titulo": "El autómata revela",
+      "fase": "madrugada",
+      "tipo": "caso_4",
+      "caso": 4,
+      "narrativa": "El autómata parece esconder algo en su interior. Merece un examen más cuidadoso.",
+      "mecanica": "Si un jugador examina el interior del autómata (INT dif. 4, en la Sala de Relojería): descubre evidencia crucial oculta dentro del mecanismo. −2 dificultad para interpretar la próxima pista.",
+      "texto_completo": "El autómata parece esconder algo en su interior. Merece un examen más cuidadoso. Si un jugador examina el interior del autómata (INT dif. 4, en la Sala de Relojería): descubre evidencia crucial oculta dentro del mecanismo. −2 dificultad para interpretar la próxima pista.",
+      "efectos": []
+    },
+    {
+      "id": "confesion_mecanica",
+      "titulo": "Confesión mecánica",
+      "fase": "madrugada",
+      "tipo": "caso_4",
+      "caso": 4,
+      "narrativa": "La presión es máxima. Uno de los sospechosos no puede seguir ocultando la verdad.",
+      "mecanica": "Si cualquier PNJ tiene Sospecha ≥4: ese PNJ busca al jugador más cercano y confiesa parcialmente. −1 Sospecha de ese PNJ. Si ninguno tiene ≥4: sin efecto.",
+      "texto_completo": "La presión es máxima. Uno de los sospechosos no puede seguir ocultando la verdad. Si cualquier PNJ tiene Sospecha ≥4: ese PNJ busca al jugador más cercano y confiesa parcialmente. −1 Sospecha de ese PNJ. Si ninguno tiene ≥4: sin efecto.",
+      "efectos": [
+        {
+          "tipo": "sospecha_bajar",
+          "valor": -1
+        }
+      ]
+    },
+    {
+      "id": "lydia_empeora",
+      "titulo": "Lydia empeora",
+      "fase": "anochecer",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "El veneno hace efecto. Lydia palidece visiblemente y su respiración se hace irregular.",
+      "mecanica": "Si no se encuentra el antídoto antes de la ronda 10, Lydia muere. Urgencia máxima. +1 Alerta.",
+      "texto_completo": "El veneno hace efecto. Lydia palidece visiblemente y su respiración se hace irregular. Si no se encuentra el antídoto antes de la ronda 10, Lydia muere. Urgencia máxima. +1 Alerta.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 1
+        }
+      ]
+    },
+    {
+      "id": "graves_culpa",
+      "titulo": "Graves culpa",
+      "fase": "anochecer",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "Graves señala a Thornton con un dedo acusador. «Él preparó la copa. Preguntadle a él.»",
+      "mecanica": "+1 Sospecha Thornton. ¿Graves desvía sospechas o dice la verdad?",
+      "texto_completo": "Graves señala a Thornton con un dedo acusador. «Él preparó la copa. Preguntadle a él.» +1 Sospecha Thornton. ¿Graves desvía sospechas o dice la verdad?",
+      "efectos": []
+    },
+    {
+      "id": "thornton_niega",
+      "titulo": "Thornton niega",
+      "fase": "anochecer",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "Thornton jura que no tocó la copa del veneno. Pero tiene algo que confesar.",
+      "mecanica": "Si se le presiona (TEM dif. 3): admite que «Forsyth me pidió revisar el vestuario justo antes de la función». +1 Sospecha Forsyth.",
+      "texto_completo": "Thornton jura que no tocó la copa del veneno. Pero tiene algo que confesar. Si se le presiona (TEM dif. 3): admite que «Forsyth me pidió revisar el vestuario justo antes de la función». +1 Sospecha Forsyth.",
+      "efectos": []
+    },
+    {
+      "id": "pryce_actua",
+      "titulo": "Pryce actúa",
+      "fase": "anochecer",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "Pryce sobreactúa su preocupación por Lydia de forma teatral. Quizá demasiado teatral.",
+      "mecanica": "Si un jugador se da cuenta de la actuación (INT dif. 3): +1 Sospecha Pryce. Si nadie lo nota: sin efecto.",
+      "texto_completo": "Pryce sobreactúa su preocupación por Lydia de forma teatral. Quizá demasiado teatral. Si un jugador se da cuenta de la actuación (INT dif. 3): +1 Sospecha Pryce. Si nadie lo nota: sin efecto.",
+      "efectos": []
+    },
+    {
+      "id": "el_antidoto",
+      "titulo": "El antídoto",
+      "fase": "medianoche",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "",
+      "mecanica": "Si la pista del veneno ha sido descubierta, quizá sea posible preparar un antídoto. Si la pista #5 está descubierta: los ingredientes para preparar un antídoto están disponibles en la Cocina. El Doctor puede prepararlo automáticamente. Otro personaje: INT dif. 4 en la Cocina.",
+      "texto_completo": "Si la pista del veneno ha sido descubierta, quizá sea posible preparar un antídoto. Si la pista #5 está descubierta: los ingredientes para preparar un antídoto están disponibles en la Cocina. El Doctor puede prepararlo automáticamente. Otro personaje: INT dif. 4 en la Cocina.",
+      "efectos": []
+    },
+    {
+      "id": "forsyth_calcula",
+      "titulo": "Forsyth calcula",
+      "fase": "medianoche",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "Forsyth se escabulle al Despacho y revisa documentos discretamente.",
+      "mecanica": "Si un jugador la sorprende (INT dif. 3): descubre que revisaba la póliza de seguro de la producción. +1 Sospecha Forsyth.",
+      "texto_completo": "Forsyth se escabulle al Despacho y revisa documentos discretamente. Si un jugador la sorprende (INT dif. 3): descubre que revisaba la póliza de seguro de la producción. +1 Sospecha Forsyth.",
+      "efectos": []
+    },
+    {
+      "id": "nora_recuerda",
+      "titulo": "Nora recuerda",
+      "fase": "medianoche",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "Nora se acerca al jugador más cercano con expresión preocupada. «Alguien me pidió cosas del jardín.» «Hierbas raras, que nunca uso para cocinar.» −1 dificultad para interpretar pistas relacionadas con el veneno.",
+      "mecanica": "Nora se acerca al jugador más cercano con expresión preocupada. «Alguien me pidió cosas del jardín.» «Hierbas raras, que nunca uso para cocinar.» −1 dificultad para interpretar pistas relacionadas con el veneno.",
+      "texto_completo": "Nora se acerca al jugador más cercano con expresión preocupada. «Alguien me pidió cosas del jardín.» «Hierbas raras, que nunca uso para cocinar.» −1 dificultad para interpretar pistas relacionadas con el veneno.",
+      "efectos": []
+    },
+    {
+      "id": "lydia_despierta",
+      "titulo": "Lydia despierta",
+      "fase": "madrugada",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "",
+      "mecanica": "Si el antídoto ha sido administrado, Lydia recobra brevemente la consciencia. Si el antídoto fue administrado: Lydia puede dar testimonio. Información crucial: −2 dificultad al próximo interrogatorio. Si no hay antídoto: sin efecto.",
+      "texto_completo": "Si el antídoto ha sido administrado, Lydia recobra brevemente la consciencia. Si el antídoto fue administrado: Lydia puede dar testimonio. Información crucial: −2 dificultad al próximo interrogatorio. Si no hay antídoto: sin efecto.",
+      "efectos": []
+    },
+    {
+      "id": "el_telon_cae",
+      "titulo": "El telón cae",
+      "fase": "madrugada",
+      "tipo": "caso_5",
+      "caso": 5,
+      "narrativa": "El desenlace se acerca. Si Lydia no ha sido atendida, las consecuencias son fatales.",
+      "mecanica": "Si el antídoto NO ha sido administrado: Lydia muere. La resolución máxima baja 1 nivel. +2 Alerta. Si el antídoto fue administrado: sin efecto.",
+      "texto_completo": "El desenlace se acerca. Si Lydia no ha sido atendida, las consecuencias son fatales. Si el antídoto NO ha sido administrado: Lydia muere. La resolución máxima baja 1 nivel. +2 Alerta. Si el antídoto fue administrado: sin efecto.",
+      "efectos": [
+        {
+          "tipo": "alerta",
+          "valor": 2
+        }
+      ]
+    }
+  ]
+}

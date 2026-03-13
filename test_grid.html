@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #0d0a07; }
+#app { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.pantalla { display: flex; flex-direction: column; width: 100%; height: 100%; overflow-y: auto; }
+.cfg-header { padding: 1rem; background: #141009; flex-shrink: 0; color: white; }
+.cfg-section { display: flex; flex-direction: column; width: 100%; gap: 1rem; flex: 1; padding: 1rem; }
+.casos-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; }
+.caso-btn { display: block; border: 2px solid gold; border-radius: 5px; overflow: hidden; cursor: pointer; }
+.caso-btn img { width: 100%; height: auto; display: block; }
+.caso-dis { opacity: 0.3; filter: grayscale(70%); cursor: default; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="pantalla">
+    <div class="cfg-header"><p style="color:white">Selección de caso</p></div>
+    <div class="cfg-section">
+      <p style="color:#c8b898">Selecciona el caso que vais a investigar esta noche.</p>
+      <div class="casos-grid">
+        <div class="caso-btn"><img src="assets/Caso_1.png" alt="Caso I"></div>
+        <div class="caso-btn caso-dis"><img src="assets/Caso_2.png" alt="Caso II"></div>
+        <div class="caso-btn caso-dis"><img src="assets/Caso_3.png" alt="Caso III"></div>
+        <div class="caso-btn caso-dis"><img src="assets/Caso_4.png" alt="Caso IV"></div>
+        <div class="caso-btn caso-dis"><img src="assets/Caso_5.png" alt="Caso V"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

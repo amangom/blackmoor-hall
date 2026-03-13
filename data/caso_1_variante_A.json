@@ -1,0 +1,997 @@
+{
+  "caso_id": "caso_1",
+  "variante": "A",
+  "culpables": [
+    "harold",
+    "marsh"
+  ],
+  "descripcion_crimen": "Harold Ashworth contrató al Dr. Marsh para envenenar a su padre antes de que cambiara el testamento. Marsh ya había matado a Eleanor Ashworth cinco años antes. Harold sirvió personalmente la segunda copa envenenada.",
+  "pistas_falsas": [
+    "pista_11"
+  ],
+  "visiones": [
+    "La Médium percibe un olor dulzón que no pertenece a esta casa. Algo que parece medicina pero no cura. Algo que se bebe sin saberlo. El veneno se esconde en lo cotidiano.",
+    "La Médium siente dos presencias unidas por un pacto oscuro. Una mano que prepara y otra que entrega. El crimen tiene dos autores, no uno.",
+    "La Médium ve una balanza: en un plato, una deuda que aplasta; en el otro, una vida. Alguien decidió que el dinero pesaba más que la culpa."
+  ],
+  "interrogatorios": {
+    "catherine": {
+      "C-A1": {
+        "pistas": [
+          "pista_5_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 3,
+        "exito": "«Mi madre no murió de un fallo cardíaco. Marsh la trataba, y cada vez estaba peor. Creo que la envenenaba. Y creo que esta noche ha hecho lo mismo con mi padre.»",
+        "fracaso": "Catherine se niega a hablar de su madre.",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "marsh",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "C-A2": {
+        "pistas": [
+          "pista_6_interpretada"
+        ],
+        "atributo": "INT",
+        "dificultad": 4,
+        "exito": "«Sí, es mi diario. Llevo meses investigando. Tengo pruebas de que Marsh mató a mi madre. Pero esta noche... esta noche la prueba final la tenéis vosotros.» Catherine coopera plenamente.",
+        "fracaso": "«No os debo explicaciones sobre mis escritos.»",
+        "efectos_exito": [],
+        "efectos_fracaso": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "catherine",
+            "valor": 1
+          }
+        ],
+        "ojo_entrenado": "Catherine protege el cuaderno con el cuerpo, pero no con vergüenza: con determinación. No oculta un crimen. Oculta una investigación. Tiene la mirada de alguien que busca justicia.",
+        "prensa": ""
+      },
+      "C-A3": {
+        "pistas": [
+          "pista_1_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«Esas iniciales... C.M. Mi nombre de soltera es Catherine Mildred Ashworth. C.M. Pero ese botón no es mío. Nunca he llevado gemelos.» Pausa. «¿O acaso me estáis acusando a mí?» Se tensa.",
+        "fracaso": "Catherine no reconoce las iniciales.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "C-A4": {
+        "pistas": [
+          "pista_9_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«Yo no me acerqué a esa copa en toda la cena. Harold fue quien insistió en servírsela al Lord. Preguntadle a él.»",
+        "fracaso": "Catherine no recuerda los detalles de la cena.",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "C-A_resto": {
+        "pistas": [
+          "pista_2",
+          "pista_3",
+          "pista_4",
+          "pista_7",
+          "pista_8",
+          "pista_10",
+          "pista_11",
+          "pista_12",
+          "pista_13",
+          "pista_14"
+        ],
+        "atributo": null,
+        "dificultad": null,
+        "exito": "«No sé nada de eso. Preguntad a Hobbes, él conoce cada rincón de esta casa.»",
+        "fracaso": "",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      }
+    },
+    "marsh": {
+      "M-A1": {
+        "pistas": [
+          "pista_1_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 5,
+        "exito": "Marsh palidece. «Mi nombre de pila es Charles. Charles Marsh. Pero el botón... lo perdí hace meses. Alguien debió poner...» Se interrumpe. Está mintiendo y lo sabéis.",
+        "fracaso": "«No son mis iniciales. Coincidencia.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "marsh",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "marsh",
+            "valor": 1
+          }
+        ],
+        "ojo_entrenado": "Marsh miente. Al decir «coincidencia», se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un botón de gemelo.",
+        "prensa": "El Periodista nota que la manga izquierda de Marsh está ligeramente desgarrada en el puño. El botón no se «perdió hace meses»: se arrancó esta noche."
+      },
+      "M-A2": {
+        "pistas": [
+          "pista_2_interpretada"
+        ],
+        "atributo": "INT",
+        "dificultad": 6,
+        "exito": "«La digitalina es un medicamento. Yo la receto a pacientes cardíacos. Que haya dedalera no significa nada.» Excusa profesional, pero evasiva.",
+        "fracaso": "«No voy a dar una lección de farmacología.»",
+        "efectos_exito": [],
+        "efectos_fracaso": [
+          {
+            "tipo": "alerta",
+            "valor": 1
+          }
+        ],
+        "ojo_entrenado": "Mientras lo dice, Marsh mira involuntariamente hacia el estante de libros del Despacho. Hay algo escondido ahí.",
+        "prensa": "",
+        "exito_condicional": {
+          "condicion": {
+            "pistas_interpretadas_any": [
+              "pista_9_interpretada",
+              "pista_10_interpretada"
+            ]
+          },
+          "texto": "«Eso... eso no es posible.»",
+          "efectos": [
+            {
+              "tipo": "sospecha_pnj",
+              "pnj": "marsh",
+              "valor": 1
+            },
+            {
+              "tipo": "atributo_jugador",
+              "jugador": "activo",
+              "atributo": "TEM",
+              "modificador": -1
+            }
+          ]
+        }
+      },
+      "M-A3": {
+        "pistas": [
+          "pista_5_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 6,
+        "exito": "«Eleanor tenía problemas cardíacos reales. Yo la traté lo mejor que pude. No pueden comparar...» Se le quiebra la voz.",
+        "fracaso": "«No voy a hablar de pacientes fallecidos.» Se cierra.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "Las manos de Marsh tiemblan por primera vez en toda la noche. No es rabia: es culpa. Este hombre ha hecho algo terrible antes, no solo esta noche.",
+        "prensa": "",
+        "exito_condicional": {
+          "condicion": {
+            "pistas_interpretadas_any": [
+              "pista_10_interpretada"
+            ]
+          },
+          "texto": "«Sois implacables.»",
+          "efectos": [
+            {
+              "tipo": "sospecha_pnj",
+              "pnj": "marsh",
+              "valor": 1
+            }
+          ]
+        }
+      },
+      "M-A4": {
+        "pistas": [
+          "pista_9_interpretada"
+        ],
+        "atributo": "INT",
+        "dificultad": 5,
+        "exito": "«Yo no serví esa copa. Fue Harold. Preguntadle a él por qué insistió en servírsela personalmente al Lord.» Marsh desvía, pero su nerviosismo es evidente.",
+        "fracaso": "«No tengo nada que ver con copas ni con cenas.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": "",
+        "exito_condicional": {
+          "condicion": {
+            "pistas_interpretadas_any": [
+              "pista_2_interpretada"
+            ]
+          },
+          "texto": "«No insinuéis que yo preparé el contenido.»",
+          "efectos": [
+            {
+              "tipo": "sospecha_pnj",
+              "pnj": "marsh",
+              "valor": 1
+            }
+          ]
+        }
+      },
+      "M-A5": {
+        "pistas": [
+          "pista_10_interpretada"
+        ],
+        "atributo": "INT",
+        "dificultad": 5,
+        "exito": "Marsh reconoce la concentración. «Esa dosis no es terapéutica. Es... Alguien sabía exactamente lo que hacía.» Se le escapa una mirada de culpa.",
+        "fracaso": "«No soy toxicólogo. No puedo opinar sobre dosis.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "marsh",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": "",
+        "exito_condicional": {
+          "condicion": {
+            "pistas_interpretadas_any": [
+              "pista_2_interpretada"
+            ]
+          },
+          "texto": "«Dejad de mirarme así.»",
+          "efectos": [
+            {
+              "tipo": "atributo_jugador",
+              "jugador": "activo",
+              "atributo": "TEM",
+              "modificador": -1
+            }
+          ]
+        }
+      },
+      "M-A6": {
+        "pistas": [
+          "pista_14_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 5,
+        "exito": "«Conozco la dedalera desde la facultad. Pero no toco plantas de jardín — trabajo con compuestos purificados.» Se detiene. Sus zapatos tienen barro.",
+        "fracaso": "«No sé nada de ese trapo. El jardín no es mi territorio.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "marsh",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "Marsh niega tocar plantas pero lleva barro en los zapatos esta noche.",
+        "prensa": ""
+      },
+      "M-A7": {
+        "pistas": [
+          "pista_6_interpretada"
+        ],
+        "atributo": "INT",
+        "dificultad": 5,
+        "exito": "Marsh lee el cuaderno con expresión tensa. «Catherine llevaba meses reuniendo \"pruebas\" contra mí. Todo esto es una acusación falsa, construida por alguien que quería culparme de la muerte de su madre. Y esta noche su padre ha muerto. Deberíais preguntaros si Catherine ha actuado en consecuencia.»",
+        "fracaso": "Marsh se niega a comentar el cuaderno de otra persona.",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "catherine",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "M-A_resto": {
+        "pistas": [
+          "pista_3",
+          "pista_4",
+          "pista_7",
+          "pista_8",
+          "pista_11",
+          "pista_12",
+          "pista_13"
+        ],
+        "atributo": null,
+        "dificultad": null,
+        "exito": "«Eso no tiene nada que ver con la medicina. No puedo ayudaros con eso.»",
+        "fracaso": "",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      }
+    },
+    "harold": {
+      "H-A1": {
+        "pistas": [
+          "pista_3_interpretada"
+        ],
+        "atributo": "INT",
+        "dificultad": 4,
+        "exito": "«Sí, mi padre iba a cambiar el testamento. ¿Y qué? Eso no me convierte en asesino. Mucha gente pierde herencias sin matar a nadie.»",
+        "fracaso": "«No sé nada de testamentos.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "ojo_entrenado": "Harold miente fatal. Al decir «no sé nada», mira hacia la puerta del Despacho. Sabe exactamente lo que hay ahí.",
+        "prensa": ""
+      },
+      "H-A2": {
+        "pistas": [
+          "pista_4_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "Harold se tensa. «Debo dinero, sí. ¿A quién no? Pero tengo un plan para pagarlo.» Presionado: «El plan era... la herencia. Pero eso no significa que yo...»",
+        "fracaso": "«Mis finanzas son asunto mío.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "Al levantarse, Harold se toca el bolsillo interior de la chaqueta. Lleva algo encima: un documento grueso.",
+        "prensa": ""
+      },
+      "H-A3": {
+        "pistas": [
+          "pista_13_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 5,
+        "exito": "«El seguro... yo no sabía el importe exacto. Es mucho dinero. Más de lo que debo. Con eso podría...» Se da cuenta de lo que acaba de decir.",
+        "fracaso": "«No sé nada de seguros.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [
+          {
+            "tipo": "alerta",
+            "valor": 1
+          }
+        ],
+        "ojo_entrenado": "Harold golpea la mesa, pero no con rabia: con miedo. Este hombre está acorralado y sabe que alguien más tiene las respuestas. Su mirada busca a Marsh.",
+        "prensa": ""
+      },
+      "H-A4": {
+        "pistas": [
+          "pista_9_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 5,
+        "exito": "«La serví yo, sí. ¿Y qué? Es lo que hacen los hijos: atender a sus padres. Una copa de vino en la cena no es ningún crimen.»",
+        "fracaso": "«No sé de qué copa me habláis. Había varias en la mesa.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "ojo_entrenado": "Harold no niega haber servido la copa — niega que importe. Esa diferencia es todo.",
+        "prensa": ""
+      },
+      "H-A5": {
+        "pistas": [
+          "pista_14_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«No fui yo. Yo no sé nada de venenos ni de jardines. Marsh es el médico — preguntadle a él.» Demasiado rápido al señalar a Marsh.",
+        "fracaso": "«No sé nada del jardín.»",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "H-A_resto": {
+        "pistas": [
+          "pista_1",
+          "pista_2",
+          "pista_5",
+          "pista_6",
+          "pista_7",
+          "pista_8",
+          "pista_10",
+          "pista_11",
+          "pista_12"
+        ],
+        "atributo": null,
+        "dificultad": null,
+        "exito": "«No sé nada de eso. Dejadme en paz de una vez.»",
+        "fracaso": "",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      }
+    },
+    "hobbes": {
+      "Ho-A1": {
+        "pistas": [
+          "pista_9_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«La segunda copa... Harold insistió en servírsela al Lord. Dijo que era un gesto de reconciliación. Mrs. Pemberton se lo permitió porque... bueno, era el hijo del Lord.»",
+        "fracaso": "Hobbes no da detalles.",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": "El Periodista capta un matiz: Hobbes dice «insistió». No fue un gesto espontáneo. Harold NECESITABA servir esa copa. ¿Alguien le dijo que lo hiciera?"
+      },
+      "Ho-A2": {
+        "pistas": [
+          "pista_12_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«El Lord cambió la cerradura la semana pasada. Me dijo que no confiaba en alguien de la casa. No me dijo en quién.»",
+        "fracaso": "Hobbes guarda silencio.",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "mayor_sospecha",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Ho-A3": {
+        "pistas": [
+          "pista_1_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«Las iniciales C.M.... El Dr. Marsh se llama Charles de pila. Charles Marsh. No usa ese nombre desde la universidad, pero esos gemelos los conozco: se los regaló la difunta Lady Eleanor hace años.»",
+        "fracaso": "«No reconozco esas iniciales.»",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "Hobbes miente. Al decir «no reconozco», evita mirar directamente al botón. Sabe perfectamente de quién es.",
+        "prensa": ""
+      },
+      "Ho-A4": {
+        "pistas": [
+          "pista_3_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 3,
+        "exito": "«El testamento... El Lord me dijo que iba a hacer cambios. Que había personas que no merecían lo que iban a recibir. No me dio detalles. Nunca lo hacía.»",
+        "fracaso": "Hobbes no comenta asuntos legales del Lord.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Ho-A5": {
+        "pistas": [
+          "pista_4_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«El señor Harold lleva meses recibiendo cartas de Londres. Sobres con membrete de bufetes. No es asunto mío, pero el Lord los veía llegar y no decía nada.»",
+        "fracaso": "Hobbes guarda silencio sobre asuntos privados de la familia.",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "harold",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Ho-A6": {
+        "pistas": [
+          "pista_5_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«Lady Eleanor... murió hace tres años. El Doctor Marsh la atendió hasta el final. El Lord nunca quiso hablar de ello después. Solo sé que cambió mucho tras su muerte.»",
+        "fracaso": "Hobbes baja la mirada. No habla de Lady Eleanor.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Ho-A7": {
+        "pistas": [
+          "pista_6_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«He visto a la señorita Catherine escribir en ese cuaderno muchas veces. Siempre lo escondía cuando alguien se acercaba. No sé qué contiene, pero no es un diario corriente.»",
+        "fracaso": "Hobbes no ha prestado atención a los hábitos de la señorita Catherine.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Ho-A8": {
+        "pistas": [
+          "pista_7_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 3,
+        "exito": "«La Capilla llevaba semanas con visitas fuera de horario. Pensé que el reverendo preparaba algo especial. No me pareció extraño.»",
+        "fracaso": "Hobbes no ha notado nada inusual en la Capilla.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Ho-A9": {
+        "pistas": [
+          "pista_8_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«El Lord me convocó la semana pasada. Me mostró ese informe y me preguntó si yo sabía algo. Le dije la verdad: sospechaba desde hacía tiempo, pero no tenía pruebas. Se quedó muy serio.»",
+        "fracaso": "Hobbes no conoce ese informe.",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "pemberton",
+            "valor": 1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Ho-A_resto": {
+        "pistas": [
+          "pista_2",
+          "pista_10",
+          "pista_11",
+          "pista_13",
+          "pista_14"
+        ],
+        "atributo": null,
+        "dificultad": null,
+        "exito": "«No es de mi incumbencia, señor. Solo soy el mayordomo.»",
+        "fracaso": "",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      }
+    },
+    "pemberton": {
+      "Pe-A1": {
+        "pistas": [
+          "pista_2_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«Esas plantas no son mías. Alguien las dejó en mi cocina. Yo uso tomillo y romero, no venenos.» Nerviosa: «No sé quién las puso ahí.»",
+        "fracaso": "Pemberton se cierra, nerviosa.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Pe-A2": {
+        "pistas": [
+          "pista_8_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "Pemberton se derrumba. «Robé. Quince años robando de la despensa. Pero no maté a nadie. El Lord lo descubrió y me dijo que llamaría a la policía. Pero eso fue la semana pasada. No esta noche.»",
+        "fracaso": "Pemberton no dice nada.",
+        "efectos_exito": [
+          {
+            "tipo": "sospecha_pnj",
+            "pnj": "pemberton",
+            "valor": 1
+          },
+          {
+            "tipo": "atributo_jugador",
+            "jugador": "activo",
+            "atributo": "TEM",
+            "modificador": -1
+          }
+        ],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Pe-A3": {
+        "pistas": [
+          "pista_9_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«La segunda copa... Harold insistió en servírsela al Lord. Dijo que quería hacer las paces antes del postre. Yo le dejé, era el hijo del Lord al fin y al cabo. No vi nada raro en el líquido.»",
+        "fracaso": "«No me fijé en quién servía qué. Estaba ocupada en la cocina. Preguntad a Hobbes, él estaba más atento.»",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Pe-A4": {
+        "pistas": [
+          "pista_14_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 3,
+        "exito": "«Ese trapo no es mío. Y esas cortes no los hice yo — yo cuido esas plantas, no las destrozo.» Está genuinamente molesta.",
+        "fracaso": "«No sé nada de ese trapo.»",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Pe-A5": {
+        "pistas": [
+          "pista_10_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«Ese frasco no es mío. En mi cocina no guardo nada sin etiqueta. Nunca.» Firme. «Si estaba en el Despacho, alguien lo llevó allí.»",
+        "fracaso": "Pemberton niega conocer el frasco.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Pe-A6": {
+        "pistas": [
+          "pista_11_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 3,
+        "exito": "«Son cartas de mi hermana. Vive en Lyon, viuda con tres hijos. Les envío lo que puedo cada mes.» Pausa. «El banco es el del marido, que en paz descanse. No hay nada raro en eso.»",
+        "fracaso": "Pemberton se niega a hablar de su correspondencia personal.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Pe-A_resto": {
+        "pistas": [
+          "pista_1",
+          "pista_3",
+          "pista_4",
+          "pista_5",
+          "pista_6",
+          "pista_7",
+          "pista_12",
+          "pista_13"
+        ],
+        "atributo": null,
+        "dificultad": null,
+        "exito": "«No sé nada de eso. Preguntad a Hobbes, él lo sabe todo de esta casa.»",
+        "fracaso": "",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      }
+    },
+    "whitfield": {
+      "Wh-A1": {
+        "pistas": [
+          "pista_7_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«El Lord me confió que iba a cambiar el testamento. Quería dejar todo a una fundación. Me pidió discreción. No sé nada de crímenes. El Lord me dijo: \"Mi hijo me ha decepcionado por última vez.\" Eso es todo lo que puedo decir.»",
+        "fracaso": "Whitfield se limita a rezar en silencio.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Wh-A2": {
+        "pistas": [
+          "pista_5_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«Oficié el entierro de Lady Eleanor. Una mujer extraordinaria. Su muerte fue... repentina para todos. El Lord quedó destrozado, aunque no lo demostrase.» Pausa. «¿Por qué me enseñáis esto ahora?»",
+        "fracaso": "Whitfield inclina la cabeza. «Los muertos merecen paz. No puedo añadir nada.»",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Wh-A3": {
+        "pistas": [
+          "pista_8_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 4,
+        "exito": "«El Lord me habló de una traición doméstica. Alguien en quien confiaba. Me lo dijo en confesión, así que no puedo revelar nombres. Pero sí diré que le causaba más dolor que rabia.»",
+        "fracaso": "Whitfield guarda silencio. El secreto de confesión es sagrado.",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Wh-A_resto": {
+        "pistas": [
+          "pista_1",
+          "pista_2",
+          "pista_3",
+          "pista_4",
+          "pista_6",
+          "pista_9",
+          "pista_10",
+          "pista_11",
+          "pista_12",
+          "pista_13",
+          "pista_14"
+        ],
+        "atributo": null,
+        "dificultad": null,
+        "exito": "«Lo siento, hijo. No puedo ayudaros con eso. Mi labor es espiritual, no detectivesca.»",
+        "fracaso": "",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      }
+    }
+  },
+  "deducciones": [
+    {
+      "pistas": [
+        "pista_1_interpretada",
+        "pista_9_interpretada"
+      ],
+      "texto": "La segunda copa fue envenenada y servida fuera del protocolo. El botón con iniciales C.M. fue arrancado en un forcejeo. Envenenamiento + forcejeo: dos personas pudieron actuar coordinadas.",
+      "efectos": []
+    },
+    {
+      "pistas": [
+        "pista_1_interpretada",
+        "pista_10_interpretada"
+      ],
+      "texto": "El botón C.M. indica un forcejeo. El frasco contenía veneno. Si el dueño del botón es también el dueño del frasco, la misma persona forcejeó y preparó el veneno.",
+      "efectos": []
+    },
+    {
+      "pistas": [
+        "pista_2_interpretada",
+        "pista_9_interpretada"
+      ],
+      "texto": "La dedalera produce el veneno que estaba en la copa. Quien cortó la dedalera preparó lo que mató al Lord.",
+      "efectos": []
+    },
+    {
+      "pistas": [
+        "pista_2_interpretada",
+        "pista_10_interpretada"
+      ],
+      "texto": "La dedalera produce digitalina. El frasco contenía digitalina. El asesino extrajo el veneno de esta planta. Necesitaba conocimientos farmacológicos.",
+      "efectos": []
+    },
+    {
+      "pistas": [
+        "pista_3_interpretada",
+        "pista_4_interpretada"
+      ],
+      "texto": "Harold iba a ser desheredado. Harold tiene deudas enormes. Sin herencia, Harold queda arruinado. Motivo financiero confirmado.",
+      "efectos": []
+    },
+    {
+      "pistas": [
+        "pista_3_interpretada",
+        "pista_7_interpretada"
+      ],
+      "texto": "El Lord confió a Whitfield que iba a cambiar el testamento. La información circulaba. ¿Quién más lo sabía?",
+      "efectos": []
+    },
+    {
+      "pistas": [
+        "pista_3_interpretada",
+        "pista_13_interpretada"
+      ],
+      "texto": "El testamento vigente nombra a Harold como beneficiario del seguro. Si se firma el nuevo, Harold pierde herencia Y seguro. Doble motivo.",
+      "efectos": []
+    },
+    {
+      "pistas": [
+        "pista_4_interpretada",
+        "pista_13_interpretada"
+      ],
+      "texto": "Harold debe £3.000. El seguro cubre mucho más. La muerte del Lord antes de firmar el nuevo testamento resuelve todos los problemas financieros de Harold.",
+      "efectos": []
+    },
+    {
+      "pistas": [
+        "pista_14_interpretada",
+        "pista_2_interpretada"
+      ],
+      "texto": "La dedalera fue cortada con precisión y los residuos del trapo coinciden con el frasco vacío. Alguien de la casa preparó el veneno deliberadamente en el jardín."
+    },
+    {
+      "pistas": [
+        "pista_14_interpretada",
+        "pista_10_interpretada"
+      ],
+      "texto": "El trapo del parterre tiene los mismos residuos que el frasco. El veneno fue procesado en el jardín y almacenado en ese frasco. La preparación fue premeditada."
+    },
+    {
+      "pistas": [
+        "pista_3_interpretada",
+        "pista_8_interpretada"
+      ],
+      "texto": "El Lord estaba poniendo orden: nuevo testamento y auditoría. Alguien con algo que perder podría haber actuado. Señala tanto a Harold (testamento) como a Pemberton (auditoría)."
+    },
+    {
+      "pistas": [
+        "pista_3_interpretada",
+        "pista_12_interpretada"
+      ],
+      "texto": "El testamento estaba en el Despacho. La cerradura fue cambiada. El Lord protegía el documento. ¿De Harold?"
+    },
+    {
+      "pistas": [
+        "pista_4_interpretada",
+        "pista_8_interpretada"
+      ],
+      "texto": "Dos personas con problemas financieros en la misma casa: Harold con deudas de juego, Pemberton con 15 años de robo. ¿Conexión? No directa. Pero la casa estaba llena de secretos financieros."
+    },
+    {
+      "pistas": [
+        "pista_5_interpretada",
+        "pista_6_interpretada"
+      ],
+      "texto": "Eleanor murió sospechosamente. Catherine lo investigó durante meses. Catherine cree que Marsh mató a su madre. La investigación de Catherine apunta en una dirección muy concreta."
+    },
+    {
+      "pistas": [
+        "pista_5_interpretada",
+        "pista_13_interpretada"
+      ],
+      "texto": "El seguro de Eleanor era sustancial. El Lord cobró cuando ella murió. ¿Fue el Lord cómplice de la muerte de Eleanor? Matiz importante."
+    },
+    {
+      "pistas": [
+        "pista_7_interpretada",
+        "pista_8_interpretada"
+      ],
+      "texto": "El Lord contó a Whitfield que descubrió un robo. El informe demuestra el robo. Whitfield lo sabía. Confirma la subtrama de Pemberton."
+    },
+    {
+      "pistas": [
+        "pista_7_interpretada",
+        "pista_12_interpretada"
+      ],
+      "texto": "El Lord confiaba en Whitfield. El Lord protegía algo en el Despacho. Whitfield sabía que el Lord tenía miedo. El miedo era real."
+    },
+    {
+      "pistas": [
+        "pista_8_interpretada",
+        "pista_11_interpretada"
+      ],
+      "texto": "Pemberton robaba de la despensa. Enviaba dinero a Francia. El dinero robado iba a su familia en Lyon. Subtrama completa de Pemberton, pero no la conecta con el asesinato."
+    },
+    {
+      "pistas": [
+        "pista_8_interpretada",
+        "pista_12_interpretada"
+      ],
+      "texto": "La cerradura protegía el informe de auditoría. El Lord no quería que la persona descubierta lo destruyera."
+    }
+  ],
+  "confesiones": {
+    "harold": {
+      "condicion_sospecha": 5,
+      "condicion_alternativa": {
+        "descripcion": "Marsh ya ha confesado, O el grupo tiene pistas #3+#4+#13 interpretadas y interroga a Harold con cualquiera",
+        "marsh_confeso": true,
+        "pistas_and": [
+          "pista_3_interpretada",
+          "pista_4_interpretada",
+          "pista_13_interpretada"
+        ]
+      },
+      "texto": "«Fue idea de Marsh. Él lo sugirió. Yo solo... solo necesitaba que mi padre no firmase ese testamento. Marsh dijo que podía parecer natural. Que nadie lo sabría.» Se señalan mutuamente. Ambos culpables.",
+      "efectos": [
+        {
+          "tipo": "atributo_jugador",
+          "jugador": "todos",
+          "atributo": "TEM",
+          "modificador": -1
+        }
+      ]
+    },
+    "marsh": {
+      "condicion_sospecha": 5,
+      "condicion_alternativa": {
+        "descripcion": "Harold ya ha confesado, O el grupo tiene 3+ pistas rojas interpretadas y interroga a Marsh con cualquiera",
+        "harold_confeso": true,
+        "pistas_rojas_min": 3
+      },
+      "texto": "«No es la primera vez. Eleanor... Eleanor también fui yo. El Lord lo sabía. Todos lo sabíamos. Cuando Harold vino a pedirme que lo hiciera otra vez, yo... ya no podía negarme. Sabía demasiado de mí. Treinta mil libras y mi libertad. Dios mío, qué he hecho.» CONFESIÓN COMPLETA.",
+      "efectos": [
+        {
+          "tipo": "atributo_jugador",
+          "jugador": "todos",
+          "atributo": "TEM",
+          "modificador": -1
+        }
+      ]
+    }
+  },
+  "acusacion": {
+    "ejecutor": "harold",
+    "instigador": "marsh",
+    "metodo": "envenenamiento_digitalina_segunda_copa",
+    "nota": "En esta variante ejecutor e instigador son distintos. Harold sirvió la copa; Marsh preparó el veneno.",
+    "texto_verdad": "Lord Ashworth iba a firmar un nuevo testamento que desheredaba a Harold y dejaba todo a una fundación. Harold, aplastado por deudas, acudió al Dr. Marsh, quien ya había envenenado a Eleanor Ashworth cinco años antes por encargo del propio Lord. Esta vez Marsh exigió treinta mil libras. Harold sirvió personalmente la segunda copa envenenada con digitalina extraída de la dedalera del jardín. Marsh certificó la muerte como fallo cardíaco.",
+    "texto_victoria": "Scotland Yard arresta a Harold Ashworth y al Dr. Elias Marsh. El doble asesinato —Lord Ashworth y Lady Eleanor— sacude a la sociedad victoriana. El nuevo testamento, aunque no firmado, orienta la distribución del patrimonio.",
+    "texto_derrota": "Sin pruebas suficientes, Harold hereda Blackmoor Hall. El Dr. Marsh continúa su práctica médica. Dos muertes quedan sin resolver."
+  }
+}

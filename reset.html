@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reset — Blackmoor Hall</title>
+<style>
+  body { background:#0a0806; color:#f0e8d8; font-family:sans-serif; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; flex-direction:column; gap:1rem; text-align:center; padding:1.5rem; box-sizing:border-box; }
+  h1  { color:#d4a840; font-size:1.6rem; margin:0; }
+  p   { color:#a09070; max-width:420px; line-height:1.6; margin:.5rem 0; }
+  .btn { display:block; width:100%; max-width:420px; padding:1rem; font-size:1rem; font-weight:bold; border:none; border-radius:8px; cursor:pointer; margin:.4rem 0; }
+  .btn-oro  { background:#d4a840; color:#0a0806; }
+  .btn-gris { background:#2a2218; color:#a09070; border:1px solid #4a3828; }
+  #log { font-size:.85rem; color:#6a8; max-width:420px; white-space:pre-wrap; margin-top:.5rem; min-height:1.5rem; }
+</style>
+</head>
+<body>
+<h1>Blackmoor Hall — Reset</h1>
+<p>Si la app no responde o muestra pantallas incorrectas, usa estos botones para limpiar el estado guardado.</p>
+
+<button class="btn btn-oro" onclick="resetCompleto()">Limpiar todo y reiniciar</button>
+<button class="btn btn-gris" onclick="soloLocalStorage()">Solo borrar partida guardada</button>
+<button class="btn btn-gris" onclick="window.location.href='/'">Ir a la app sin limpiar</button>
+
+<div id="log"></div>
+
+<script>
+const log = document.getElementById('log');
+
+async function resetCompleto() {
+  log.textContent = 'Limpiando...';
+
+  // 1. localStorage
+  localStorage.clear();
+  log.textContent += '\n✓ Partida guardada eliminada';
+
+  // 2. Service Workers
+  if ('serviceWorker' in navigator) {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (const r of regs) { await r.unregister(); }
+    log.textContent += regs.length ? '\n✓ Service Worker eliminado' : '\n(Sin Service Workers)';
+  }
+
+  // 3. Cachés
+  if ('caches' in window) {
+    const keys = await caches.keys();
+    for (const k of keys) { await caches.delete(k); }
+    log.textContent += keys.length ? '\n✓ Cache eliminada' : '\n(Sin cache)';
+  }
+
+  log.textContent += '\n\nRedirigiendo...';
+  setTimeout(() => { window.location.href = '/'; }, 1200);
+}
+
+function soloLocalStorage() {
+  localStorage.clear();
+  log.textContent = '✓ Partida guardada eliminada.\nRedirigiendo...';
+  setTimeout(() => { window.location.href = '/'; }, 1000);
+}
+</script>
+</body>
+</html>
