@@ -4,8 +4,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Registrar Service Worker para PWA / offline
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(err => {
+    navigator.serviceWorker.register('/blackmoor-hall/sw.js', { scope: '/blackmoor-hall/' }).catch(err => {
       console.warn('Service Worker no registrado:', err);
+    });
+    // Auto-recarga cuando el SW detecta una nueva versión
+    navigator.serviceWorker.addEventListener('message', e => {
+      if (e.data?.type === 'SW_UPDATED') {
+        window.location.reload();
+      }
     });
   }
 

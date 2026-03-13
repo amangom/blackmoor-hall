@@ -1041,6 +1041,10 @@ const Mapa = {
       if (e.touches.length === 2) {
         const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
         this._pinch = Math.sqrt(dx*dx+dy*dy);
+        this._pinchMid = {
+          x: (e.touches[0].clientX+e.touches[1].clientX)/2,
+          y: (e.touches[0].clientY+e.touches[1].clientY)/2
+        };
       }
       lt = [...e.touches].map(t=>({x:t.clientX,y:t.clientY}));
     }, {passive:true});
@@ -1054,7 +1058,14 @@ const Mapa = {
       } else if (e.touches.length === 2 && lt?.length===2) {
         const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
         const d = Math.sqrt(dx*dx+dy*dy);
-        this._sc = Math.max(0.35, Math.min(3.5, this._sc * d/this._pinch));
+        const ratio = d / this._pinch;
+        // Punto focal del gesto en coordenadas del contenedor
+        const mx = (e.touches[0].clientX+e.touches[1].clientX)/2 - container.getBoundingClientRect().left;
+        const my = (e.touches[0].clientY+e.touches[1].clientY)/2 - container.getBoundingClientRect().top;
+        // Ajustar tx/ty para que el punto bajo los dedos no se mueva
+        this._tx -= mx / this._sc * (ratio - 1);
+        this._ty -= my / this._sc * (ratio - 1);
+        this._sc = Math.max(0.35, Math.min(3.5, this._sc * ratio));
         this._pinch = d;
         this._aplicarTransform();
       }
@@ -1084,6 +1095,16 @@ const Mapa = {
     }, {passive:false});
 
     container.style.cursor = 'grab';
+
+    // Recentrar automáticamente al rotar pantalla o cambiar tamaño
+    const _recentrar = () => {
+      const svg = document.getElementById('mapa-svg');
+      if (svg && container.offsetParent !== null) {
+        this._centrar(container, +svg.getAttribute('width'), +svg.getAttribute('height'));
+      }
+    };
+    window.addEventListener('resize', _recentrar);
+    screen.orientation?.addEventListener('change', _recentrar);
 
     // Botón centrar
     const b = document.createElement('button');

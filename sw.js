@@ -1,5 +1,5 @@
-// ── SERVICE WORKER — incrementar CACHE_NAME al actualizar assets ──────────────
-const CACHE_NAME = 'blackmoor-v70';
+// ── SERVICE WORKER — auto-actualización al detectar nueva versión ──────────────
+const CACHE_NAME = 'blackmoor-v71';
 const BASE = '/blackmoor-hall';
 
 const ASSETS = [
@@ -44,7 +44,11 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
+    ).then(() => {
+      return self.clients.matchAll({ type: 'window' }).then(clients => {
+        clients.forEach(client => client.postMessage({ type: 'SW_UPDATED' }));
+      });
+    })
   );
   self.clients.claim();
 });
