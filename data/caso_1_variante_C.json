@@ -128,10 +128,10 @@
         "atributo": "INT",
         "dificultad": 4,
         "exito": "Marsh examina la descripción del frasco. «Ese tipo de frasco lo uso yo para muestras, sí. Pero yo no lo traje esta noche. Alguien lo cogió de mi maletín en algún momento y lo reutilizó.» Perturbado. «¿Quién ha tenido acceso a mi maletín en esta casa?»",
-        "fracaso": "Marsh no aporta nada nuevo.",
+        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
         "efectos_exito": [],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
+        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
         "prensa": ""
       },
       "M-C3": {
@@ -141,7 +141,7 @@
         "atributo": "TEM",
         "dificultad": 4,
         "exito": "«Mi nombre de pila es Charles, sí, pero esos gemelos no son míos. Lady Eleanor encargó dos pares con las mismas iniciales: uno para mí y otro para su hija. Lo que tenéis ahí es el de Catherine.»",
-        "fracaso": "«C.M. son mis iniciales, sí. Pero yo no he estado cerca del Lord esta noche.» Se cierra.",
+        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -155,7 +155,7 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
+        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
         "prensa": ""
       },
       "M-C4": {
@@ -184,7 +184,7 @@
         "atributo": "TEM",
         "dificultad": 5,
         "exito": "«Eleanor tenía una cardiopatía real. Yo la traté correctamente. Que alguien use su muerte ahora para señalarme... no tengo palabras.» Firme.",
-        "fracaso": "«No voy a hablar de pacientes fallecidos.»",
+        "fracaso": "«No voy a hablar de pacientes fallecidos.» Se cierra. +1 Alerta (la negativa llama la atención de los presentes).",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -192,7 +192,12 @@
             "valor": -1
           }
         ],
-        "efectos_fracaso": [],
+        "efectos_fracaso": [
+          {
+            "tipo": "alerta",
+            "valor": 1
+          }
+        ],
         "ojo_entrenado": "",
         "prensa": ""
       },
@@ -222,7 +227,7 @@
         "atributo": "TEM",
         "dificultad": 4,
         "exito": "«La dedalera del jardín es de Pemberton. Siempre la ha tenido. Pero ese trapo y la concentración del frasco... alguien procesó la planta con precisión. No es trabajo de cocina habitual.»",
-        "fracaso": "«No sé nada de ese trapo. El jardín no es mi territorio.»",
+        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -231,7 +236,7 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
+        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
         "prensa": ""
       },
       "M-C_resto": {
@@ -281,7 +286,7 @@
         "atributo": "TEM",
         "dificultad": 4,
         "exito": "«Sí, debo dinero. Bastante. Y sí, ahora heredo. Pero si hubiera querido resolver mis deudas matando a mi padre, lo habría hecho hace meses, no esta noche con la casa llena de testigos.»",
-        "fracaso": "«Mis asuntos financieros no os incumben.»",
+        "fracaso": "«Mis finanzas son asunto mío.» Se levanta, da la espalda y no vuelve a mirar al interrogador. La conversación ha terminado.",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -290,7 +295,7 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
+        "ojo_entrenado": "Harold da la espalda, pero no se va. Le tiembla ligeramente la mano derecha. Este hombre está al límite — y sabe que si abre la boca, no podrá parar.",
         "prensa": ""
       },
       "H-C3": {
@@ -752,6 +757,19 @@
         "dificultad": null,
         "exito": "«Lo siento, hijo. No puedo ayudaros con eso. Mi labor es espiritual, no detectivesca.»",
         "fracaso": "",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Wh-C4": {
+        "pistas": [
+          "pista_3_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 3,
+        "exito": "«El Lord me habló de ello en privado. Quería poner orden antes de que fuera demasiado tarde. Me dijo que había personas en esta casa que no merecían lo que iban a recibir. Le aconsejé que actuara con prudencia. No sé si lo hizo.»",
+        "fracaso": "«Los asuntos del Lord eran confidenciales. No me corresponde a mí revelarlos.»",
         "efectos_exito": [],
         "efectos_fracaso": [],
         "ojo_entrenado": "",

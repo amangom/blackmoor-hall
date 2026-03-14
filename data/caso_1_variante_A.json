@@ -52,7 +52,7 @@
           }
         ],
         "ojo_entrenado": "Catherine protege el cuaderno con el cuerpo, pero no con vergüenza: con determinación. No oculta un crimen. Oculta una investigación. Tiene la mirada de alguien que busca justicia.",
-        "prensa": ""
+        "prensa": "El Periodista reconoce la estructura del cuaderno: no es un diario — es una investigación periodística. Fechas, nombres, fuentes. Esta mujer sabe cómo construir un caso."
       },
       "C-A3": {
         "pistas": [
@@ -117,7 +117,7 @@
         "atributo": "TEM",
         "dificultad": 5,
         "exito": "Marsh palidece. «Mi nombre de pila es Charles. Charles Marsh. Pero el botón... lo perdí hace meses. Alguien debió poner...» Se interrumpe. Está mintiendo y lo sabéis.",
-        "fracaso": "«No son mis iniciales. Coincidencia.»",
+        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -132,7 +132,7 @@
             "valor": 1
           }
         ],
-        "ojo_entrenado": "Marsh miente. Al decir «coincidencia», se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un botón de gemelo.",
+        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
         "prensa": "El Periodista nota que la manga izquierda de Marsh está ligeramente desgarrada en el puño. El botón no se «perdió hace meses»: se arrancó esta noche."
       },
       "M-A2": {
@@ -182,11 +182,16 @@
         "atributo": "TEM",
         "dificultad": 6,
         "exito": "«Eleanor tenía problemas cardíacos reales. Yo la traté lo mejor que pude. No pueden comparar...» Se le quiebra la voz.",
-        "fracaso": "«No voy a hablar de pacientes fallecidos.» Se cierra.",
+        "fracaso": "«No voy a hablar de pacientes fallecidos.» Se cierra. +1 Alerta (la negativa llama la atención de los presentes).",
         "efectos_exito": [],
-        "efectos_fracaso": [],
+        "efectos_fracaso": [
+          {
+            "tipo": "alerta",
+            "valor": 1
+          }
+        ],
         "ojo_entrenado": "Las manos de Marsh tiemblan por primera vez en toda la noche. No es rabia: es culpa. Este hombre ha hecho algo terrible antes, no solo esta noche.",
-        "prensa": "",
+        "prensa": "La muerte de Lady Eleanor fue pública pero silenciosa. Ningún periódico la cubrió, lo que es inusual para una familia de esta posición. Alguien se aseguró de que no hubiera preguntas.",
         "exito_condicional": {
           "condicion": {
             "pistas_interpretadas_any": [
@@ -244,7 +249,7 @@
         "atributo": "INT",
         "dificultad": 5,
         "exito": "Marsh reconoce la concentración. «Esa dosis no es terapéutica. Es... Alguien sabía exactamente lo que hacía.» Se le escapa una mirada de culpa.",
-        "fracaso": "«No soy toxicólogo. No puedo opinar sobre dosis.»",
+        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -253,7 +258,7 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
+        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
         "prensa": "",
         "exito_condicional": {
           "condicion": {
@@ -279,7 +284,7 @@
         "atributo": "TEM",
         "dificultad": 5,
         "exito": "«Conozco la dedalera desde la facultad. Pero no toco plantas de jardín — trabajo con compuestos purificados.» Se detiene. Sus zapatos tienen barro.",
-        "fracaso": "«No sé nada de ese trapo. El jardín no es mi territorio.»",
+        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -288,7 +293,7 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "Marsh niega tocar plantas pero lleva barro en los zapatos esta noche.",
+        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
         "prensa": ""
       },
       "M-A7": {
@@ -354,7 +359,7 @@
           }
         ],
         "ojo_entrenado": "Harold miente fatal. Al decir «no sé nada», mira hacia la puerta del Despacho. Sabe exactamente lo que hay ahí.",
-        "prensa": ""
+        "prensa": "Harold niega saber nada, pero su reacción llega antes que las palabras. El Periodista lo ha visto antes: es la negativa de alguien que lleva horas preparándose para esta pregunta concreta. Además, mira hacia la puerta del Despacho cada vez que la menciona."
       },
       "H-A2": {
         "pistas": [
@@ -363,7 +368,7 @@
         "atributo": "TEM",
         "dificultad": 4,
         "exito": "Harold se tensa. «Debo dinero, sí. ¿A quién no? Pero tengo un plan para pagarlo.» Presionado: «El plan era... la herencia. Pero eso no significa que yo...»",
-        "fracaso": "«Mis finanzas son asunto mío.»",
+        "fracaso": "«Mis finanzas son asunto mío.» Se levanta, da la espalda y no vuelve a mirar al interrogador. La conversación ha terminado.",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -372,8 +377,8 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "Al levantarse, Harold se toca el bolsillo interior de la chaqueta. Lleva algo encima: un documento grueso.",
-        "prensa": ""
+        "ojo_entrenado": "Harold da la espalda, pero no se va. Le tiembla ligeramente la mano derecha. Este hombre está al límite — y sabe que si abre la boca, no podrá parar.",
+        "prensa": "El Periodista reconoce el tipo: deudas de juego con plazos vencidos. No es negligencia — es desesperación. Este hombre necesitaba dinero esta semana, no el mes que viene."
       },
       "H-A3": {
         "pistas": [
@@ -547,7 +552,7 @@
         ],
         "efectos_fracaso": [],
         "ojo_entrenado": "",
-        "prensa": ""
+        "prensa": "El Periodista conoce ese membrete. Es un bufete especializado en reclamaciones de deudas de juego. Trabajan para casas de apuestas de Londres. Los plazos que manejan no se prorrogan."
       },
       "Ho-A6": {
         "pistas": [
@@ -795,6 +800,19 @@
         "dificultad": null,
         "exito": "«Lo siento, hijo. No puedo ayudaros con eso. Mi labor es espiritual, no detectivesca.»",
         "fracaso": "",
+        "efectos_exito": [],
+        "efectos_fracaso": [],
+        "ojo_entrenado": "",
+        "prensa": ""
+      },
+      "Wh-A4": {
+        "pistas": [
+          "pista_3_interpretada"
+        ],
+        "atributo": "TEM",
+        "dificultad": 3,
+        "exito": "«El Lord me habló de ello en privado. Quería poner orden antes de que fuera demasiado tarde. Me dijo que había personas en esta casa que no merecían lo que iban a recibir. Le aconsejé que actuara con prudencia. No sé si lo hizo.»",
+        "fracaso": "«Los asuntos del Lord eran confidenciales. No me corresponde a mí revelarlos.»",
         "efectos_exito": [],
         "efectos_fracaso": [],
         "ojo_entrenado": "",
