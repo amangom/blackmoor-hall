@@ -89,8 +89,9 @@ const Config = {
   siguientePaso() {
     if (!this._validar()) return;
     if (this._paso === 2) {
-      // Mostrar instrucciones de cartas físicas antes de avanzar al paso 3
-      document.getElementById('overlay-cartas-prep').style.display = 'flex';
+      // Avanzar directamente al paso 3
+      this._paso++;
+      this._renderPaso();
       return;
     }
     if (this._paso < 3) { this._paso++; this._renderPaso(); }

@@ -14,6 +14,84 @@ const UI = {
     document.getElementById('overlay-premisa').style.display = 'flex';
   },
 
+  mostrarMontajeTablero() {
+    const cont = document.getElementById('montaje-contenido');
+    if (!cont) { this.irAPartida(); return; }
+
+    const caso = datosCaso || {};
+    const comun = caso.comun || {};
+    const pnjs = comun.pnj || [];
+    const losetasDistrib = typeof obtenerLosetasDistribucion === 'function' ? obtenerLosetasDistribucion() : [];
+
+    const nombreLoseta = (id) => {
+      const l = datosLosetas?.losetas?.find(x => x.id === id);
+      return l ? l.nombre : id;
+    };
+
+    let html = '';
+
+    // Sección: Distribución de losetas
+    html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;">Losetas del caso</p>`;
+    if (losetasDistrib.length > 0) {
+      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.6;margin:0 0 1rem;">Colocad las siguientes losetas según el diagrama de distribución correspondiente:</p>`;
+      html += `<ul style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.8;margin:0 0 1.25rem;padding-left:1.2rem;">`;
+      losetasDistrib.forEach(l => {
+        html += `<li>${nombreLoseta(l.id)}</li>`;
+      });
+      html += `</ul>`;
+    } else {
+      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);margin:0 0 1.25rem;">Consultad el diagrama de distribución de puertas del caso.</p>`;
+    }
+
+    // Sección: Escena del crimen
+    const escena = caso.escena_crimen;
+    if (escena) {
+      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .4rem;">Escena del crimen</p>`;
+      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.6;margin:0 0 1.25rem;">Colocad el token de cadáver en: <strong style="color:var(--oro2);">${nombreLoseta(escena)}</strong></p>`;
+    }
+
+    // Sección: Punto de inicio de PJs
+    const inicio = caso.punto_inicio;
+    if (inicio) {
+      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .4rem;">Posición inicial de los jugadores</p>`;
+      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.6;margin:0 0 1.25rem;">Todos los jugadores comienzan en: <strong style="color:var(--oro2);">${nombreLoseta(inicio)}</strong></p>`;
+    }
+
+    // Sección: PNJs
+    if (pnjs.length > 0) {
+      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;">Posición inicial de los PNJ</p>`;
+      html += `<ul style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.8;margin:0 0 1.25rem;padding-left:1.2rem;">`;
+      pnjs.forEach(p => {
+        if (p.posicion_inicial) {
+          html += `<li><strong style="color:var(--txt);">${p.nombre}</strong> — ${nombreLoseta(p.posicion_inicial)}</li>`;
+        }
+      });
+      html += `</ul>`;
+    }
+
+    // Sección: Cerraduras iniciales
+    const cerraduras = caso.losetas_cerradas_inicial || [];
+    if (cerraduras.length > 0) {
+      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;">Losetas bloqueadas</p>`;
+      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);margin:0 0 .4rem;">Colocad un token de cerradura en:</p>`;
+      html += `<ul style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.8;margin:0 0 1.25rem;padding-left:1.2rem;">`;
+      cerraduras.forEach(c => {
+        html += `<li><strong style="color:var(--txt);">${nombreLoseta(c.id)}</strong> (FOR ${c.dificultad_for} para forzar)</li>`;
+      });
+      html += `</ul>`;
+    }
+
+    // Sección: Herramienta / Ganzúa
+    const herramienta = caso.herramienta_ganzua;
+    if (herramienta) {
+      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .4rem;">Herramienta</p>`;
+      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.6;margin:0 0 1.25rem;">Colocad el token de herramienta en: <strong style="color:var(--oro2);">${nombreLoseta(herramienta)}</strong></p>`;
+    }
+
+    cont.innerHTML = html;
+    document.getElementById('overlay-montaje').style.display = 'flex';
+  },
+
   irAInicio() {
     this._mostrarPantalla('inicio');
   },

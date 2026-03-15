@@ -238,7 +238,7 @@
     <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">Realizad estos pasos con las cartas físicas:</p>
     <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem;text-align:left;line-height:1.7;font-size:1.05rem;">
       <p style="margin:0 0 .75rem;"><strong>1. Cartas de Pista</strong><br>Preparad las cartas de Pista del caso en dos mazos boca abajo: el mazo de pistas descubiertas y el mazo de pistas interpretadas.</p>
-      <p style="margin:0 0 .75rem;"><strong>2. Cartas de Exploración</strong><br>Sacad las cartas de Exploración del caso y colocadlas en un mazo con el reverso visible, ordenadas por loseta. Todas las cartas van al mazo, incluyendo las de la escena del crimen.</p>
+      <p style="margin:0 0 .75rem;"><strong>2. Cartas de Exploración</strong><br>Sacad las cartas de Exploración del caso. Colocad cada carta boca abajo en su loseta correspondiente, ordenadas de menor a mayor dificultad (la de menor dificultad queda arriba del todo). Incluye las cartas de la escena del crimen.</p>
       <p style="margin:0 0 .75rem;"><strong>3. Mazo de Resolución</strong><br>Barajad el mazo de Resolución. Cada jugador roba 6 cartas (límite de mano: 6).</p>
       <p style="margin:0;"><strong>4. Reloj y Alerta</strong><br>Colocad el Reloj en posición 1 (Anochecer). Alerta en 0.</p>
     </div>
@@ -246,15 +246,27 @@
   </div>
 </div>
 
-<div class="overlay overlay-modal" id="overlay-cartas-prep" style="display:none;z-index:115;">
+<!-- Overlay Implicado (post-premisa, paso 1) -->
+<div class="overlay overlay-modal" id="overlay-implicado-prep" style="display:none;z-index:123;">
   <div class="overlay-box" style="max-width:400px;">
-    <h2 class="ov-titulo" style="margin-bottom:1rem;">📋 Antes de continuar</h2>
-    <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">Realizad estos pasos con las cartas físicas:</p>
+    <h2 class="ov-titulo" style="margin-bottom:1rem;">Cartas de ¿Implicado?</h2>
+    <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">Antes de preparar el tablero, realizad este paso:</p>
     <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem;text-align:left;line-height:1.7;font-size:1.05rem;">
-      <p style="margin:0 0 .75rem;"><strong>1. Cartas de Confidencia</strong><br>Cada jugador recibe la carta de Confidencia correspondiente a su personaje. La lee en <em>PRIVADO</em> y la guarda en secreto.</p>
-      <p style="margin:0;"><strong>2. Cartas de ¿Implicado?</strong><br>Se barajan las 6 cartas de ¿Implicado? boca abajo. Se reparte 1 a cada jugador. Las sobrantes se retiran a la caja sin mirar.</p>
+      <p style="margin:0;">Barajad las 6 cartas de <strong>¿Implicado?</strong> boca abajo. Repartid 1 a cada jugador. Las sobrantes se retiran a la caja <em>sin mirar</em>.</p>
     </div>
-    <button class="ov-btn" onclick="document.getElementById('overlay-cartas-prep').style.display='none'; Config._continuarTrasPJ();">✓ Hecho, continuar</button>
+    <button class="ov-btn" onclick="document.getElementById('overlay-implicado-prep').style.display='none'; document.getElementById('overlay-confidencia-prep').style.display='flex';">✓ Hecho, continuar</button>
+  </div>
+</div>
+
+<!-- Overlay Confidencia (post-premisa, paso 2) -->
+<div class="overlay overlay-modal" id="overlay-confidencia-prep" style="display:none;z-index:123;">
+  <div class="overlay-box" style="max-width:400px;">
+    <h2 class="ov-titulo" style="margin-bottom:1rem;">Cartas de Confidencia</h2>
+    <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">A continuación, realizad este paso:</p>
+    <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem;text-align:left;line-height:1.7;font-size:1.05rem;">
+      <p style="margin:0;">Cada jugador recibe la carta de <strong>Confidencia</strong> correspondiente a su personaje. La lee en <em>PRIVADO</em> y la guarda en secreto.</p>
+    </div>
+    <button class="ov-btn" onclick="document.getElementById('overlay-confidencia-prep').style.display='none'; UI.mostrarMontajeTablero();">✓ Hecho, continuar</button>
   </div>
 </div>
 
@@ -325,7 +337,16 @@
     <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;display:inline-block;margin-bottom:.75rem;">CASO <span id="premisa-caso-num"></span></div>
     <h2 id="premisa-titulo" style="font-family:var(--f1);font-size:clamp(1.3rem,5vw,1.9rem);color:var(--oro2);margin:.3rem 0 1rem;"></h2>
     <p id="premisa-texto" style="font-family:var(--f3);font-size:clamp(.9rem,3vw,1rem);color:var(--txt2);line-height:1.75;margin-bottom:1.5rem;text-align:left;"></p>
-    <button onclick="document.getElementById('overlay-premisa').style.display='none'; UI.irAPartida();" class="btn btn-p btn-bloque" style="min-height:56px;font-size:1.05rem;max-width:320px;margin:0 auto;">▶ Comenzar investigación</button>
+    <button onclick="document.getElementById('overlay-premisa').style.display='none'; document.getElementById('overlay-implicado-prep').style.display='flex';" class="btn btn-p btn-bloque" style="min-height:56px;font-size:1.05rem;max-width:320px;margin:0 auto;">▶ Preparar el tablero</button>
+  </div>
+</div>
+
+<!-- ═══ OVERLAY: MONTAJE DEL TABLERO ═══ -->
+<div id="overlay-montaje" class="overlay" style="z-index:122;display:none;align-items:center;justify-content:center;">
+  <div style="background:linear-gradient(160deg,#1c1509,#100d07);border:1px solid #8a6818;border-radius:16px;padding:1.75rem 1.5rem;max-width:520px;width:92%;max-height:88vh;overflow-y:auto;">
+    <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;display:inline-block;margin-bottom:.75rem;">Montaje del tablero</div>
+    <div id="montaje-contenido" style="text-align:left;"></div>
+    <button onclick="document.getElementById('overlay-montaje').style.display='none'; UI.irAPartida();" class="btn btn-p btn-bloque" style="min-height:52px;font-size:1rem;max-width:320px;margin:1.25rem auto 0;display:block;">▶ Comenzar investigación</button>
   </div>
 </div>
 
