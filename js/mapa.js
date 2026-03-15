@@ -591,6 +591,8 @@ const Mapa = {
     btnTerminar.innerHTML = `<span style="font-size:1.1rem;">⏭</span><span>Terminar turno</span>`;
     btnTerminar.addEventListener('click', e => {
       e.stopPropagation();
+      UI._mostrarBtnDeshacer(false);
+      UI._estadoAnterior = null;
       if (typeof pasarTurno === 'function') pasarTurno(this._jugSelIdx);
       this._jugSelIdx = null; this._accionActiva = null;
       this._resaltados = []; this._pnjResaltados = [];
@@ -791,6 +793,8 @@ const Mapa = {
       }
       return;
     } else if (accionId === 'descansar') {
+      UI._snapshot();
+      UI._mostrarBtnDeshacer(true);
       usarAccion(jugIdx, 'descansar');
       guardarEstado();
       this._accionActiva = null; this._jugSelIdx = null;
@@ -854,6 +858,8 @@ const Mapa = {
   },
 
   _ejecutarMovimiento(losetaId) {
+    UI._snapshot();
+    UI._mostrarBtnDeshacer(true);
     const bar = document.getElementById('mapa-instruccion');
     if (bar) bar.remove();
     const jugIdx = this._jugSelIdx;
@@ -970,6 +976,8 @@ const Mapa = {
     btn.className = 'btn btn-p btn-bloque';
     btn.textContent = 'Confirmar descanso';
     btn.onclick = () => {
+      UI._snapshot();
+      UI._mostrarBtnDeshacer(true);
       if (jugIdx >= 0 && bonDesc && typeof aplicarPasivaDescanso === 'function') {
         const logsD = aplicarPasivaDescanso(jugIdx, losetaDesc);
         if (logsD.length) UI.mostrarNotifPasiva(logsD);
@@ -1204,6 +1212,8 @@ const Mapa = {
   },
 
   _ejecutarForzarCerradura(jugIdx, losetaId, conHerramientas) {
+    UI._snapshot();
+    UI._mostrarBtnDeshacer(true);
     const j         = estado.jugadores[jugIdx];
     const esMayord  = j.personaje === 'mayordomo';
     const difBase   = getDifCerradura(losetaId);

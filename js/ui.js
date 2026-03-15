@@ -156,6 +156,36 @@ const UI = {
     document.getElementById('overlay-prep-cartas').classList.add('activo');
   },
 
+  // ─── DESHACER ÚLTIMA ACCIÓN ────────────────────────────────────────────────
+  _snapshot() {
+    try {
+      this._estadoAnterior = JSON.parse(JSON.stringify(estado));
+    } catch(e) {
+      this._estadoAnterior = null;
+    }
+  },
+
+  _mostrarBtnDeshacer(visible) {
+    const btn = document.getElementById('btn-deshacer');
+    if (btn) btn.style.display = visible ? 'flex' : 'none';
+  },
+
+  deshacerAccion() {
+    if (!this._estadoAnterior) return;
+    if (!confirm('¿Deshacer la última acción?')) return;
+    estado = this._estadoAnterior;
+    this._estadoAnterior = null;
+    guardarEstado();
+    this._mostrarBtnDeshacer(false);
+    this.cerrarOverlay('resultado');
+    this.cerrarOverlay('interrogatorio');
+    this.cerrarOverlay('pistas');
+    this.renderizarPartida();
+    this._renderAlerta();
+    this._renderSospecha();
+    Mapa.renderizar();
+  },
+
   irAInicio() {
     document.querySelectorAll('.overlay-modal').forEach(o => {
       o.style.display = 'none';
@@ -792,6 +822,7 @@ const UI = {
   },
 
   _resolverInterrogatorioUI(pnj_id, pista_id) {
+    this._snapshot();
     const calc = calcularDificultad(pnj_id, pista_id);
     if (!calc || calc.bloqueado) {
       this._mostrarNotificacion('Bloqueado', calc?.razon || 'No hay entrada para esta combinación.');
@@ -869,6 +900,7 @@ const UI = {
   },
 
   _mostrarResultadoInterrogatorio(pnj_id, pista_id, res) {
+    this._mostrarBtnDeshacer(true);
     if (!res || res.bloqueado) {
       this._mostrarNotificacion('Bloqueado', res?.razon || 'Error en interrogatorio.');
       return;
@@ -1127,6 +1159,7 @@ const UI = {
     btnDeducir.textContent = 'Deducir';
     btnDeducir.disabled = true;
     btnDeducir.onclick = () => {
+      this._snapshot();
       // Consumir acción ahora que se ejecuta la deducción
       if (this._pendienteAccionDeducir != null) {
         usarAccion(this._pendienteAccionDeducir, 'deducir');
@@ -1145,6 +1178,7 @@ const UI = {
   },
 
   _mostrarResultadoDeduccion(res, pistas, noms) {
+    this._mostrarBtnDeshacer(true);
     const container = document.getElementById('resultado-cont');
     const etiquetas = noms || pistas;
     document.getElementById('resultado-tit').textContent = `Deducción: ${etiquetas.join(' + ')}`;
@@ -1554,7 +1588,7 @@ const UI = {
       if (typeof getPasivaExploracion === 'function') {
         const pas = getPasivaExploracion(jugIdxReal, loseta, carta.atributo);
         if (pas.modDif !== 0) {
-          difDisplay = Math.max(1, difDisplay + pas.modDif);
+          difDisplay = Math.max(0, difDisplay + pas.modDif);
         }
         if (pas.notas.length) {
           notaEsp = (notaEsp ? notaEsp + ' · ' : '') + pas.notas.join(' · ');
@@ -1568,7 +1602,7 @@ const UI = {
       if (typeof getBonusConfidenciaExploracion === 'function') {
         const bonusConf = getBonusConfidenciaExploracion(jugIdxReal, loseta);
         if (bonusConf !== 0) {
-          difDisplay = Math.max(1, difDisplay + bonusConf);
+          difDisplay = Math.max(0, difDisplay + bonusConf);
           notaEsp = (notaEsp ? notaEsp + ' · ' : '') + '★ Confidencia −2 dif.';
         }
       }
@@ -1639,6 +1673,8 @@ const UI = {
     }
   },
   _aplicarResultadoExploracion(carta, resultado, jugIdx) {
+    this._snapshot();
+    this._mostrarBtnDeshacer(true);
     // Marcar carta como jugada
     if (!estado.exploraciones_jugadas) estado.exploraciones_jugadas = [];
     if (!estado.exploraciones_jugadas.includes(carta.id)) {
@@ -1767,6 +1803,8 @@ const UI = {
   },
 
   _ejecutarAvanceRonda() {
+    this._snapshot();
+    this._mostrarBtnDeshacer(true);
     if (!avanzarRonda()) {
       this._mostrarNotificacion('El tiempo se ha agotado', 'Las doce campanadas resuenan en Blackmoor Hall. Ya es demasiado tarde.');
       this.renderizarPartida(); Mapa.renderizar(); return;

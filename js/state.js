@@ -219,6 +219,7 @@ function iniciarPartida(config) {
     acusacion_desbloqueada: false,
     partida_terminada: false,
     visiones_activadas: 0,
+    flags: {},
   };
 
   datosCaso.comun.pnj.forEach(pnj => {
