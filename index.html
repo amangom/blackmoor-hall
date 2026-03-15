@@ -101,7 +101,7 @@
       </div>
     </div>
     <div id="lista-jug" class="flex-col gap-m"></div>
-    <button class="btn btn-p btn-bloque" style="margin-top:auto;min-height:52px;" onclick="Config.siguientePaso()">Continuar →</button>
+    <button class="btn btn-p btn-bloque" style="margin-top:auto;min-height:52px;touch-action:manipulation;" onclick="Config.siguientePaso()">Continuar →</button>
   </div>
 
   <!-- PASO 4: Distribución -->
@@ -222,6 +222,8 @@
   </div>
 </div>
 
+</div><!-- #app -->
+
 <!-- Notificación -->
 <div class="overlay overlay-modal" id="overlay-aviso">
   <div class="overlay-box" style="max-width:380px;text-align:center;">
@@ -232,7 +234,7 @@
   </div>
 </div>
 
-<div class="overlay overlay-modal" id="overlay-prep-cartas" style="display:none;z-index:400;">
+<div class="overlay overlay-modal" id="overlay-prep-cartas" style="display:none;">
   <div class="overlay-box" style="max-width:420px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
       <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;">Preparad el material</div>
@@ -266,8 +268,6 @@
     <button class="ov-btn" onclick="document.getElementById('overlay-confidencia-prep').style.display='none'; UI.mostrarMontajeTablero();">✓ Hecho, continuar</button>
   </div>
 </div>
-
-</div><!-- #app -->
 
 <script src="js/personajes.js?v=1772741038"></script>
 <script src="js/state.js?v=1772741038"></script>

@@ -152,7 +152,7 @@ const UI = {
       }
     };
 
-    UI.mostrarPrepMaterial();
+    document.getElementById('overlay-prep-cartas').style.display = 'flex';
   },
 
   irAInicio() {

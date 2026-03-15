@@ -77,8 +77,9 @@ h2, h3 { font-family: var(--f2); color: var(--oro2); }
   min-height: var(--tap); padding: 0 1.5rem;
   border: none; border-radius: var(--r);
   font-family: var(--f2); font-size: 1rem; letter-spacing: .1em; text-transform: uppercase;
-  cursor: pointer; transition: all .2s;
+  cursor: pointer; transition: all .2s; touch-action: manipulation;
 }
+button { touch-action: manipulation; }
 .btn:active { transform: scale(.97); }
 
 .btn-p { /* primario */
