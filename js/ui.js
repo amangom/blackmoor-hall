@@ -156,10 +156,13 @@ const UI = {
   },
 
   irAInicio() {
+    // Cerrar cualquier overlay que pudiera haber quedado abierto
+    document.querySelectorAll('.overlay-modal').forEach(o => o.style.display = 'none');
     this._mostrarPantalla('inicio');
   },
 
   irAConfig() {
+    document.querySelectorAll('.overlay-modal').forEach(o => o.style.display = 'none');
     Config.inicializar();
     this._mostrarPantalla('config');
   },
