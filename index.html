@@ -232,17 +232,14 @@
   </div>
 </div>
 
-<div class="overlay overlay-modal" id="overlay-prep-cartas" style="display:none;z-index:116;">
+<div class="overlay overlay-modal" id="overlay-prep-cartas" style="display:none;">
   <div class="overlay-box" style="max-width:420px;">
-    <h2 class="ov-titulo" style="margin-bottom:1rem;">📋 Preparad el material</h2>
-    <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">Realizad estos pasos con las cartas físicas:</p>
-    <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem;text-align:left;line-height:1.7;font-size:1.05rem;">
-      <p style="margin:0 0 .75rem;"><strong>1. Cartas de Pista</strong><br>Preparad las cartas de Pista del caso en dos mazos boca abajo: el mazo de pistas descubiertas y el mazo de pistas interpretadas.</p>
-      <p style="margin:0 0 .75rem;"><strong>2. Cartas de Exploración</strong><br>Sacad las cartas de Exploración del caso. Colocad cada carta boca abajo en su loseta correspondiente, ordenadas de menor a mayor dificultad (la de menor dificultad queda arriba del todo). Incluye las cartas de la escena del crimen.</p>
-      <p style="margin:0 0 .75rem;"><strong>3. Mazo de Resolución</strong><br>Barajad el mazo de Resolución. Cada jugador roba 6 cartas (límite de mano: 6).</p>
-      <p style="margin:0;"><strong>4. Reloj y Alerta</strong><br>Colocad el Reloj en posición 1 (Anochecer). Alerta en 0.</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
+      <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;">Preparad el material</div>
+      <span id="prep-indicador" style="font-family:var(--f2);font-size:.75rem;color:var(--oro2);letter-spacing:.08em;"></span>
     </div>
-    <button class="ov-btn" onclick="document.getElementById('overlay-prep-cartas').style.display='none'; UI.irAPartida();">✓ Hecho, comenzar investigación</button>
+    <div id="prep-contenido" style="text-align:left;margin-bottom:1.25rem;"></div>
+    <button id="prep-btn" class="ov-btn" style="width:100%;">Siguiente →</button>
   </div>
 </div>
 

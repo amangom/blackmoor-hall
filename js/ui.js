@@ -95,7 +95,7 @@ const UI = {
     btn.onclick = () => {
       if (esUltimo) {
         document.getElementById('overlay-montaje').style.display = 'none';
-        document.getElementById('overlay-prep-cartas').style.display = 'flex';
+        UI.mostrarPrepMaterial();
       } else {
         this._montajePasoActual++;
         this._mostrarPasoMontaje();
@@ -107,6 +107,52 @@ const UI = {
     if (ind) ind.textContent = `${idx + 1} / ${pasos.length}`;
 
     document.getElementById('overlay-montaje').style.display = 'flex';
+  },
+
+  mostrarPrepMaterial() {
+    const pasos = [
+      `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Cartas de Pista</p>
+       <p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Preparad las cartas de Pista del caso en dos mazos boca abajo: el mazo de <strong>pistas descubiertas</strong> y el mazo de <strong>pistas interpretadas</strong>.</p>`,
+
+      `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Cartas de Exploración</p>
+       <p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Sacad las cartas de Exploración del caso. Colocad cada carta <strong>boca abajo en su loseta correspondiente</strong>, ordenadas de menor a mayor dificultad — la de menor dificultad queda arriba del todo. Incluye las cartas de la escena del crimen.</p>`,
+
+      `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Mazo de Resolución</p>
+       <p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Barajad el mazo de Resolución. Cada jugador roba <strong>6 cartas</strong> (límite de mano: 6).</p>`,
+
+      `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Reloj y Alerta</p>
+       <p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Colocad el Reloj en posición <strong>1 (Anochecer)</strong>. Alerta en <strong>0</strong>.</p>`,
+    ];
+
+    this._prepPasos = pasos;
+    this._prepPasoActual = 0;
+    this._mostrarPasoPrep();
+  },
+
+  _mostrarPasoPrep() {
+    const pasos = this._prepPasos || [];
+    const idx = this._prepPasoActual || 0;
+    const cont = document.getElementById('prep-contenido');
+    const btn  = document.getElementById('prep-btn');
+    const ind  = document.getElementById('prep-indicador');
+    if (!cont || !btn) { this.irAPartida(); return; }
+
+    cont.innerHTML = pasos[idx] || '';
+    if (ind) ind.textContent = `${idx + 1} / ${pasos.length}`;
+
+    const esUltimo = idx >= pasos.length - 1;
+    btn.textContent = esUltimo ? '✓ Hecho, comenzar investigación' : 'Siguiente →';
+    btn.onclick = () => {
+      if (esUltimo) {
+        document.getElementById('overlay-prep-cartas').style.display = 'none';
+        this.irAPartida();
+      } else {
+        this._prepPasoActual++;
+        this._mostrarPasoPrep();
+      }
+    };
+
+    UI.mostrarPrepMaterial();
   },
 
   irAInicio() {
