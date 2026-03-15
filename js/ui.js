@@ -15,80 +15,97 @@ const UI = {
   },
 
   mostrarMontajeTablero() {
-    const cont = document.getElementById('montaje-contenido');
-    if (!cont) { this.irAPartida(); return; }
-
     const caso = datosCaso || {};
     const comun = caso.comun || {};
     const pnjs = comun.pnj || [];
     const losetasDistrib = typeof obtenerLosetasDistribucion === 'function' ? obtenerLosetasDistribucion() : [];
 
-    const nombreLoseta = (id) => {
+    const nom = (id) => {
       const l = datosLosetas?.losetas?.find(x => x.id === id);
       return l ? l.nombre : id;
     };
 
-    let html = '';
+    // Construir pasos
+    const pasos = [];
 
-    // Sección: Distribución de losetas
-    html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;">Losetas del caso</p>`;
+    // Paso 1: Losetas
+    let htmlLosetas = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Losetas del caso</p>`;
     if (losetasDistrib.length > 0) {
-      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.6;margin:0 0 1rem;">Colocad las siguientes losetas según el diagrama de distribución correspondiente:</p>`;
-      html += `<ul style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.8;margin:0 0 1.25rem;padding-left:1.2rem;">`;
-      losetasDistrib.forEach(l => {
-        html += `<li>${nombreLoseta(l.id)}</li>`;
-      });
-      html += `</ul>`;
+      htmlLosetas += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.6;margin:0 0 .75rem;">Colocad las siguientes losetas según el diagrama de distribución:</p>`;
+      htmlLosetas += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0;padding-left:1.2rem;">`;
+      losetasDistrib.forEach(l => { htmlLosetas += `<li>${nom(l.id)}</li>`; });
+      htmlLosetas += `</ul>`;
     } else {
-      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);margin:0 0 1.25rem;">Consultad el diagrama de distribución de puertas del caso.</p>`;
+      htmlLosetas += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);">Consultad el diagrama de distribución de puertas del caso.</p>`;
     }
+    pasos.push(htmlLosetas);
 
-    // Sección: Escena del crimen
+    // Paso 2: Escena del crimen + PJs
     const escena = caso.escena_crimen;
-    if (escena) {
-      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .4rem;">Escena del crimen</p>`;
-      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.6;margin:0 0 1.25rem;">Colocad el token de cadáver en: <strong style="color:var(--oro2);">${nombreLoseta(escena)}</strong></p>`;
-    }
-
-    // Sección: Punto de inicio de PJs
     const inicio = caso.punto_inicio;
-    if (inicio) {
-      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .4rem;">Posición inicial de los jugadores</p>`;
-      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.6;margin:0 0 1.25rem;">Todos los jugadores comienzan en: <strong style="color:var(--oro2);">${nombreLoseta(inicio)}</strong></p>`;
-    }
+    let htmlEscena = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Escena y posiciones iniciales</p>`;
+    if (escena) htmlEscena += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0 0 .75rem;">Colocad el token de cadáver en: <strong style="color:var(--oro2);">${nom(escena)}</strong></p>`;
+    if (inicio) htmlEscena += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Todos los jugadores comienzan en: <strong style="color:var(--oro2);">${nom(inicio)}</strong></p>`;
+    pasos.push(htmlEscena);
 
-    // Sección: PNJs
-    if (pnjs.length > 0) {
-      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;">Posición inicial de los PNJ</p>`;
-      html += `<ul style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.8;margin:0 0 1.25rem;padding-left:1.2rem;">`;
-      pnjs.forEach(p => {
-        if (p.posicion_inicial) {
-          html += `<li><strong style="color:var(--txt);">${p.nombre}</strong> — ${nombreLoseta(p.posicion_inicial)}</li>`;
-        }
+    // Paso 3: PNJs
+    const pnjsConPos = pnjs.filter(p => p.posicion_inicial);
+    if (pnjsConPos.length > 0) {
+      let htmlPnj = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Posición inicial de los PNJ</p>`;
+      htmlPnj += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0;padding-left:1.2rem;">`;
+      pnjsConPos.forEach(p => {
+        htmlPnj += `<li><strong style="color:var(--txt);">${p.nombre}</strong> — ${nom(p.posicion_inicial)}</li>`;
       });
-      html += `</ul>`;
+      htmlPnj += `</ul>`;
+      pasos.push(htmlPnj);
     }
 
-    // Sección: Cerraduras iniciales
+    // Paso 4: Cerraduras + Herramienta
     const cerraduras = caso.losetas_cerradas_inicial || [];
-    if (cerraduras.length > 0) {
-      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;">Losetas bloqueadas</p>`;
-      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);margin:0 0 .4rem;">Colocad un token de cerradura en:</p>`;
-      html += `<ul style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.8;margin:0 0 1.25rem;padding-left:1.2rem;">`;
-      cerraduras.forEach(c => {
-        html += `<li><strong style="color:var(--txt);">${nombreLoseta(c.id)}</strong> (FOR ${c.dificultad_for} para forzar)</li>`;
-      });
-      html += `</ul>`;
-    }
-
-    // Sección: Herramienta / Ganzúa
     const herramienta = caso.herramienta_ganzua;
-    if (herramienta) {
-      html += `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .4rem;">Herramienta</p>`;
-      html += `<p style="font-family:var(--f3);font-size:.9rem;color:var(--txt2);line-height:1.6;margin:0 0 1.25rem;">Colocad el token de herramienta en: <strong style="color:var(--oro2);">${nombreLoseta(herramienta)}</strong></p>`;
+    let htmlCerr = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Cerraduras y herramienta</p>`;
+    if (cerraduras.length > 0) {
+      htmlCerr += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);margin:0 0 .5rem;">Colocad un token de cerradura en:</p>`;
+      htmlCerr += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0 0 .75rem;padding-left:1.2rem;">`;
+      cerraduras.forEach(c => {
+        htmlCerr += `<li><strong style="color:var(--txt);">${nom(c.id)}</strong> (FOR ${c.dificultad_for} para forzar)</li>`;
+      });
+      htmlCerr += `</ul>`;
     }
+    if (herramienta) htmlCerr += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Colocad el token de herramienta en: <strong style="color:var(--oro2);">${nom(herramienta)}</strong></p>`;
+    pasos.push(htmlCerr);
 
-    cont.innerHTML = html;
+    // Mostrar pasos secuencialmente
+    this._montajePasos = pasos;
+    this._montajePasoActual = 0;
+    this._mostrarPasoMontaje();
+  },
+
+  _mostrarPasoMontaje() {
+    const pasos = this._montajePasos || [];
+    const idx = this._montajePasoActual || 0;
+    const cont = document.getElementById('montaje-contenido');
+    const btn  = document.getElementById('montaje-btn');
+    if (!cont || !btn) { this.irAPartida(); return; }
+
+    cont.innerHTML = pasos[idx] || '';
+
+    const esUltimo = idx >= pasos.length - 1;
+    btn.textContent = esUltimo ? '✓ Hecho, preparar las cartas' : 'Siguiente →';
+    btn.onclick = () => {
+      if (esUltimo) {
+        document.getElementById('overlay-montaje').style.display = 'none';
+        document.getElementById('overlay-prep-cartas').style.display = 'flex';
+      } else {
+        this._montajePasoActual++;
+        this._mostrarPasoMontaje();
+      }
+    };
+
+    // Indicador de paso
+    const ind = document.getElementById('montaje-indicador');
+    if (ind) ind.textContent = `${idx + 1} / ${pasos.length}`;
+
     document.getElementById('overlay-montaje').style.display = 'flex';
   },
 

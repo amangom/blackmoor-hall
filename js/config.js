@@ -18,6 +18,15 @@ const Config = {
   inicializar() {
     this._paso = 0; this._casoId = 'caso_1'; this._modoVariante = 'aleatoria'; this._varianteManual = null;
     this._numJug = 3; this._jugadores = []; this._distribId = null;
+    // Limpiar selección visual de variante
+    document.querySelectorAll('#cfg-variante .opcion').forEach(e => e.classList.remove('sel'));
+    const optAleatoria = document.getElementById('opt-aleatoria');
+    if (optAleatoria) optAleatoria.classList.add('sel');
+    document.getElementById('sel-variante-manual').style.display = 'none';
+    ['A','B','C'].forEach(x => {
+      const b = document.getElementById('vbtn-' + x);
+      if (b) b.classList.remove('sel');
+    });
     this._renderPaso();
   },
 
@@ -56,7 +65,6 @@ const Config = {
       const b = document.getElementById('vbtn-' + x);
       if (b) b.classList.toggle('sel', x === v);
     });
-    // Avanzar automáticamente solo si venimos de una interacción directa del usuario
     if (avanzar && this._paso === 1 && this._modoVariante === 'manual') {
       setTimeout(() => this.siguientePaso(), 180);
     }
@@ -68,11 +76,9 @@ const Config = {
     el.classList.add('sel');
     document.getElementById('sel-variante-manual').style.display = modo === 'manual' ? 'block' : 'none';
     if (modo === 'manual') {
-      // Preseleccionar A si no hay ninguna seleccionada — selVariante ya llamará a siguientePaso
       if (!this._varianteManual) this.selVariante('A', false);
-      // No avanzamos aquí: el avance ocurre al seleccionar A/B/C
     } else {
-      // Aleatoria: avance automático
+      // Aleatoria: avance automático siempre
       setTimeout(() => this.siguientePaso(), 180);
     }
   },
@@ -321,11 +327,11 @@ const Config = {
     }
     this._casoNumInt = casoNumInt;
 
-    // Mostrar overlay de preparación de cartas antes de la portada
-    document.getElementById('overlay-prep-cartas').style.display = 'flex';
+    // Mostrar portada directamente
+    this._mostrarPortada();
   },
 
-  _continuarTrasPrep() {
+  _mostrarPortada() {
     const casoNumInt = this._casoNumInt || 1;
     const premisa = UI._premisaPendiente;
     if (premisa) {
@@ -336,6 +342,10 @@ const Config = {
     } else {
       UI.irAPartida();
     }
+  },
+
+  _continuarTrasPrep() {
+    this._mostrarPortada();
   },
 
   _notif(msg) { UI._mostrarNotificacion('Aviso', msg); }

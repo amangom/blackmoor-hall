@@ -242,7 +242,7 @@
       <p style="margin:0 0 .75rem;"><strong>3. Mazo de Resolución</strong><br>Barajad el mazo de Resolución. Cada jugador roba 6 cartas (límite de mano: 6).</p>
       <p style="margin:0;"><strong>4. Reloj y Alerta</strong><br>Colocad el Reloj en posición 1 (Anochecer). Alerta en 0.</p>
     </div>
-    <button class="ov-btn" onclick="document.getElementById('overlay-prep-cartas').style.display='none'; Config._continuarTrasPrep();">✓ Hecho, continuar</button>
+    <button class="ov-btn" onclick="document.getElementById('overlay-prep-cartas').style.display='none'; UI.irAPartida();">✓ Hecho, comenzar investigación</button>
   </div>
 </div>
 
@@ -343,10 +343,13 @@
 
 <!-- ═══ OVERLAY: MONTAJE DEL TABLERO ═══ -->
 <div id="overlay-montaje" class="overlay" style="z-index:122;display:none;align-items:center;justify-content:center;">
-  <div style="background:linear-gradient(160deg,#1c1509,#100d07);border:1px solid #8a6818;border-radius:16px;padding:1.75rem 1.5rem;max-width:520px;width:92%;max-height:88vh;overflow-y:auto;">
-    <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;display:inline-block;margin-bottom:.75rem;">Montaje del tablero</div>
-    <div id="montaje-contenido" style="text-align:left;"></div>
-    <button onclick="document.getElementById('overlay-montaje').style.display='none'; UI.irAPartida();" class="btn btn-p btn-bloque" style="min-height:52px;font-size:1rem;max-width:320px;margin:1.25rem auto 0;display:block;">▶ Comenzar investigación</button>
+  <div class="overlay-box" style="max-width:420px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
+      <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;">Montaje del tablero</div>
+      <span id="montaje-indicador" style="font-family:var(--f2);font-size:.75rem;color:var(--oro2);letter-spacing:.08em;"></span>
+    </div>
+    <div id="montaje-contenido" style="text-align:left;margin-bottom:1.25rem;"></div>
+    <button id="montaje-btn" class="ov-btn" style="width:100%;">Siguiente →</button>
   </div>
 </div>
 
