@@ -18,7 +18,7 @@ const UI = {
     const caso = datosCaso || {};
     const comun = caso.comun || {};
     const pnjs = comun.pnj || [];
-    const losetasDistrib = typeof obtenerLosetasDistribucion === 'function' ? obtenerLosetasDistribucion() : [];
+    const losetasDistrib = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
 
     const nom = (id) => {
       const l = datosLosetas?.losetas?.find(x => x.id === id);
