@@ -1,5 +1,5 @@
 // ── SERVICE WORKER — auto-actualización al detectar nueva versión ──────────────
-const CACHE_NAME = 'blackmoor-v78';
+const CACHE_NAME = 'blackmoor-v79';
 const BASE = '/blackmoor-hall';
 
 const ASSETS = [
