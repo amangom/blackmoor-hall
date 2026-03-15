@@ -8,7 +8,7 @@
     "B",
     "C"
   ],
-  "premisa": "Habéis sido invitados a Blackmoor Hall, la mansión de Lord Edmund Ashworth, para una velada con motivo de su 60 cumpleaños. Sois viejos conocidos de la familia, cada uno con vuestra propia historia ligada a los Ashworth. La cena transcurre con normalidad hasta que, poco después de las diez, Lord Ashworth se desploma sobre la mesa de su despacho. El Dr. Marsh, médico de la familia, lo declara muerto: fallo cardíaco. Pero la expresión del Lord no es de dolor. Es de terror absoluto. Y en su mano crispada sujeta un botón de puño con las iniciales «C.M.» grabadas. La tormenta ruge fuera. Las líneas están cortadas. La policía no llegará hasta el amanecer. Si esto no fue un accidente, el asesino está entre los presentes.",
+  "premisa": "Habéis sido invitados a Blackmoor Hall, la mansión de Lord Edmund Ashworth, para una velada con motivo de su 60 cumpleaños. Sois viejos conocidos de la familia, cada uno con vuestra propia historia ligada a los Ashworth. La cena transcurre con normalidad hasta que, poco después de las diez, Lord Ashworth se desploma sobre la mesa de su despacho. El Dr. Marsh, médico de la familia, lo declara muerto: fallo cardíaco. Pero la expresión del Lord no es de dolor. Es de terror absoluto. Y en su mano crispada sujeta un botón de puño. La tormenta ruge fuera. Las líneas están cortadas. La policía no llegará hasta el amanecer. Si esto no fue un accidente, el asesino está entre los presentes.",
   "objetivo": "Descubrir la verdadera causa de la muerte de Lord Ashworth y señalar al responsable antes del amanecer.",
   "losetas_cerradas_inicial": [
     {

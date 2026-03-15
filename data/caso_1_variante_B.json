@@ -34,8 +34,8 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
-        "prensa": ""
+        "ojo_entrenado": "Catherine no aparta la mirada ni baja la cabeza. No es el gesto de quien sufre — es el de quien ha decidido no sufrir en público. Lleva tiempo preparada para esta pregunta.",
+        "prensa": "Una hija que se niega a hablar de la muerte de su madre en mitad de una investigación. No es dolor — es una decisión tomada de antemano."
       },
       "C-B2": {
         "pistas": [
@@ -53,8 +53,8 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
-        "prensa": ""
+        "ojo_entrenado": "Catherine reivindica el cuaderno como suyo pero se niega a explicarlo. No lo niega — lo protege. Y quien protege algo con esa determinación tiene mucho que perder si lo leen.",
+        "prensa": "Catherine no niega el cuaderno — niega que tenga que explicarlo. Es la respuesta de alguien que sabe exactamente lo que contiene y ha decidido que no es asunto de nadie más."
       },
       "C-B3": {
         "pistas": [
@@ -63,7 +63,7 @@
         "atributo": "TEM",
         "dificultad": 4,
         "exito": "Catherine sostiene la mirada un momento antes de responder. «Sí, son mis iniciales. Catherine Mildred. Ese gemelo es mío — era un regalo de mi madre. Lo perdí esta noche, no sé cómo.» Pausa forzada. «¿Por qué lo tenía mi padre en la mano?»",
-        "fracaso": "Catherine se cierra. «No sé nada de ese botón.»",
+        "fracaso": "«No sé nada de ese botón. Pero esas iniciales... C.M. Son las del Doctor Marsh. Su nombre de pila es Charles.»",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -72,8 +72,8 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
-        "prensa": ""
+        "ojo_entrenado": "Catherine responde demasiado deprisa. Tenía preparada esa explicación — sabía que le iban a preguntar por las iniciales.",
+        "prensa": "Catherine no duda al mencionar las iniciales de Marsh. No dice «creo» ni «quizás» — lo afirma con precisión. El Periodista lo anota: esa certeza sobre el nombre de pila de Marsh no es casual."
       },
       "C-B4": {
         "pistas": [
@@ -97,8 +97,8 @@
             "valor": 1
           }
         ],
-        "ojo_entrenado": "",
-        "prensa": ""
+        "ojo_entrenado": "Catherine niega conocer la copa, pero no niega haberse acercado a su padre durante la cena. Hay una pregunta que no se ha hecho todavía — y ella tampoco la responde.",
+        "prensa": "Catherine dice que no sabe de qué copa hablan. Pero la pregunta era simple y directa. El Periodista ha visto muchas veces esa negativa total — suele aparecer cuando alguien tiene demasiado que perder con cualquier respuesta parcial."
       },
       "C-B5": {
         "pistas": [
@@ -106,7 +106,7 @@
         ],
         "atributo": "TEM",
         "dificultad": 4,
-        "exito": "«Ese frasco... lo robé yo del maletín del Doctor Marsh. Iba a usarlo para guardar algo. Pero no lo usé para nada.» Se detiene, consciente de lo que acaba de decir.",
+        "exito": "«Ese frasco... lo cogí del maletín del Doctor Marsh hace unas semanas. Quería guardar algo en él. Pero al final no lo usé.» Se detiene, consciente de lo que acaba de decir. +1 Sospecha Catherine.",
         "fracaso": "Catherine no sabe nada de ese frasco.",
         "efectos_exito": [
           {
@@ -116,8 +116,8 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
-        "prensa": ""
+        "ojo_entrenado": "Catherine niega el frasco sin titubear. Sin pausa, sin pregunta. No pregunta de qué frasco se trata ni dónde estaba. Como si ya lo supiera.",
+        "prensa": "Catherine niega el frasco sin preguntar de qué frasco se trata. No pregunta dónde estaba, ni de qué tamaño era, ni qué contenía. Quien no sabe nada suele preguntar."
       },
       "C-B_resto": {
         "pistas": [
@@ -149,7 +149,7 @@
         "atributo": "INT",
         "dificultad": 4,
         "exito": "«Mi nombre completo es Charles Elias Marsh. Todo el mundo me llama Elias desde hace treinta años. Esos gemelos... me los regaló Lady Eleanor. Pero los perdí hace semanas, no sé dónde.»",
-        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
+        "fracaso": "«Ese botón... no sé cómo ha llegado aquí. Esos gemelos los perdí hace semanas.»",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -158,8 +158,8 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
-        "prensa": ""
+        "ojo_entrenado": "Marsh no niega que los gemelos sean suyos — dice que los perdió. La diferencia es importante: alguien puede perder algo sin saber dónde acabó.",
+        "prensa": "Marsh dice que perdió los gemelos hace semanas. Si eso es cierto, alguien los encontró y los usó deliberadamente esta noche. ¿Quién sabía que eran de Marsh?"
       },
       "M-B2": {
         "pistas": [
@@ -186,8 +186,8 @@
         ],
         "atributo": "INT",
         "dificultad": 4,
-        "exito": "Marsh lee y palidece: «Catherine creía que yo maté a Eleanor. No es cierto. Eleanor tenía una cardiopatía real. Pero... el Lord nunca quiso buscar segunda opinión. Siempre me pareció extraño. ¿Por qué no querría salvar a su esposa?» Señala al Lord como responsable pasivo. Motivo de Catherine confirmado.",
-        "fracaso": "Marsh no comenta.",
+        "exito": "Marsh lee y palidece. «Catherine creía que yo maté a Eleanor. No es cierto. Eleanor tenía una cardiopatía real. Pero... el Lord nunca quiso buscar segunda opinión. Siempre me pareció extraño.» +1 Sospecha Catherine.",
+        "fracaso": "«No voy a comentar los escritos privados de nadie.» Se tensa visiblemente.",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -197,7 +197,7 @@
         ],
         "efectos_fracaso": [],
         "ojo_entrenado": "",
-        "prensa": ""
+        "prensa": "Marsh rechaza el cuaderno con irritación, no con miedo. El Periodista conoce la diferencia: quien teme que le descubran no aparta las pruebas — las niega con detalle. Marsh las descarta como si no merecieran su atención."
       },
       "M-B4": {
         "pistas": [
@@ -243,7 +243,7 @@
         "atributo": "INT",
         "dificultad": 4,
         "exito": "Marsh palidece al ver la descripción del frasco. «Ese frasco... es de los que yo uso para muestras. Guardo varios en el maletín. Pero no falta ninguno... que yo sepa.» Se detiene. «¿Alguien ha tocado mi maletín?» Perturbado.",
-        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
+        "fracaso": "«Uso muchos frascos de ese tipo. No puedo identificarlo sin verlo.» Pausa. «¿Dónde estaba exactamente?»",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -252,8 +252,8 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
-        "prensa": ""
+        "ojo_entrenado": "Marsh pide saber dónde estaba el frasco. No está a la defensiva — está preocupado. Este hombre empieza a atar cabos sobre algo que no entiende todavía.",
+        "prensa": "Marsh pide saber dónde estaba el frasco. No está a la defensiva — quiere entender. El Periodista lo anota: esta no es la reacción de alguien que sabe lo que hizo con ese frasco."
       },
       "M-B7": {
         "pistas": [
@@ -262,16 +262,10 @@
         "atributo": "TEM",
         "dificultad": 5,
         "exito": "«En el jardín hay dedalera de siempre — la de Pemberton. Pero alguien también cultivó dedalera en la Biblioteca: lo vi hace semanas y no le di importancia. Ahora... ahora sí la tiene.»",
-        "fracaso": "«No reconozco ese botón. No es mío.» +1 Sospecha (actitud defensiva).",
-        "efectos_exito": [
-          {
-            "tipo": "sospecha_pnj",
-            "pnj": "catherine",
-            "valor": 1
-          }
-        ],
+        "fracaso": "«El jardín no es mi territorio. Preguntad a Pemberton.»",
+        "efectos_exito": [],
         "efectos_fracaso": [],
-        "ojo_entrenado": "Marsh miente. Al negar el botón, se toca la muñeca izquierda. La manga de la camisa tiene un hilo suelto donde debería estar un gemelo.",
+        "ojo_entrenado": "",
         "prensa": ""
       },
       "M-B_resto": {
@@ -330,7 +324,7 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "Harold da la espalda, pero no se va. Le tiembla ligeramente la mano derecha. Este hombre está al límite — y sabe que si abre la boca, no podrá parar.",
+        "ojo_entrenado": "",
         "prensa": ""
       },
       "H-B3": {
@@ -377,7 +371,7 @@
         ],
         "atributo": "TEM",
         "dificultad": 4,
-        "exito": "«No sé nada de jardines ni de venenos. Eso es territorio del Doctor Marsh, no mío.»",
+        "exito": "«No sé nada de jardines ni de venenos. Preguntad a Pemberton, ella es quien cuida esas plantas.»",
         "fracaso": "«No sé nada de eso.»",
         "efectos_exito": [],
         "efectos_fracaso": [],
@@ -413,7 +407,7 @@
         ],
         "atributo": "TEM",
         "dificultad": 5,
-        "exito": "«Las iniciales C.M.... La señorita Catherine se llama Catherine Mildred. Y esos gemelos... creo que eran un regalo de Lady Eleanor. Vi a la señorita Catherine llevarlos alguna vez.»",
+        "exito": "«Las iniciales C.M.... El Doctor Marsh se llama Charles de pila. Charles Marsh. No usa ese nombre desde la universidad, pero esos gemelos los conozco: se los regaló la difunta Lady Eleanor hace años.» +1 Sospecha Marsh.",
         "fracaso": "Hobbes guarda silencio.",
         "efectos_exito": [
           {
@@ -423,8 +417,8 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
-        "prensa": ""
+        "ojo_entrenado": "Hobbes identifica los gemelos sin dudar. No dice «creo» ni «quizás» — los conoce desde hace años. Un mayordomo que normalmente mide cada palabra acaba de ser completamente preciso. Sabe exactamente de quién son.",
+        "prensa": "El Periodista capta el detalle: Hobbes dice que Eleanor le regaló esos gemelos a Marsh. Si los gemelos aparecen junto al cuerpo del Lord, alguien tuvo que quitárselos a Marsh primero. ¿Cuándo y cómo?"
       },
       "Ho-B2": {
         "pistas": [
@@ -607,7 +601,7 @@
         "atributo": "TEM",
         "dificultad": 4,
         "exito": "Pemberton se queda pálida. «Ese informe... el Lord me llamó esta semana. Me dijo que lo sabía todo. Que llamaría a la policía.» Las manos le tiemblan. «Pero yo no le maté. Dios me libre. No soy capaz de algo así.»",
-        "fracaso": "Pemberton llora pero no habla.",
+        "fracaso": "«Yo no maté a nadie. Dios me libre.» Se le quiebra la voz. No dice nada más.",
         "efectos_exito": [
           {
             "tipo": "sospecha_pnj",
@@ -616,7 +610,7 @@
           }
         ],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
+        "ojo_entrenado": "Pemberton está aterrada, pero su miedo no es el de quien ha matado — es el de quien tiene algo que ocultar mucho más pequeño. Hay una diferencia entre el pánico de un asesino y la vergüenza de alguien que ha hecho algo malo pero no esto.",
         "prensa": ""
       },
       "Pe-B5": {
@@ -639,11 +633,11 @@
         "atributo": "TEM",
         "dificultad": 3,
         "exito": "«Son cartas de mi hermana en Lyon. Viuda, con tres hijos. Les envío dinero cada mes.» Pausa. «No es asunto de nadie más.»",
-        "fracaso": "Pemberton se niega a hablar de su correspondencia privada.",
+        "fracaso": "«Son cartas personales. No tienen nada que ver con lo de esta noche.» Lo dice con firmeza, pero sin agresividad.",
         "efectos_exito": [],
         "efectos_fracaso": [],
         "ojo_entrenado": "",
-        "prensa": ""
+        "prensa": "Pemberton protege su correspondencia pero aclara espontáneamente que no tiene relación con el crimen. Quien mata no suele hacer esa distinción — simplemente niega todo."
       },
       "Pe-B_resto": {
         "pistas": [
@@ -673,11 +667,11 @@
         ],
         "atributo": "TEM",
         "dificultad": 5,
-        "exito": "«Alguien en esta casa carga un peso terrible. Uno que yo no puedo aliviar. El remordimiento ya estaba antes de esta noche. Mucho antes.» Whitfield dirige una mirada involuntaria hacia una de las mujeres presentes.",
-        "fracaso": "Whitfield se limita a rezar.",
+        "exito": "«Alguien en esta casa vino a verme antes de la cena. Cargaba un peso que yo no podía aliviar. Algo terrible pesaba sobre ella antes de que el Lord muriese.» Whitfield dirige una mirada involuntaria hacia Catherine.",
+        "fracaso": "Whitfield inclina la cabeza y reza en silencio. Antes de hacerlo, su mirada se detiene un instante en alguien de la sala.",
         "efectos_exito": [],
         "efectos_fracaso": [],
-        "ojo_entrenado": "",
+        "ojo_entrenado": "Whitfield reza, pero antes de inclinarse su mirada se detiene en Catherine. Solo un momento. No es una acusación — es el gesto de alguien que carga con un secreto que le pesa.",
         "prensa": ""
       },
       "Wh-B2": {
@@ -747,104 +741,94 @@
   "deducciones": [
     {
       "pistas": [
-        "pista_1_interpretada",
-        "pista_10_interpretada"
+        "pista_1",
+        "pista_9"
       ],
-      "texto": "El botón es de Catherine. El frasco no coincide con el maletín de Marsh. Si Catherine preparó el veneno, necesita conocimientos de botánica.",
-      "efectos": []
+      "texto": "Alguien se acercó al Lord durante la cena para servirle una copa. Alguien estuvo en contacto físico con el Lord antes de su muerte. Las iniciales C.M. en su mano apuntan a quien lo hizo."
     },
     {
       "pistas": [
-        "pista_2_interpretada",
-        "pista_9_interpretada"
+        "pista_1",
+        "pista_10"
       ],
-      "texto": "La dedalera del jardín parece intacta. Nadie cortó aquí recientemente. Si la copa contenía digitalina, la fuente no es este jardín. ¿De dónde viene el veneno?",
-      "efectos": []
+      "texto": "Un botón con iniciales C.M. y un frasco médico vacío, ambos junto al cuerpo. Quien actuó esta noche dejó dos objetos que pueden identificarle. Las iniciales y el frasco apuntan al mismo perfil."
     },
     {
       "pistas": [
-        "pista_2_interpretada",
-        "pista_10_interpretada"
+        "pista_2",
+        "pista_9"
       ],
-      "texto": "La dedalera del jardín no fue cortada. Pero el frasco contenía digitalina. Alguien cultivó dedalera en otro sitio.",
-      "efectos": []
+      "texto": "La dedalera del jardín parece intacta. Nadie cortó aquí recientemente. Si la copa contenía digitalina, la fuente no es este jardín. ¿De dónde viene el veneno?"
     },
     {
       "pistas": [
-        "pista_3_interpretada",
-        "pista_4_interpretada"
+        "pista_2",
+        "pista_10"
       ],
-      "texto": "Harold tenía motivo financiero. Pero el testamento no estaba firmado: la muerte no cambia nada legalmente. Harold heredaría de todos modos con el testamento vigente. ¿Era necesario matar?",
-      "efectos": []
+      "texto": "La dedalera del jardín no fue cortada. Pero el frasco contenía digitalina. Alguien cultivó dedalera en otro sitio."
     },
     {
       "pistas": [
-        "pista_5_interpretada",
-        "pista_6_interpretada"
+        "pista_3",
+        "pista_4"
       ],
-      "texto": "Eleanor murió sospechosamente. Catherine descubrió que su padre se negó a buscar segunda opinión médica porque se beneficiaba del seguro. Catherine no culpa a Marsh: culpa a su padre. Motivo de venganza confirmado.",
-      "efectos": []
+      "texto": "Harold iba a ser desheredado y arrastra deudas que no puede pagar. Sin herencia, su situación es desesperada. El motivo es claro. Pero la desesperación no siempre lleva al crimen."
     },
     {
       "pistas": [
-        "pista_5_interpretada",
-        "pista_7_interpretada"
+        "pista_3",
+        "pista_13"
       ],
-      "texto": "Eleanor murió. Catherine vino a confesarse con Whitfield antes del crimen. Catherine sabía lo que iba a hacer. Premeditación confirmada.",
-      "efectos": []
+      "texto": "Harold iba a ser desheredado y es beneficiario del seguro de vida. La muerte de su padre esta noche le beneficia en ambos frentes. El motivo financiero es sólido. Pero tener motivo no es lo mismo que ser el culpable."
     },
     {
       "pistas": [
-        "pista_5_interpretada",
-        "pista_12_interpretada"
+        "pista_5",
+        "pista_6"
       ],
-      "texto": "Eleanor murió. El Lord cambió la cerradura tras la visita de Catherine. El Lord sabía que Catherine sospechaba. ¿Sabía que estaba en peligro?",
-      "efectos": []
+      "texto": "El certificado de defunción de Eleanor estaba escondido en la Capilla. Catherine lleva meses documentando algo en secreto. Alguien en esta casa ha estado investigando esa muerte — y ha llegado a una conclusión."
     },
     {
       "pistas": [
-        "pista_6_interpretada",
-        "pista_7_interpretada"
+        "pista_5",
+        "pista_7"
       ],
-      "texto": "Catherine escribió que haría justicia. Catherine se confesó con Whitfield. Sabía que lo que planeaba era un pecado. Lo hizo igualmente.",
-      "efectos": []
+      "texto": "La Capilla ha tenido visitas fuera de horario durante semanas. El certificado de Eleanor está guardado allí. Alguien ha estado visitando ese lugar con un propósito."
     },
     {
       "pistas": [
-        "pista_8_interpretada",
-        "pista_11_interpretada"
+        "pista_5",
+        "pista_12"
       ],
-      "texto": "Pemberton robaba. Pemberton enviaba dinero a su hermana en Lyon. Subtrama completa. No conecta con el asesinato.",
-      "efectos": []
+      "texto": "El Lord guardaba el certificado de defunción de Eleanor en la Capilla y cambió la cerradura del Despacho la misma semana. Alguien le preocupaba. ¿Sabía que estaba en peligro?"
     },
     {
       "pistas": [
-        "pista_9_interpretada",
-        "pista_10_interpretada"
+        "pista_6",
+        "pista_7"
       ],
-      "texto": "La copa contenía lo del frasco. El frasco no es de Marsh. Alguien más lo preparó. Si no fue Marsh ni Pemberton, queda Catherine.",
-      "efectos": []
+      "texto": "El cuaderno de Catherine documenta algo que ocurrió en esta casa. La Capilla ha tenido visitas fuera de horario durante semanas. Alguien preparaba algo — y buscó un lugar discreto para hacerlo."
     },
     {
       "pistas": [
-        "pista_1_interpretada",
-        "pista_9_interpretada"
+        "pista_7",
+        "pista_12"
       ],
-      "texto": "Catherine (C.M.) estaba junto a la mesa cuando se sirvió la copa. Un relámpago causó confusión. Catherine tuvo oportunidad."
+      "texto": "La Capilla recibió visitas fuera de horario durante semanas. El Lord cambió la cerradura del Despacho esa misma semana. Alguien se movía en las sombras — y el Lord lo notó."
     },
     {
       "pistas": [
-        "pista_3_interpretada",
-        "pista_13_interpretada"
+        "pista_8",
+        "pista_11"
       ],
-      "texto": "Harold heredaría. Harold tiene deudas. Pero Harold no mató. Callejón sin salida financiero."
+      "texto": "Pemberton lleva años desviando dinero de la casa y enviándolo a alguien en Francia. El Lord lo había descubierto. ¿Es esto el móvil de un crimen, o una situación sin relación con el asesinato?"
     },
     {
       "pistas": [
-        "pista_7_interpretada",
-        "pista_12_interpretada"
+        "pista_9",
+        "pista_10"
       ],
-      "texto": "Catherine se confesó. El Lord cambió la cerradura. Ambos sabían que algo iba a pasar. Ninguno pudo evitarlo."
+      "texto": "La segunda copa se sirvió fuera del protocolo y hay un frasco médico vacío junto al cuerpo. Si el frasco contuvo lo que se vertió en la copa, quien lo preparó sabía exactamente lo que hacía."
     }
   ],
   "confesiones": {
