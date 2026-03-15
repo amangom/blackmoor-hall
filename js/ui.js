@@ -144,6 +144,7 @@ const UI = {
     btn.textContent = esUltimo ? '✓ Hecho, comenzar investigación' : 'Siguiente →';
     btn.onclick = () => {
       if (esUltimo) {
+        document.getElementById('overlay-prep-cartas').classList.remove('activo');
         document.getElementById('overlay-prep-cartas').style.display = 'none';
         this.irAPartida();
       } else {
@@ -152,17 +153,22 @@ const UI = {
       }
     };
 
-    document.getElementById('overlay-prep-cartas').style.display = 'flex';
+    document.getElementById('overlay-prep-cartas').classList.add('activo');
   },
 
   irAInicio() {
-    // Cerrar cualquier overlay que pudiera haber quedado abierto
-    document.querySelectorAll('.overlay-modal').forEach(o => o.style.display = 'none');
+    document.querySelectorAll('.overlay-modal').forEach(o => {
+      o.style.display = 'none';
+      o.classList.remove('activo');
+    });
     this._mostrarPantalla('inicio');
   },
 
   irAConfig() {
-    document.querySelectorAll('.overlay-modal').forEach(o => o.style.display = 'none');
+    document.querySelectorAll('.overlay-modal').forEach(o => {
+      o.style.display = 'none';
+      o.classList.remove('activo');
+    });
     Config.inicializar();
     this._mostrarPantalla('config');
   },
