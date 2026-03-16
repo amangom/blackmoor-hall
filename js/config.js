@@ -31,7 +31,6 @@ const Config = {
   },
 
   _renderPaso() {
-    console.log('[CONFIG] _renderPaso llamado, paso=', this._paso, new Error().stack?.split('\n')[2]);
     document.getElementById('cfg-paso-lbl').textContent   = this.TITULOS[this._paso][0];
     document.getElementById('cfg-titulo-lbl').textContent = this.TITULOS[this._paso][1];
 
