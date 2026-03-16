@@ -151,7 +151,7 @@ const UI = {
     btn.onclick = () => {
       if (esUltimo) {
         document.getElementById('overlay-prep-cartas').classList.remove('activo');
-        document.getElementById('overlay-prep-cartas').style.display = 'none';
+        document.getElementById('overlay-prep-cartas').style.display = '';
         this.irAPartida();
       } else {
         this._prepPasoActual++;
@@ -194,7 +194,7 @@ const UI = {
 
   irAInicio() {
     document.querySelectorAll('.overlay-modal').forEach(o => {
-      o.style.display = 'none';
+      o.style.display = '';
       o.classList.remove('activo');
     });
     this._mostrarPantalla('inicio');
@@ -202,7 +202,7 @@ const UI = {
 
   irAConfig() {
     document.querySelectorAll('.overlay-modal').forEach(o => {
-      o.style.display = 'none';
+      o.style.display = '';
       o.classList.remove('activo');
     });
     Config.inicializar();
