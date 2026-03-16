@@ -15,18 +15,6 @@ const UI = {
   },
 
   mostrarMontajeTablero() {
-    // Activar la pantalla de partida desde ya — los overlays se muestran encima
-    this._mostrarPantalla('partida');
-    // Iniciar carga de datos en paralelo (sin bloquear los overlays)
-    Promise.all([
-      typeof cargarSucesos === 'function' ? cargarSucesos() : Promise.resolve(),
-      typeof precargarAvatares === 'function' ? precargarAvatares() : Promise.resolve(),
-      typeof cargarCartasExploracion === 'function' ? cargarCartasExploracion(estado?.caso_id) : Promise.resolve()
-    ]).then(() => {
-      this.renderizarPartida();
-      setTimeout(() => Mapa.renderizar(), 80);
-    });
-
     const caso = datosCaso || {};
     const comun = caso.comun || {};
     const pnjs = comun.pnj || [];

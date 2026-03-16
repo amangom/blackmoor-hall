@@ -235,7 +235,7 @@
   </div>
 </div>
 
-<div class="overlay-modal" id="overlay-prep-cartas" style="display:none;">
+<div class="overlay-modal" id="overlay-prep-cartas">
   <div class="overlay-box" style="max-width:420px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
       <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;">Preparad el material</div>
@@ -247,26 +247,26 @@
 </div>
 
 <!-- Overlay Implicado (post-premisa, paso 1) -->
-<div class="overlay-modal" id="overlay-implicado-prep" style="display:none;">
+<div class="overlay-modal" id="overlay-implicado-prep">
   <div class="overlay-box" style="max-width:400px;">
     <h2 class="ov-titulo" style="margin-bottom:1rem;">Cartas de ¿Implicado?</h2>
     <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">Antes de preparar el tablero, realizad este paso:</p>
     <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem;text-align:left;line-height:1.7;font-size:1.05rem;">
       <p style="margin:0;">Barajad las 6 cartas de <strong>¿Implicado?</strong> boca abajo. Repartid 1 a cada jugador. Las sobrantes se retiran a la caja <em>sin mirar</em>.</p>
     </div>
-    <button class="ov-btn" onclick="document.getElementById('overlay-implicado-prep').style.display='none'; document.getElementById('overlay-confidencia-prep').style.display='flex';">✓ Hecho, continuar</button>
+    <button class="ov-btn" onclick="document.getElementById('overlay-implicado-prep').classList.remove('activo'); document.getElementById('overlay-confidencia-prep').classList.add('activo');">✓ Hecho, continuar</button>
   </div>
 </div>
 
 <!-- Overlay Confidencia (post-premisa, paso 2) -->
-<div class="overlay-modal" id="overlay-confidencia-prep" style="display:none;">
+<div class="overlay-modal" id="overlay-confidencia-prep">
   <div class="overlay-box" style="max-width:400px;">
     <h2 class="ov-titulo" style="margin-bottom:1rem;">Cartas de Confidencia</h2>
     <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">A continuación, realizad este paso:</p>
     <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem;text-align:left;line-height:1.7;font-size:1.05rem;">
       <p style="margin:0;">Cada jugador recibe la carta de <strong>Confidencia</strong> correspondiente a su personaje. La lee en <em>PRIVADO</em> y la guarda en secreto.</p>
     </div>
-    <button class="ov-btn" onclick="document.getElementById('overlay-confidencia-prep').style.display='none'; UI.mostrarMontajeTablero();">✓ Hecho, continuar</button>
+    <button class="ov-btn" onclick="document.getElementById('overlay-confidencia-prep').classList.remove('activo'); UI.mostrarMontajeTablero();">✓ Hecho, continuar</button>
   </div>
 </div>
 
@@ -335,12 +335,12 @@
     <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;display:inline-block;margin-bottom:.75rem;">CASO <span id="premisa-caso-num"></span></div>
     <h2 id="premisa-titulo" style="font-family:var(--f1);font-size:clamp(1.3rem,5vw,1.9rem);color:var(--oro2);margin:.3rem 0 1rem;"></h2>
     <p id="premisa-texto" style="font-family:var(--f3);font-size:clamp(.9rem,3vw,1rem);color:var(--txt2);line-height:1.75;margin-bottom:1.5rem;text-align:left;"></p>
-    <button onclick="document.getElementById('overlay-premisa').style.display='none'; document.getElementById('overlay-implicado-prep').style.display='flex';" class="btn btn-p btn-bloque" style="min-height:56px;font-size:1.05rem;max-width:320px;margin:0 auto;">▶ Preparar el tablero</button>
+    <button onclick="document.getElementById('overlay-premisa').style.display='none'; document.getElementById('overlay-implicado-prep').classList.add('activo');" class="btn btn-p btn-bloque" style="min-height:56px;font-size:1.05rem;max-width:320px;margin:0 auto;">▶ Preparar el tablero</button>
   </div>
 </div>
 
 <!-- ═══ OVERLAY: MONTAJE DEL TABLERO ═══ -->
-<div id="overlay-montaje" class="overlay-modal" style="z-index:302;display:none;">
+<div id="overlay-montaje" class="overlay-modal" style="z-index:302;">
   <div class="overlay-box" style="max-width:420px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
       <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;">Montaje del tablero</div>
