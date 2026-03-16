@@ -47,8 +47,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ── Puente global para habilidades de personaje llamadas desde state.js ──────
 function _activarVisionMedium(jugIdx) {
-  if (typeof UI !== 'undefined' && typeof UI._activarVisionMedium_impl === 'function') {
-    // Pequeño delay para que la notificación de -TEM se muestre primero
-    setTimeout(() => UI._activarVisionMedium_impl(jugIdx), 400);
+  if (typeof UI === 'undefined') return;
+  // Encolar la visión — se mostrará en secuencia
+  if (!UI._colaVisiones) UI._colaVisiones = [];
+  UI._colaVisiones.push(jugIdx);
+  // Solo disparar si no hay ya una visión mostrándose
+  if (UI._colaVisiones.length === 1) {
+    setTimeout(() => UI._mostrarSiguienteVision(), 400);
   }
 }

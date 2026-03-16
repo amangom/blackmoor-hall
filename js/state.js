@@ -380,11 +380,14 @@ function modificarAtributoJugador(jugIdx, atributo, modificador, motivo) {
   guardarEstado();
   if (typeof notifAtributo === 'function') notifAtributo(jugIdx, atributo, anterior, nuevo, motivo);
 
-  // Habilidad Médium: visión al perder Temple
+  // Habilidad Médium: visión al perder Temple (una por cada punto perdido)
   const jug = estado.jugadores[jugIdx];
   if (atributo === 'TEM' && modificador < 0 && jug?.personaje === 'medium') {
     if (typeof _activarVisionMedium === 'function') {
-      _activarVisionMedium(jugIdx);
+      const puntosPerdidos = Math.abs(modificador);
+      for (let i = 0; i < puntosPerdidos; i++) {
+        _activarVisionMedium(jugIdx);
+      }
     }
   }
 }

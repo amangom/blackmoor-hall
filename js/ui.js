@@ -2873,15 +2873,21 @@ const UI = {
 
   // ── Visiones de la Médium ──────────────────────────────────────────────────
   // Llamada desde state.js cuando la Médium pierde Temple
+  _mostrarSiguienteVision() {
+    if (!this._colaVisiones || this._colaVisiones.length === 0) return;
+    const jugIdx = this._colaVisiones[0];
+    this._activarVisionMedium_impl(jugIdx);
+  },
+
   _activarVisionMedium_impl(jugIdx) {
     // Las visiones están en datosVariante (la variante activa del caso)
     const visiones = (typeof datosVariante !== 'undefined' && datosVariante?.visiones)
       ? datosVariante.visiones
       : [];
-    if (!visiones.length) return;
+    if (!visiones.length) { if (this._colaVisiones) this._colaVisiones.shift(); return; }
 
     const idx = estado.visiones_activadas || 0;
-    if (idx >= visiones.length) return; // Ya se mostraron todas
+    if (idx >= visiones.length) { if (this._colaVisiones) this._colaVisiones.shift(); return; }
 
     const textoVision = visiones[idx];
     estado.visiones_activadas = idx + 1;
@@ -2921,8 +2927,19 @@ const UI = {
 
     const btn = document.createElement('button');
     btn.className = 'btn btn-primario btn-bloque';
-    btn.textContent = 'Entendido';
-    btn.onclick = () => this.cerrarOverlay('reaccion');
+    // Si hay más visiones en cola, el botón lo indica
+    const masVisiones = this._colaVisiones && this._colaVisiones.length > 1;
+    btn.textContent = masVisiones ? 'Siguiente visión →' : 'Entendido';
+    btn.onclick = () => {
+      // Quitar esta visión de la cola y mostrar la siguiente si existe
+      if (this._colaVisiones) this._colaVisiones.shift();
+      if (this._colaVisiones && this._colaVisiones.length > 0) {
+        // Hay más visiones pendientes — mostrar la siguiente
+        this._mostrarSiguienteVision();
+      } else {
+        this.cerrarOverlay('reaccion');
+      }
+    };
     container.appendChild(btn);
 
     this._abrirOverlay('reaccion');

@@ -226,7 +226,7 @@
 </div><!-- #app -->
 
 <!-- Notificación -->
-<div class="overlay overlay-modal" id="overlay-aviso">
+<div class="overlay-modal" id="overlay-aviso">
   <div class="overlay-box" style="max-width:380px;text-align:center;">
     <p class="ov-badge" id="aviso-badge" style="display:none;"></p>
     <h2 class="ov-titulo" id="aviso-titulo"></h2>
@@ -235,7 +235,7 @@
   </div>
 </div>
 
-<div class="overlay overlay-modal" id="overlay-prep-cartas" style="display:none;">
+<div class="overlay-modal" id="overlay-prep-cartas" style="display:none;">
   <div class="overlay-box" style="max-width:420px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
       <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;">Preparad el material</div>
@@ -247,7 +247,7 @@
 </div>
 
 <!-- Overlay Implicado (post-premisa, paso 1) -->
-<div class="overlay overlay-modal" id="overlay-implicado-prep" style="display:none;">
+<div class="overlay-modal" id="overlay-implicado-prep" style="display:none;">
   <div class="overlay-box" style="max-width:400px;">
     <h2 class="ov-titulo" style="margin-bottom:1rem;">Cartas de ¿Implicado?</h2>
     <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">Antes de preparar el tablero, realizad este paso:</p>
@@ -259,7 +259,7 @@
 </div>
 
 <!-- Overlay Confidencia (post-premisa, paso 2) -->
-<div class="overlay overlay-modal" id="overlay-confidencia-prep" style="display:none;">
+<div class="overlay-modal" id="overlay-confidencia-prep" style="display:none;">
   <div class="overlay-box" style="max-width:400px;">
     <h2 class="ov-titulo" style="margin-bottom:1rem;">Cartas de Confidencia</h2>
     <p class="ov-texto" style="text-align:left;margin-bottom:1.2rem;">A continuación, realizad este paso:</p>
@@ -315,7 +315,7 @@
         style="background:none;border:1px solid var(--gris2);border-radius:50%;width:36px;height:36px;font-size:1.1rem;color:var(--txt2);cursor:pointer;flex-shrink:0;">✕</button>
     </div>
     <p id="expl-instruccion" style="font-family:var(--f3);font-size:clamp(1rem,3.2vw,1.05rem);color:var(--txt2);line-height:1.6;margin-bottom:1rem;font-style:italic;"></p>
-    <div id="expl-cartas" style="display:flex;flex-direction:column;gap:.5rem;"></div>
+    <div id="expl-cartas" style="display:flex;flex-direction:column;gap:.5rem;overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
   </div>
 </div>
 
@@ -340,7 +340,7 @@
 </div>
 
 <!-- ═══ OVERLAY: MONTAJE DEL TABLERO ═══ -->
-<div id="overlay-montaje" class="overlay overlay-modal" style="z-index:302;display:none;">
+<div id="overlay-montaje" class="overlay-modal" style="z-index:302;display:none;">
   <div class="overlay-box" style="max-width:420px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
       <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;">Montaje del tablero</div>
