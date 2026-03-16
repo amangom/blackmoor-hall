@@ -86,7 +86,7 @@ const UI = {
     const idx = this._montajePasoActual || 0;
     const cont = document.getElementById('montaje-contenido');
     const btn  = document.getElementById('montaje-btn');
-    if (!cont || !btn) { this.irAPartida(); return; }
+    if (!cont || !btn) { console.warn('[Montaje] elementos no encontrados'); return; }
 
     cont.innerHTML = pasos[idx] || '';
 
@@ -94,7 +94,7 @@ const UI = {
     btn.textContent = esUltimo ? '✓ Hecho, preparar las cartas' : 'Siguiente →';
     btn.onclick = () => {
       if (esUltimo) {
-        document.getElementById('overlay-montaje').style.display = 'none';
+        document.getElementById('overlay-montaje').classList.remove('activo'); document.getElementById('overlay-montaje').style.display = '';
         UI.mostrarPrepMaterial();
       } else {
         this._montajePasoActual++;
@@ -106,7 +106,7 @@ const UI = {
     const ind = document.getElementById('montaje-indicador');
     if (ind) ind.textContent = `${idx + 1} / ${pasos.length}`;
 
-    document.getElementById('overlay-montaje').style.display = 'flex';
+    document.getElementById('overlay-montaje').classList.add('activo');
   },
 
   mostrarPrepMaterial() {
@@ -135,7 +135,7 @@ const UI = {
     const cont = document.getElementById('prep-contenido');
     const btn  = document.getElementById('prep-btn');
     const ind  = document.getElementById('prep-indicador');
-    if (!cont || !btn) { this.irAPartida(); return; }
+    if (!cont || !btn) { console.warn('[Prep] elementos no encontrados'); return; }
 
     cont.innerHTML = pasos[idx] || '';
     if (ind) ind.textContent = `${idx + 1} / ${pasos.length}`;
