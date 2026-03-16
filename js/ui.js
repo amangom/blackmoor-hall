@@ -16,6 +16,7 @@ const UI = {
 
   mostrarMontajeTablero() {
     console.log('[MONTAJE] mostrarMontajeTablero llamado, Config._paso=', typeof Config !== 'undefined' ? Config._paso : 'N/A');
+    try {
     const caso = datosCaso || {};
     const comun = caso.comun || {};
     const pnjs = comun.pnj || [];
@@ -80,6 +81,10 @@ const UI = {
     this._montajePasos = pasos;
     this._montajePasoActual = 0;
     this._mostrarPasoMontaje();
+    } catch(e) {
+      console.error('[MONTAJE] Error en mostrarMontajeTablero:', e);
+      alert('Error montaje: ' + e.message);
+    }
   },
 
   _mostrarPasoMontaje() {
