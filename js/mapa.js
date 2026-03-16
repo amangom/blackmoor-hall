@@ -972,6 +972,12 @@ const Mapa = {
       cont.appendChild(bonTxt);
     }
 
+    // Instrucción de cartas al descansar
+    const instrCartas = document.createElement('p');
+    instrCartas.style.cssText = 'font-family:"EB Garamond",serif;font-size:.95rem;color:#d4a840;background:rgba(180,140,40,.1);border:1px solid rgba(180,140,40,.25);border-radius:8px;padding:.6rem .85rem;margin-bottom:1rem;';
+    instrCartas.textContent = 'Descarta toda tu mano y roba 6 cartas nuevas del mazo de Resolución.';
+    cont.appendChild(instrCartas);
+
     const btn = document.createElement('button');
     btn.className = 'btn btn-p btn-bloque';
     btn.textContent = 'Confirmar descanso';

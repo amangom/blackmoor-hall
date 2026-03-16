@@ -873,6 +873,33 @@ const UI = {
     instrEl.textContent = '¿Cuál es el resultado de la prueba?';
     container.appendChild(instrEl);
 
+    // Selector de enfoque
+    let _enfoqueDecididoInt = false;
+    const enfoqueWrapInt = document.createElement('div');
+    enfoqueWrapInt.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.75rem;';
+    const mkEBI = (label) => {
+      const b = document.createElement('button');
+      b.style.cssText = 'flex:1;padding:.5rem .4rem;border-radius:8px;font-family:var(--f2);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;touch-action:manipulation;';
+      b.textContent = label;
+      return b;
+    };
+    const btnCautInt = mkEBI('🛡 Cauteloso');
+    const btnDecInt  = mkEBI('⚔ Decidido · +1 Alerta');
+    const actualizarEnfoqueInt = () => {
+      btnCautInt.style.background  = !_enfoqueDecididoInt ? 'rgba(80,160,80,.2)'  : 'rgba(0,0,0,.2)';
+      btnCautInt.style.borderColor = !_enfoqueDecididoInt ? 'rgba(80,160,80,.5)'  : 'rgba(255,255,255,.1)';
+      btnCautInt.style.color       = !_enfoqueDecididoInt ? '#81c784' : '#555';
+      btnDecInt.style.background   =  _enfoqueDecididoInt ? 'rgba(200,80,40,.2)'  : 'rgba(0,0,0,.2)';
+      btnDecInt.style.borderColor  =  _enfoqueDecididoInt ? 'rgba(200,80,40,.5)'  : 'rgba(255,255,255,.1)';
+      btnDecInt.style.color        =  _enfoqueDecididoInt ? '#e07050' : '#555';
+    };
+    btnCautInt.onclick = () => { _enfoqueDecididoInt = false; actualizarEnfoqueInt(); };
+    btnDecInt.onclick  = () => { _enfoqueDecididoInt = true;  actualizarEnfoqueInt(); };
+    actualizarEnfoqueInt();
+    enfoqueWrapInt.appendChild(btnCautInt);
+    enfoqueWrapInt.appendChild(btnDecInt);
+    container.appendChild(enfoqueWrapInt);
+
     const resultados = [
       { id: 'exito',   label: '✓ Éxito',   color: '#4caf50' },
       { id: 'fracaso', label: '✗ Fracaso', color: '#ef9a9a' },
@@ -886,6 +913,7 @@ const UI = {
       btn.style.marginBottom = '0.375rem';
       btn.textContent = label;
       btn.onclick = () => {
+        if (_enfoqueDecididoInt) subirAlerta(1, 'Enfoque decidido');
         const res = resolverInterrogatorio(pnj_id, pista_id, id);
         if (res) this._mostrarResultadoInterrogatorio(pnj_id, pista_id, res);
       };
@@ -1635,6 +1663,34 @@ const UI = {
 
       instrEl.textContent = '';
 
+      // Selector de enfoque cauteloso/decidido
+      let _enfoqueDecidido = false;
+      const enfoqueWrap = document.createElement('div');
+      enfoqueWrap.style.cssText = 'display:flex;gap:.5rem;margin-bottom:1rem;';
+      const mkEB = (label, esDec) => {
+        const b = document.createElement('button');
+        b.style.cssText = 'flex:1;padding:.55rem .4rem;border-radius:8px;font-family:var(--f2);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;touch-action:manipulation;';
+        b.innerHTML = label;
+        return b;
+      };
+      const btnCaut = mkEB('🛡 Cauteloso', false);
+      const btnDec  = mkEB('⚔ Decidido · +1 Alerta', true);
+      const actualizarEnfoque = () => {
+        btnCaut.style.cssText = btnCaut.style.cssText.replace(/background:[^;]+;/,'');
+        btnCaut.style.background  = !_enfoqueDecidido ? 'rgba(80,160,80,.2)'  : 'rgba(0,0,0,.2)';
+        btnCaut.style.borderColor = !_enfoqueDecidido ? 'rgba(80,160,80,.5)'  : 'rgba(255,255,255,.1)';
+        btnCaut.style.color       = !_enfoqueDecidido ? '#81c784' : '#555';
+        btnDec.style.background   =  _enfoqueDecidido ? 'rgba(200,80,40,.2)'  : 'rgba(0,0,0,.2)';
+        btnDec.style.borderColor  =  _enfoqueDecidido ? 'rgba(200,80,40,.5)'  : 'rgba(255,255,255,.1)';
+        btnDec.style.color        =  _enfoqueDecidido ? '#e07050' : '#555';
+      };
+      btnCaut.onclick = () => { _enfoqueDecidido = false; actualizarEnfoque(); };
+      btnDec.onclick  = () => { _enfoqueDecidido = true;  actualizarEnfoque(); };
+      actualizarEnfoque();
+      enfoqueWrap.appendChild(btnCaut);
+      enfoqueWrap.appendChild(btnDec);
+      cartasEl.appendChild(enfoqueWrap);
+
       // Botones de resultado — sin texto de carta (el jugador ya tiene la carta física)
       const resultados = [
         { key:'critico', icono:'★', label:'Crítico',  color:'#ffd54f' },
@@ -1653,7 +1709,10 @@ const UI = {
         btn.innerHTML =
           '<span style="font-size:1.5rem;flex-shrink:0;color:' + r.color + ';line-height:1;">' + r.icono + '</span>' +
           '<span style="font-family:var(--f2);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;color:' + r.color + ';">' + r.label + '</span>';
-        btn.onclick = () => this._aplicarResultadoExploracion(carta, r.key, jugIdx != null ? jugIdx : 0);
+        btn.onclick = () => {
+          if (_enfoqueDecidido) subirAlerta(1, 'Enfoque decidido');
+          this._aplicarResultadoExploracion(carta, r.key, jugIdx != null ? jugIdx : 0);
+        };
         cartasEl.appendChild(btn);
       });
 
@@ -1879,6 +1938,13 @@ const UI = {
         const lineas = movsFase.map(m => `${m.nombre} se retira a ${m.nomHasta}.`).join('\n');
         setTimeout(() => this._mostrarNotificacion(titulo, lineas), 200);
       }
+
+      // Notificación: todos los jugadores roban 2 cartas de Resolución
+      const faseNomCartas = { medianoche: 'Medianoche', madrugada: 'Madrugada' };
+      setTimeout(() => this._mostrarNotificacion(
+        `${faseNomCartas[estado.fase] || 'Nueva fase'} — Cartas de Resolución`,
+        'Todos los jugadores roban 2 cartas del mazo de Resolución.'
+      ), 250);
 
       // Mostrar todas las reacciones en una sola pantalla (no una por PNJ)
       setTimeout(() => this._mostrarReaccionesFase(estado.fase, reacciones_pendientes), 350);
@@ -2425,6 +2491,35 @@ const UI = {
   },
 
   _crearBotonesResultado(jugIdx, pid, info, calc, metodo, onFin) {
+    const wrapper = document.createElement('div');
+
+    // Selector de enfoque cauteloso/decidido
+    let _enfoqueDecididoInterp = false;
+    const enfoqueWrapInterp = document.createElement('div');
+    enfoqueWrapInterp.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.6rem;';
+    const mkEBInterp = (label) => {
+      const b = document.createElement('button');
+      b.style.cssText = 'flex:1;padding:.45rem .3rem;border-radius:8px;font-family:var(--f2);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;touch-action:manipulation;';
+      b.textContent = label;
+      return b;
+    };
+    const btnCautInterp = mkEBInterp('🛡 Cauteloso');
+    const btnDecInterp  = mkEBInterp('⚔ Decidido · +1 Alerta');
+    const actualizarEnfoqueInterp = () => {
+      btnCautInterp.style.background  = !_enfoqueDecididoInterp ? 'rgba(80,160,80,.2)'  : 'rgba(0,0,0,.2)';
+      btnCautInterp.style.borderColor = !_enfoqueDecididoInterp ? 'rgba(80,160,80,.5)'  : 'rgba(255,255,255,.1)';
+      btnCautInterp.style.color       = !_enfoqueDecididoInterp ? '#81c784' : '#555';
+      btnDecInterp.style.background   =  _enfoqueDecididoInterp ? 'rgba(200,80,40,.2)'  : 'rgba(0,0,0,.2)';
+      btnDecInterp.style.borderColor  =  _enfoqueDecididoInterp ? 'rgba(200,80,40,.5)'  : 'rgba(255,255,255,.1)';
+      btnDecInterp.style.color        =  _enfoqueDecididoInterp ? '#e07050' : '#555';
+    };
+    btnCautInterp.onclick = () => { _enfoqueDecididoInterp = false; actualizarEnfoqueInterp(); };
+    btnDecInterp.onclick  = () => { _enfoqueDecididoInterp = true;  actualizarEnfoqueInterp(); };
+    actualizarEnfoqueInterp();
+    enfoqueWrapInterp.appendChild(btnCautInterp);
+    enfoqueWrapInterp.appendChild(btnDecInterp);
+    wrapper.appendChild(enfoqueWrapInterp);
+
     const row = document.createElement('div');
     row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;';
     [
@@ -2436,9 +2531,10 @@ const UI = {
       const btn = document.createElement('button');
       btn.style.cssText = `background:rgba(10,7,4,0.8);border:1px solid ${res.color}55;border-radius:8px;` +
         `color:${res.color};font-family:Cinzel,serif;font-size:.7rem;padding:8px 2px;cursor:pointer;` +
-        `display:flex;flex-direction:column;align-items:center;gap:2px;min-height:50px;`;
+        `display:flex;flex-direction:column;align-items:center;gap:2px;min-height:50px;touch-action:manipulation;`;
       btn.innerHTML = `<span style="font-size:1.1rem;">${res.icon}</span><span>${res.label}</span>`;
       btn.addEventListener('click', () => {
+        if (_enfoqueDecididoInterp) subirAlerta(1, 'Enfoque decidido');
         this._resolverInterpretacion(jugIdx, pid, info, metodo, res.key, onFin);
       });
       row.appendChild(btn);
@@ -2868,6 +2964,33 @@ const UI = {
       : 'Fracaso: el ruido llama la atención — Alerta ↑';
     cont.appendChild(nota);
 
+    // Selector de enfoque cauteloso/decidido
+    let _enfoqueDecididoCerr = false;
+    const enfoqueWrapCerr = document.createElement('div');
+    enfoqueWrapCerr.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.75rem;';
+    const mkEBC = (label) => {
+      const b = document.createElement('button');
+      b.style.cssText = 'flex:1;padding:.5rem .4rem;border-radius:8px;font-family:var(--f2);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;touch-action:manipulation;';
+      b.textContent = label;
+      return b;
+    };
+    const btnCautCerr = mkEBC('🛡 Cauteloso');
+    const btnDecCerr  = mkEBC('⚔ Decidido · +1 Alerta');
+    const actualizarEnfoqueCerr = () => {
+      btnCautCerr.style.background  = !_enfoqueDecididoCerr ? 'rgba(80,160,80,.2)'  : 'rgba(0,0,0,.2)';
+      btnCautCerr.style.borderColor = !_enfoqueDecididoCerr ? 'rgba(80,160,80,.5)'  : 'rgba(255,255,255,.1)';
+      btnCautCerr.style.color       = !_enfoqueDecididoCerr ? '#81c784' : '#555';
+      btnDecCerr.style.background   =  _enfoqueDecididoCerr ? 'rgba(200,80,40,.2)'  : 'rgba(0,0,0,.2)';
+      btnDecCerr.style.borderColor  =  _enfoqueDecididoCerr ? 'rgba(200,80,40,.5)'  : 'rgba(255,255,255,.1)';
+      btnDecCerr.style.color        =  _enfoqueDecididoCerr ? '#e07050' : '#555';
+    };
+    btnCautCerr.onclick = () => { _enfoqueDecididoCerr = false; actualizarEnfoqueCerr(); };
+    btnDecCerr.onclick  = () => { _enfoqueDecididoCerr = true;  actualizarEnfoqueCerr(); };
+    actualizarEnfoqueCerr();
+    enfoqueWrapCerr.appendChild(btnCautCerr);
+    enfoqueWrapCerr.appendChild(btnDecCerr);
+    cont.appendChild(enfoqueWrapCerr);
+
     // Botones de resultado
     const resultados = [
       { id:'critico', label:'⭐ Crítico',  desc:'' },
@@ -2881,6 +3004,7 @@ const UI = {
       btn.style.marginBottom = '.5rem';
       btn.innerHTML = `<strong>${r.label}</strong> <span style="font-size:.82rem;color:#8a7a68;">(${r.desc})</span>`;
       btn.onclick = () => {
+        if (_enfoqueDecididoCerr) subirAlerta(1, 'Enfoque decidido');
         this._abrirOverlay('resultado'); // mantener abierto — callback lo cierra
         this.cerrarOverlay('resultado');
         callback(r.id);
