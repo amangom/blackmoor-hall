@@ -15,6 +15,7 @@ const UI = {
   },
 
   mostrarMontajeTablero() {
+    console.log('[MONTAJE] mostrarMontajeTablero llamado, Config._paso=', typeof Config !== 'undefined' ? Config._paso : 'N/A');
     const caso = datosCaso || {};
     const comun = caso.comun || {};
     const pnjs = comun.pnj || [];
