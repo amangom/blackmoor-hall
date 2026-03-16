@@ -4,6 +4,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Registrar Service Worker para PWA / offline
   if ('serviceWorker' in navigator) {
+    // Desregistrar SWs viejos y forzar recarga si hay actualización
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (const reg of regs) {
+      const sw = reg.installing || reg.waiting || reg.active;
+      if (sw) {
+        // Forzar actualización inmediata
+        await reg.update().catch(() => {});
+      }
+    }
+
     navigator.serviceWorker.register('/blackmoor-hall/sw.js', { scope: '/blackmoor-hall/' }).catch(err => {
       console.warn('Service Worker no registrado:', err);
     });
@@ -11,6 +21,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     navigator.serviceWorker.addEventListener('message', e => {
       if (e.data?.type === 'SW_UPDATED') {
         window.location.reload();
+      }
+    });
+    // Si hay un SW en espera, forzar activación
+    navigator.serviceWorker.ready.then(reg => {
+      if (reg.waiting) {
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
       }
     });
   }

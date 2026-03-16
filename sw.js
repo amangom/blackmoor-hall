@@ -1,5 +1,5 @@
 // ── SERVICE WORKER — auto-actualización al detectar nueva versión ──────────────
-const CACHE_NAME = 'blackmoor-v94';
+const CACHE_NAME = 'blackmoor-v95';
 const BASE = '/blackmoor-hall';
 
 const ASSETS = [
@@ -63,4 +63,9 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request))
   );
+});
+
+// Forzar activación inmediata cuando se recibe SKIP_WAITING
+self.addEventListener('message', e => {
+  if (e.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
