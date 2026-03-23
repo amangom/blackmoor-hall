@@ -1188,7 +1188,7 @@ const Mapa = {
       [
         {
           label: '🔑 Usar llave (sin prueba, sin Alerta)',
-          disponible: true,
+          disponible: !!(estado.tokens_llave?.[jugIdx]),
           accion: () => this._ejecutarAbrirConLlave(jugIdx, losetaId)
         },
         {

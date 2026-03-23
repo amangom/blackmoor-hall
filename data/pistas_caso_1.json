@@ -5,21 +5,23 @@
       "nombre": "El botón de puño",
       "metodos": [
         {
-          "id": "p1-pnj",
-          "tipo": "pnj_cualquiera",
-          "descripcion": "Preguntar a los PNJ quién tiene las iniciales C.M.",
+          "id": "p1-ind",
+          "tipo": "individual",
           "atributo": "INT",
-          "dificultad": 3
+          "dificultad": 4,
+          "descripcion": "Examinar el botón con detalle: material, manufactura, marcas del artesano"
         },
         {
           "id": "p1-loseta",
           "tipo": "loseta",
-          "loseta_id": "hab_invitados",
-          "loseta_nombre": "Hab. de Invitados",
-          "descripcion": "Buscar en la Hab. de Invitados un gemelo que haga par",
           "atributo": "INT",
           "dificultad": 1,
+          "descripcion": "Buscar en la Habitación de Invitados el gemelo que hace par",
+          "loseta_id": "hab_invitados",
+          "loseta_nombre": "Hab. de Invitados",
           "requiere_loseta_abierta": true,
+          "fracaso_reintento": true,
+          "fracaso_texto": "Registráis la habitación de forma superficial pero no localizáis nada relevante entre las pertenencias. Podéis volver a intentarlo.",
           "exito_variante": {
             "texto_comun": "Entre las maletas de Harold y los efectos personales del Dr. Marsh, encontráis el maletín médico de Marsh. Dentro hay un estuche de terciopelo para gemelos de plata con las iniciales C.M.",
             "A": {
@@ -58,16 +60,7 @@
                 }
               ]
             }
-          },
-          "fracaso_texto": "Registráis la habitación de forma superficial pero no localizáis nada relevante entre las pertenencias. Podéis volver a intentarlo.",
-          "fracaso_reintento": true
-        },
-        {
-          "id": "p1-ind",
-          "tipo": "individual",
-          "descripcion": "Examinar el botón como joya (factura, joyero, antigüedad)",
-          "atributo": "INT",
-          "dificultad": 4
+          }
         }
       ],
       "color": "roja"
