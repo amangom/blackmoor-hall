@@ -10,28 +10,41 @@ const _PISTAS_EMBEBIDOS = {
       "nombre": "El botón de puño",
       "metodos": [
         {
-          "id": "p1-pnj",
-          "tipo": "pnj_cualquiera",
-          "descripcion": "Preguntar a los PNJ quién tiene las iniciales C.M.",
+          "id": "p1-ind",
+          "tipo": "individual",
+          "descripcion": "Examinar el botón con detalle: material, manufactura, marcas del artesano",
           "atributo": "INT",
-          "dificultad": 3
+          "dificultad": 4
         },
         {
           "id": "p1-loseta",
           "tipo": "loseta",
           "loseta_id": "hab_invitados",
           "loseta_nombre": "Hab. de Invitados",
-          "descripcion": "Buscar en la Hab. de Invitados un gemelo que haga par",
+          "descripcion": "Buscar en la Habitación de Invitados el gemelo que hace par",
           "atributo": "INT",
           "dificultad": 1,
-          "ref_libro": "§1-1H"
-        },
-        {
-          "id": "p1-ind",
-          "tipo": "individual",
-          "descripcion": "Examinar el botón como joya (factura, joyero, antigüedad)",
-          "atributo": "INT",
-          "dificultad": 4
+          "requiere_loseta_abierta": true,
+          "fracaso_reintento": true,
+          "fracaso_texto": "Registráis la habitación de forma superficial pero no localizáis nada relevante entre las pertenencias. Podéis volver a intentarlo.",
+          "exito_variante": {
+            "texto_comun": "Entre las maletas de Harold y los efectos personales del Dr. Marsh, encontráis el maletín médico de Marsh. Dentro hay un estuche de terciopelo para gemelos de plata con las iniciales C.M.",
+            "A": {
+              "texto": "El estuche contiene un solo gemelo. El hueco del segundo está vacío. El gemelo presente es idéntico al encontrado en la mano del Lord: plata maciza, iniciales C.M., misma manufactura. Al Dr. Marsh le falta un gemelo.",
+              "efectos": [{"tipo": "sospecha_pnj", "pnj": "marsh", "valor": 1}]
+            },
+            "B": {
+              "texto": "El estuche contiene un solo gemelo. El hueco del segundo está vacío. El gemelo presente es idéntico al encontrado en la mano del Lord: plata maciza, iniciales C.M., misma manufactura. Pero hay un detalle: el interior del maletín tiene arañazos recientes en el cierre, como si alguien lo hubiera abierto a la fuerza o con prisa. Al Dr. Marsh le falta un gemelo.",
+              "efectos": [{"tipo": "sospecha_pnj", "pnj": "marsh", "valor": 1}]
+            },
+            "C": {
+              "texto": "El estuche contiene dos gemelos completos. Ambos son de plata con las iniciales C.M. Al Dr. Marsh no le falta ninguno. El botón encontrado en la mano del Lord no pertenece a este par. Existe otro juego de gemelos C.M. en Blackmoor Hall.",
+              "efectos": [
+                {"tipo": "sospecha_pnj", "pnj": "marsh", "valor": -1, "condicional": "si_tiene"},
+                {"tipo": "sospecha_pnj", "pnj": "catherine", "valor": 1}
+              ]
+            }
+          }
         }
       ],
       "color": "roja"

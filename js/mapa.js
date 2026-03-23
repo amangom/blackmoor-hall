@@ -1181,29 +1181,32 @@ const Mapa = {
     const mayordomoYaIntento = (estado.mayordomo_intentos_cerradura || {})[losetaId];
     const sinAlertaMayord    = esMayord && !mayordomoYaIntento;
 
-    UI._mostrarConfirmacion(
-      `🗝 Abrir "${nomLoseta}"`,
-      `¿Cómo abrís la cerradura?`,
-      null,
-      [
-        {
+    const tieneLlave = !!(estado.tokens_llave?.[jugIdx]);
+    const opcionesCerradura = [
+      ...(tieneLlave ? [{
           label: '🔑 Usar llave (sin prueba, sin Alerta)',
-          disponible: !!(estado.tokens_llave?.[jugIdx]),
+          disponible: true,
           accion: () => this._ejecutarAbrirConLlave(jugIdx, losetaId)
-        },
-        {
+      }] : []),
+      {
           label: `🔧 Forzar con herramienta (FOR dif ${difForzarConH}, sin +Alerta)`,
           disponible: !!estado.herramienta_recogida,
           accion: () => this._ejecutarForzarCerradura(jugIdx, losetaId, true)
-        },
-        {
+      },
+      {
           label: sinAlertaMayord
             ? `💪 Forzar sin herramienta (FOR dif ${difForzarSinH}, sin +Alerta — 1er intento)`
             : `💪 Forzar sin herramienta (FOR dif ${difForzarSinH}${esMayord ? '' : ' · fracaso: +1 Alerta'})`,
           disponible: true,
           accion: () => this._ejecutarForzarCerradura(jugIdx, losetaId, false)
-        }
-      ]
+      }
+    ];
+
+    UI._mostrarConfirmacion(
+      `🗝 Abrir "${nomLoseta}"`,
+      `¿Cómo abrís la cerradura?`,
+      null,
+      opcionesCerradura
     );
   },
 
