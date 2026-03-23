@@ -2591,23 +2591,14 @@ const UI = {
         else if (ea.tipo === 'alerta')   subirAlerta(ea.valor, motivo);
       }
 
-      // Efectos variante-dependientes (registro de habitaciones)
+      // Efectos variante-dependientes: se aplican DESPUÉS de mostrar el texto
+      // Se guardan para ejecutar al cerrar el overlay
+      this._efectosPendientesInterpretacion = null;
       if (metodo?.exito_variante) {
         const varLetra = (estado.variante || 'A').toUpperCase();
         const vd = metodo.exito_variante[varLetra];
-        if (vd?.efectos) {
-          const motivo = `Registro — ${info.nombre}`;
-          for (const ef of vd.efectos) {
-            if (ef.tipo === 'sospecha_pnj') {
-              if (ef.condicional === 'si_tiene') {
-                if ((estado.pnj?.[ef.pnj]?.sospecha || 0) > 0) subirSospecha(ef.pnj, ef.valor, motivo);
-              } else {
-                subirSospecha(ef.pnj, ef.valor, motivo);
-              }
-            } else if (ef.tipo === 'alerta') {
-              subirAlerta(ef.valor, motivo);
-            }
-          }
+        if (vd?.efectos?.length) {
+          this._efectosPendientesInterpretacion = { efectos: vd.efectos, motivo: `Registro — ${info.nombre}` };
         }
       }
 
@@ -2723,6 +2714,22 @@ const UI = {
       btnCerrar.style.cssText = 'min-height:52px;font-size:1rem;margin-top:.5rem;';
       btnCerrar.textContent = 'Continuar';
       btnCerrar.onclick = () => {
+        // Aplicar efectos diferidos (sospecha, alerta) del registro de habitación
+        if (this._efectosPendientesInterpretacion) {
+          const { efectos, motivo } = this._efectosPendientesInterpretacion;
+          for (const ef of efectos) {
+            if (ef.tipo === 'sospecha_pnj') {
+              if (ef.condicional === 'si_tiene') {
+                if ((estado.pnj?.[ef.pnj]?.sospecha || 0) > 0) subirSospecha(ef.pnj, ef.valor, motivo);
+              } else {
+                subirSospecha(ef.pnj, ef.valor, motivo);
+              }
+            } else if (ef.tipo === 'alerta') {
+              subirAlerta(ef.valor, motivo);
+            }
+          }
+          this._efectosPendientesInterpretacion = null;
+        }
         this.cerrarOverlay('resultado');
         if (typeof onFin === 'function') onFin();
       };
