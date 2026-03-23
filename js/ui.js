@@ -2583,7 +2583,7 @@ const UI = {
         }
       }
 
-      // Efectos adicionales del método (Sospecha PNJ, Alerta)
+      // Efectos adicionales del método (Sospecha PNJ, Alerta) — campo legacy
       if (metodo?.efecto_adicional) {
         const ea = metodo.efecto_adicional;
         const motivo = `Interpretar ${info.nombre}`;
@@ -2591,15 +2591,22 @@ const UI = {
         else if (ea.tipo === 'alerta')   subirAlerta(ea.valor, motivo);
       }
 
-      // Efectos variante-dependientes: se aplican DESPUÉS de mostrar el texto
-      // Se guardan para ejecutar al cerrar el overlay
+      // Efectos en éxito — nuevo formato (array)
+      // Se guardan como pendientes para aplicar DESPUÉS de mostrar el texto
       this._efectosPendientesInterpretacion = null;
+      const efectosExitoBase = metodo?.efecto_exito || [];
+
+      // Efectos variante-dependientes: se aplican DESPUÉS de mostrar el texto
       if (metodo?.exito_variante) {
         const varLetra = (estado.variante || 'A').toUpperCase();
         const vd = metodo.exito_variante[varLetra];
-        if (vd?.efectos?.length) {
-          this._efectosPendientesInterpretacion = { efectos: vd.efectos, motivo: `Registro — ${info.nombre}` };
+        const efectosCombinados = [...efectosExitoBase, ...(vd?.efectos || [])];
+        if (efectosCombinados.length) {
+          this._efectosPendientesInterpretacion = { efectos: efectosCombinados, motivo: `Registro — ${info.nombre}` };
         }
+      } else if (efectosExitoBase.length) {
+        // Efectos sin variante — también diferidos
+        this._efectosPendientesInterpretacion = { efectos: efectosExitoBase, motivo: `Interpretar ${info.nombre}` };
       }
 
       usarAccion(jugIdx, 'interpretar');
@@ -2618,6 +2625,9 @@ const UI = {
           ? `La mente de ${PERSONAJES[j.personaje]?.nombre || j.personaje} encaja todas las piezas. "${info.nombre}" revela su significado con absoluta claridad.`
           : `Tras reflexionar detenidamente, ${PERSONAJES[j.personaje]?.nombre || j.personaje} comprende el alcance de "${info.nombre}".`;
       }
+      // Confirmar pista obtenida al final del texto
+      const _numPista = pid.replace('pista_', '#');
+      texto = (texto ? texto + '\n\n' : '') + `❆ Has obtenido la Pista ${_numPista} Interpretada.`;
       refLibro  = metodo?.ref_libro || null;
 
     } else if (resultado === 'fracaso') {
