@@ -26,7 +26,7 @@ const PERSONAJES = {
     atributos: { FOR: 2, INT: 4, TEM: 3 },
     habilidad_id: 'olfato_periodistico',
     habilidad_nombre: 'Olfato periodístico',
-    habilidad_desc: 'Al superar un interrogatorio con pista, consulta la entrada [PRENSA]. Obtiene un detalle adicional.'
+    habilidad_desc: 'Al fallar un interrogatorio con pista, la app puede mostrar la entrada [PRENSA], obteniendo un detalle adicional incluso en el fracaso.'
   },
   medium: {
     id: 'medium',
@@ -35,7 +35,7 @@ const PERSONAJES = {
     atributos: { FOR: 2, INT: 2, TEM: 5 },
     habilidad_id: 'visiones',
     habilidad_nombre: 'Visiones',
-    habilidad_desc: 'Cada vez que pierda Temple, activa la siguiente visión de la variante en juego (en orden). Las visiones se leen en voz alta a todos.'
+    habilidad_desc: 'Cada vez que pierde Temple (por cualquier causa), la app muestra una visión [VISIÓN] y la lee en voz alta. Hay 3 visiones por caso, en orden.'
   },
   mayordomo: {
     id: 'mayordomo',

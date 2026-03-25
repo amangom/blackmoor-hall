@@ -986,8 +986,8 @@ const UI = {
       container.appendChild(ojoDiv);
     }
 
-    // Prensa (solo Periodista en éxito)
-    if (res.prensa && personaje.habilidad_id === 'olfato_periodistico' && res.tipo_resultado !== 'fracaso') {
+    // Prensa (solo Periodista en fracaso/pifia)
+    if (res.prensa && personaje.habilidad_id === 'olfato_periodistico' && (res.tipo_resultado === 'fracaso' || res.tipo_resultado === 'pifia')) {
       const prensaDiv = document.createElement('div');
       prensaDiv.className = 'interrog-texto';
       prensaDiv.style.borderColor = '#1a5276';
