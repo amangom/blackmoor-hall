@@ -8,7 +8,7 @@ const PERSONAJES = {
     atributos: { FOR: 2, INT: 4, TEM: 3 },
     habilidad_id: 'mente_analitica',
     habilidad_nombre: 'Mente analítica',
-    habilidad_desc: '−1 dif al interpretar pistas (prueba individual). Algunas cartas indican «Doctor: automático» o «Doctor: dif X».'
+    habilidad_desc: '−1 dif al interpretar pistas. Algunas cartas indican «Doctor: automático» o «Doctor: dif X».'
   },
   institutriz: {
     id: 'institutriz',
@@ -23,7 +23,7 @@ const PERSONAJES = {
     id: 'periodista',
     nombre: 'El Periodista',
     imagen: 'Periodista.png',
-    atributos: { FOR: 2, INT: 4, TEM: 2 },
+    atributos: { FOR: 2, INT: 4, TEM: 3 },
     habilidad_id: 'olfato_periodistico',
     habilidad_nombre: 'Olfato periodístico',
     habilidad_desc: 'Al superar un interrogatorio con pista, consulta la entrada [PRENSA]. Publicar (1 vez por partida): interpreta automáticamente 1 pista DESCUBIERTA, +1 Alerta.'
