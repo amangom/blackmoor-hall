@@ -16,8 +16,8 @@ const PERSONAJES = {
     imagen: 'Institutriz.png',
     atributos: { FOR: 2, INT: 3, TEM: 4 },
     habilidad_id: 'intuicion_social',
-    habilidad_nombre: 'Intuición social',
-    habilidad_desc: 'Una vez por ronda, puede intentar un interrogatorio sin gastar acción. Solo si el PNJ tiene Sospecha ≤ 2.'
+    habilidad_nombre: 'Empatía',
+    habilidad_desc: '−1 dif en exploración y en interrogatorios de Temple.'
   },
   periodista: {
     id: 'periodista',
@@ -26,7 +26,7 @@ const PERSONAJES = {
     atributos: { FOR: 2, INT: 4, TEM: 3 },
     habilidad_id: 'olfato_periodistico',
     habilidad_nombre: 'Olfato periodístico',
-    habilidad_desc: 'Al superar un interrogatorio con pista, consulta la entrada [PRENSA]. Publicar (1 vez por partida): interpreta automáticamente 1 pista DESCUBIERTA, +1 Alerta.'
+    habilidad_desc: 'Al superar un interrogatorio con pista, consulta la entrada [PRENSA]. Obtiene un detalle adicional.'
   },
   medium: {
     id: 'medium',

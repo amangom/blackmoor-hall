@@ -139,6 +139,15 @@ function getPasivaExploracion(jugIdx, losetaId, atributoCarta) {
     notas.push('Institutriz: −1 dif');
   }
 
+  // Habilidad pasiva del Mayordomo: −1 dif en losetas tipo P (Privada)
+  const losetaTipo = getLoseta(losetaId)?.tipo;
+  if (j.personaje === 'mayordomo' && losetaTipo === 'P') {
+    modDif -= 1;
+    notas.push('Mayordomo: −1 dif (zona privada)');
+    // También anula el +1 Alerta por explorar en privada
+    anulaAlerta = true;
+  }
+
   return { modDif, alertaExtra, temPen, anulaAlerta, notas };
 }
 

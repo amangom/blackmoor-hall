@@ -696,6 +696,13 @@ const Mapa = {
       { id:'deducir',     icono:'📜', label:'Deducir',           disponible: !dedBlq,    bloqueado_por: dedBlq    },
       { id:'abrir_cerradura', icono:'🗝', label:'Abrir cerradura', disponible: !abrirBlq, bloqueado_por: abrirBlq },
       { id:'descansar',   icono:'🛌', label:'Descansar',         disponible: !descBlq,   bloqueado_por: descBlq   },
+      ...(j.personaje === 'periodista' ? [{
+        id: 'publicar',
+        icono: '📰',
+        label: 'Publicar',
+        disponible: !estado.flags?.publicar_usado,
+        bloqueado_por: estado.flags?.publicar_usado ? 'Ya usado esta partida' : null
+      }] : []),
     ];
   },
 
@@ -799,6 +806,8 @@ const Mapa = {
       guardarEstado();
       this._accionActiva = null; this._jugSelIdx = null;
       this.renderizar(); this._confirmarDescanso(j); return;
+    } else if (accionId === 'publicar') {
+      this._ejecutarPublicar(jugIdx); return;
     }
 
     if (this._resaltados.length === 0 && this._pnjResaltados.length === 0) {
@@ -1280,5 +1289,65 @@ const Mapa = {
     guardarEstado();
     this.renderizar();
     UI.renderizarPartida();
+  },
+
+  _ejecutarPublicar(jugIdx) {
+    const j = estado.jugadores[jugIdx];
+    // Obtener pistas descubiertas pero no interpretadas
+    const descubiertas = (estado.pistas_descubiertas || []);
+    const interpretadas = (estado.pistas_interpretadas || []);
+    const candidatas = descubiertas.filter(p => !interpretadas.includes(p));
+
+    if (candidatas.length === 0) {
+      UI._mostrarConfirmacion(
+        '📰 Publicar',
+        'No hay pistas descubiertas pendientes de interpretar.',
+        null,
+        [{ label: 'Cerrar', disponible: true, accion: () => {} }]
+      );
+      return;
+    }
+
+    // Mostrar selector de pista a interpretar automáticamente
+    const opciones = candidatas.map(pid => {
+      const info = (typeof getInfoPista === 'function') ? getInfoPista(pid) : { nombre: pid };
+      return {
+        label: `${pid.replace('pista_', 'Pista #')} — ${info.nombre || pid}`,
+        disponible: true,
+        accion: () => {
+          UI._snapshot();
+          // Marcar como interpretada
+          if (!estado.pistas_interpretadas.includes(pid)) {
+            estado.pistas_interpretadas.push(pid);
+          }
+          // Marcar Publicar como usado
+          if (!estado.flags) estado.flags = {};
+          estado.flags.publicar_usado = true;
+          // +1 Alerta
+          subirAlerta(1, 'Publicar (Periodista)');
+          usarAccion(jugIdx, 'publicar');
+          guardarEstado();
+          if (typeof _verificarDesbloqueoAcusacion === 'function') _verificarDesbloqueoAcusacion();
+          UI._mostrarBtnDeshacer(true);
+          this._accionActiva = null; this._jugSelIdx = null;
+          this.renderizar();
+          // Notificar
+          const numPista = pid.replace('pista_', '#');
+          UI._mostrarConfirmacion(
+            '📰 Publicado',
+            `${j.nombre} publica sus hallazgos. La Pista ${numPista} queda interpretada.\n\n+1 Alerta.`,
+            null,
+            [{ label: 'Continuar', disponible: true, accion: () => {} }]
+          );
+        }
+      };
+    });
+
+    UI._mostrarConfirmacion(
+      '📰 Publicar — elige una pista',
+      'Elige qué pista descubierta interpretar automáticamente. +1 Alerta. Solo 1 vez por partida.',
+      null,
+      opciones
+    );
   }
 };
