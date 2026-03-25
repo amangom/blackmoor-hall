@@ -745,5 +745,11 @@ function calcularDifMetodo(metodo, jugIdx) {
     }
   }
 
+  // Habilidad pasiva del Doctor: −1 dif en todas las interpretaciones
+  if (j.personaje === 'doctor') {
+    dif -= 1;
+    mods.push('Doctor: −1 dif');
+  }
+
   return { dif: Math.max(1, dif), attr, mods, automatico: false };
 }

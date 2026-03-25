@@ -520,6 +520,16 @@ function calcularDificultad(pnj_id, pista_id) {
     }
   }
 
+  // Habilidad pasiva de Institutriz: −1 dif en interrogatorios TEM
+  {
+    const jugActivo = estado.jugadores.find(j => j.turno?.accion_tipo === 'interrogatorio') ||
+                      estado.jugadores.find(j => !j.turno?.turno_terminado);
+    if (jugActivo?.personaje === 'institutriz' && entrada.atributo === 'TEM') {
+      dif -= 1;
+      mods.push({ texto: 'Institutriz: −1 dif TEM', valor: -1 });
+    }
+  }
+
   return { dificultad: dif, mods, entrada, atributo: entrada.atributo };
 }
 

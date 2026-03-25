@@ -133,6 +133,12 @@ function getPasivaExploracion(jugIdx, losetaId, atributoCarta) {
     }
   }
 
+  // Habilidad pasiva de Institutriz: −1 dif en todas las exploraciones
+  if (j.personaje === 'institutriz') {
+    modDif -= 1;
+    notas.push('Institutriz: −1 dif');
+  }
+
   return { modDif, alertaExtra, temPen, anulaAlerta, notas };
 }
 
