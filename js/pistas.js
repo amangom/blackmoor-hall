@@ -346,8 +346,8 @@ const _PISTAS_EMBEBIDOS = {
           "tipo": "individual",
           "atributo": "INT",
           "dificultad": 5,
-          "descripcion": "Analizar los restos químicamente",
-          "doctor_dif": 4,
+          "descripcion": "Analizar los restos",
+          "doctor_dif": 3,
           "id": "p9-m0"
         },
         {
