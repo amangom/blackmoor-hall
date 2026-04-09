@@ -91,7 +91,7 @@ function aplicarResultadoPruebaPasadizos(jugIdx, exito) {
 // ── 2. AL EXPLORAR — modificador de dificultad ───────────────────────────────
 // Llamar ANTES de mostrar la carta de exploración
 // Devuelve { modDificultad, alertaExtra, temPenalizacion }
-function getPasivaExploracion(jugIdx, losetaId) {
+function getPasivaExploracion(jugIdx, losetaId, atributoCarta) {
   const j         = estado.jugadores[jugIdx];
   const ef        = _getEfectos(losetaId);
   const pnjPresente = datosCaso?.comun?.pnj?.some(p =>
@@ -106,6 +106,8 @@ function getPasivaExploracion(jugIdx, losetaId) {
 
   for (const e of ef) {
     if (e.tipo === 'mod_prueba') {
+      // Solo aplica si el atributo del efecto coincide con el atributo de la prueba
+      if (atributoCarta && e.atributo && e.atributo !== atributoCarta) continue;
       modDif += e.modificador;
       notas.push(`Pasiva loseta: ${e.atributo} ${e.modificador > 0 ? '+' : ''}${e.modificador} dif`);
     }
@@ -129,6 +131,21 @@ function getPasivaExploracion(jugIdx, losetaId) {
         notas.push(`Primera exploración: ${e.atributo} ${e.modificador > 0 ? '+' : ''}${e.modificador} dif`);
       }
     }
+  }
+
+  // Habilidad pasiva de Institutriz: −1 dif en todas las exploraciones
+  if (j.personaje === 'institutriz') {
+    modDif -= 1;
+    notas.push('Institutriz: −1 dif');
+  }
+
+  // Habilidad pasiva del Mayordomo: −1 dif en losetas tipo P (Privada)
+  const losetaTipo = getLoseta(losetaId)?.tipo;
+  if (j.personaje === 'mayordomo' && losetaTipo === 'P') {
+    modDif -= 1;
+    notas.push('Mayordomo: −1 dif (zona privada)');
+    // También anula el +1 Alerta por explorar en privada
+    anulaAlerta = true;
   }
 
   return { modDif, alertaExtra, temPen, anulaAlerta, notas };

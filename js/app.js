@@ -4,8 +4,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Registrar Service Worker para PWA / offline
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(err => {
+    // Desregistrar SWs viejos y forzar recarga si hay actualización
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (const reg of regs) {
+      const sw = reg.installing || reg.waiting || reg.active;
+      if (sw) {
+        // Forzar actualización inmediata
+        await reg.update().catch(() => {});
+      }
+    }
+
+    navigator.serviceWorker.register('/blackmoor-hall/sw.js', { scope: '/blackmoor-hall/' }).catch(err => {
       console.warn('Service Worker no registrado:', err);
+    });
+    // Auto-recarga cuando el SW detecta una nueva versión
+    navigator.serviceWorker.addEventListener('message', e => {
+      if (e.data?.type === 'SW_UPDATED') {
+        window.location.reload();
+      }
+    });
+    // Si hay un SW en espera, forzar activación
+    navigator.serviceWorker.ready.then(reg => {
+      if (reg.waiting) {
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      }
     });
   }
 
@@ -41,8 +63,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ── Puente global para habilidades de personaje llamadas desde state.js ──────
 function _activarVisionMedium(jugIdx) {
-  if (typeof UI !== 'undefined' && typeof UI._activarVisionMedium_impl === 'function') {
-    // Pequeño delay para que la notificación de -TEM se muestre primero
-    setTimeout(() => UI._activarVisionMedium_impl(jugIdx), 400);
+  if (typeof UI === 'undefined') return;
+  // Encolar la visión — se mostrará en secuencia
+  if (!UI._colaVisiones) UI._colaVisiones = [];
+  UI._colaVisiones.push(jugIdx);
+  // Solo disparar si no hay ya una visión mostrándose
+  if (UI._colaVisiones.length === 1) {
+    setTimeout(() => UI._mostrarSiguienteVision(), 400);
   }
 }

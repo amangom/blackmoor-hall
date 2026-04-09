@@ -192,7 +192,6 @@ function iniciarPartida(config) {
     distribucion_id: config.distribucion_id,
     jugadores: config.jugadores.map(j => ({
       personaje:      j.personaje,
-      nombre:         j.nombre,
       loseta_actual:  datosCaso.punto_inicio,
       atributos:      { ...PERSONAJES[j.personaje].atributos },
       // Tracking de acciones por ronda
@@ -220,6 +219,7 @@ function iniciarPartida(config) {
     acusacion_desbloqueada: false,
     partida_terminada: false,
     visiones_activadas: 0,
+    flags: {},
   };
 
   datosCaso.comun.pnj.forEach(pnj => {
@@ -241,7 +241,11 @@ function iniciarPartida(config) {
 function subirAlerta(valor = 1, motivo) {
   const anterior = estado.alerta;
   estado.alerta = Math.min(10, estado.alerta + valor);
-  if (estado.alerta >= 10) estado.partida_terminada = true;
+  if (estado.alerta >= 10) {
+    estado.partida_terminada = true;
+    estado._alerta10 = true;
+    estado._pts_resolucion = 0;
+  }
   guardarEstado();
   if (typeof notifAlerta === 'function') notifAlerta(anterior, estado.alerta, motivo);
   return estado.alerta;
@@ -311,7 +315,9 @@ function interpretarPista(pista_id) {
 }
 
 function _verificarDesbloqueoAcusacion() {
-  if (estado.deducciones_resueltas.length >= 1 && estado.pistas_interpretadas.length >= 3) {
+  const tieneRoja = estado.deducciones_resueltas.some(d => d.color === 'roja');
+  const tieneAzul = estado.deducciones_resueltas.some(d => d.color === 'azul');
+  if (tieneRoja && tieneAzul) {
     estado.acusacion_desbloqueada = true;
     guardarEstado();
   }
@@ -374,11 +380,14 @@ function modificarAtributoJugador(jugIdx, atributo, modificador, motivo) {
   guardarEstado();
   if (typeof notifAtributo === 'function') notifAtributo(jugIdx, atributo, anterior, nuevo, motivo);
 
-  // Habilidad Médium: visión al perder Temple
+  // Habilidad Médium: visión al perder Temple (una por cada punto perdido)
   const jug = estado.jugadores[jugIdx];
   if (atributo === 'TEM' && modificador < 0 && jug?.personaje === 'medium') {
     if (typeof _activarVisionMedium === 'function') {
-      _activarVisionMedium(jugIdx);
+      const puntosPerdidos = Math.abs(modificador);
+      for (let i = 0; i < puntosPerdidos; i++) {
+        _activarVisionMedium(jugIdx);
+      }
     }
   }
 }
@@ -496,18 +505,42 @@ function calcularDificultad(pnj_id, pista_id) {
     estado.buffs_interrogacion = estado.buffs_interrogacion.filter(b => b.expira_ronda > estado.ronda);
   }
 
+  // Bonus de confidencia del jugador activo
+  if (typeof getBonusConfidenciaInterrogacion === 'function') {
+    // Detectar jugador activo: el que está realizando el interrogatorio
+    const jugActivo = estado.jugadores.find(j => j.turno?.accion_tipo === 'interrogatorio') ||
+                      estado.jugadores.find(j => !j.turno?.turno_terminado);
+    const jugIdx = jugActivo ? estado.jugadores.indexOf(jugActivo) : -1;
+    if (jugIdx >= 0) {
+      const bonusConf = getBonusConfidenciaInterrogacion(jugIdx, pnj_id);
+      if (bonusConf !== 0) {
+        dif += bonusConf;
+        mods.push({ texto: 'Confidencia', valor: bonusConf });
+      }
+    }
+  }
+
+  // Habilidad pasiva de Institutriz: −1 dif en interrogatorios TEM
+  {
+    const jugActivo = estado.jugadores.find(j => j.turno?.accion_tipo === 'interrogatorio') ||
+                      estado.jugadores.find(j => !j.turno?.turno_terminado);
+    if (jugActivo?.personaje === 'institutriz' && entrada.atributo === 'TEM') {
+      dif -= 1;
+      mods.push({ texto: 'Institutriz: −1 dif TEM', valor: -1 });
+    }
+  }
+
   return { dificultad: dif, mods, entrada, atributo: entrada.atributo };
 }
 
+// Fase 1: calcula resultado y texto pero NO modifica el estado.
+// Devuelve efectosPendientes para aplicar al confirmar.
 function resolverInterrogatorio(pnj_id, pista_id, resultado) {
   const calc = calcularDificultad(pnj_id, pista_id);
   if (!calc || calc.bloqueado) return { bloqueado: true, razon: calc?.razon };
 
   const { dificultad, entrada } = calc;
 
-  // resultado es siempre un string: 'critico'|'exito'|'fracaso'|'pifia'
-  // (o null para respuestas sin prueba → siempre exito)
-  // Interrogatorios con pista: solo éxito/fracaso. Crítico = éxito, pifia = fracaso.
   let tipo_resultado;
   if (calc.sinPrueba || !entrada.atributo || resultado === null) {
     tipo_resultado = 'exito';
@@ -516,65 +549,95 @@ function resolverInterrogatorio(pnj_id, pista_id, resultado) {
   } else if (resultado === 'pifia') {
     tipo_resultado = 'fracaso';
   } else {
-    tipo_resultado = resultado; // 'exito'|'fracaso'
+    tipo_resultado = resultado;
   }
 
-  let texto   = tipo_resultado === 'fracaso' || tipo_resultado === 'pifia' ? entrada.fracaso : entrada.exito;
-  const efectos = tipo_resultado === 'fracaso'
-    ? (entrada.efectos_fracaso || [])
-    : (entrada.efectos_exito   || []);
+  let texto = tipo_resultado === 'fracaso' ? entrada.fracaso : entrada.exito;
+  const efectosPendientes = tipo_resultado === 'fracaso'
+    ? [...(entrada.efectos_fracaso || [])]
+    : [...(entrada.efectos_exito   || [])];
 
-  // Texto condicional
+  // Texto y efectos condicionales (solo lectura del estado, sin modificarlo)
   if (tipo_resultado !== 'fracaso' && entrada.exito_condicional) {
     const cond = entrada.exito_condicional.condicion;
     if (cond?.pistas_interpretadas_any) {
       const cumple = cond.pistas_interpretadas_any.some(p => estado.pistas_interpretadas.includes(p));
-      if (cumple) texto = (texto || '') + '\n\n' + entrada.exito_condicional.texto;
+      if (cumple) {
+        texto = (texto || '') + '\n\n' + entrada.exito_condicional.texto;
+        (entrada.exito_condicional.efectos || []).forEach(ef => efectosPendientes.push(ef));
+      }
     }
   }
 
-  // Aplicar efectos
-  const efectosAplicados = [];
-  efectos.forEach(ef => {
-    if (ef.tipo === 'sospecha_pnj' && ef.valor > 0)  { subirSospecha(ef.pnj, ef.valor); efectosAplicados.push(ef); }
-    if (ef.tipo === 'sospecha_pnj' && ef.valor < 0)  { bajarSospecha(ef.pnj, -ef.valor); efectosAplicados.push(ef); }
-    if (ef.tipo === 'atributo_jugador')               { aplicarAtributoJugadores(ef.jugador, ef.atributo, ef.modificador); efectosAplicados.push(ef); }
-  });
-
-  // Sospecha según resultado: éxito = 0, fracaso = +1
+  // Sospecha por fracaso: pendiente, se aplica al confirmar
   if (tipo_resultado === 'fracaso') {
-    const res = subirSospecha(pnj_id, 1);
-    if (res?.reaccionesNuevas?.length > 0) {
-      efectosAplicados.push({ tipo: '_reacciones', pnj_id, reacciones: res.reaccionesNuevas });
-    }
-  }
-
-  // Marcar entrada usada
-  const { key } = _encontrarEntrada(pnj_id, pista_id) || {};
-  if (key) {
-    estado.pnj[pnj_id].interrogatorios_usados.push(key);
-    guardarEstado();
+    efectosPendientes.push({ tipo: 'sospecha_pnj', pnj: pnj_id, valor: 1, _fracaso: true });
   }
 
   return {
     tipo_resultado, dificultad, texto,
-    efectos:        efectosAplicados,
-    ojo_entrenado:  entrada.ojo_entrenado || null,
-    prensa:         entrada.prensa || null,
-    atributo:       entrada.atributo,
+    efectosPendientes,
+    efectos: [],   // se rellena en confirmarInterrogatorio
+    pnj_id, pista_id,
+    ojo_entrenado: entrada.ojo_entrenado || null,
+    prensa:        entrada.prensa || null,
+    atributo:      entrada.atributo,
   };
+}
+
+// Fase 2: aplica efectos y marca la entrada usada. Llamar desde "Continuar".
+function confirmarInterrogatorio(res) {
+  if (!res || res.bloqueado) return;
+  const { pnj_id, pista_id, efectosPendientes } = res;
+
+  const efectosAplicados = [];
+  (efectosPendientes || []).forEach(ef => {
+    if (ef.tipo === 'sospecha_pnj' && ef.valor > 0) {
+      const r = subirSospecha(ef.pnj, ef.valor);
+      efectosAplicados.push(ef);
+      if (r?.reaccionesNuevas?.length > 0) {
+        efectosAplicados.push({ tipo: '_reacciones', pnj_id: ef.pnj, reacciones: r.reaccionesNuevas });
+      }
+    } else if (ef.tipo === 'sospecha_pnj' && ef.valor < 0) {
+      bajarSospecha(ef.pnj, -ef.valor);
+      efectosAplicados.push(ef);
+    } else if (ef.tipo === 'atributo_jugador') {
+      aplicarAtributoJugadores(ef.jugador, ef.atributo, ef.modificador);
+      efectosAplicados.push(ef);
+    }
+  });
+
+  res.efectos = efectosAplicados;
+
+  const { key } = _encontrarEntrada(pnj_id, pista_id) || {};
+  if (key) {
+    // Guardar pista_id para bloquear re-interrogatorio por pista (incluso en entradas _resto)
+    if (!estado.pnj[pnj_id].interrogatorios_usados.includes(pista_id)) {
+      estado.pnj[pnj_id].interrogatorios_usados.push(pista_id);
+    }
+    guardarEstado();
+  }
 }
 
 function resolverDeduccion(pista1_id, pista2_id) {
   if (!datosVariante?.deducciones) return { encontrada: false };
+
+  // Los IDs en estado son 'pista_N'; en el JSON de variante son 'pista_N_interpretada'
+  // Normalizamos: probamos el ID tal cual y con sufijo _interpretada
+  const variantes1 = [pista1_id, pista1_id + '_interpretada'];
+  const variantes2 = [pista2_id, pista2_id + '_interpretada'];
+
   const deduccion = datosVariante.deducciones.find(d =>
-    d.pistas.includes(pista1_id) && d.pistas.includes(pista2_id)
+    variantes1.some(v => d.pistas.includes(v)) &&
+    variantes2.some(v => d.pistas.includes(v))
   );
   if (!deduccion) return { encontrada: false };
 
   const id = [pista1_id, pista2_id].sort().join('+');
   if (!estado.deducciones_resueltas.find(d => d.id === id)) {
-    estado.deducciones_resueltas.push({ id });
+    // Determinar el color de la deducción (ambas pistas deben ser del mismo color)
+    const color = typeof getColorPista === 'function' ? getColorPista(pista1_id) : null;
+    estado.deducciones_resueltas.push({ id, color });
     guardarEstado();
     _verificarDesbloqueoAcusacion();
   }
@@ -589,6 +652,14 @@ function _mayorSospecha() {
     if (!e.retirado && e.sospecha > max) { max = e.sospecha; maxId = id; }
   });
   return maxId;
+}
+
+function _menorSospecha(excluir = null) {
+  let min = Infinity, minId = null;
+  Object.entries(estado.pnj).forEach(([id, e]) => {
+    if (!e.retirado && id !== excluir && e.sospecha < min) { min = e.sospecha; minId = id; }
+  });
+  return minId;
 }
 
 function resolverMovimientoPatrulla(pnj_id) {
