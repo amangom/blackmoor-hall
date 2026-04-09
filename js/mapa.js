@@ -191,43 +191,16 @@ const Mapa = {
       }
       const bloqueada = typeof isLosetaBloqueada === 'function' && isLosetaBloqueada(l.id);
       if (bloqueada) {
-        // Overlay semitransparente oscuro
-        const ovRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        ovRect.setAttribute('x', x); ovRect.setAttribute('y', y);
-        ovRect.setAttribute('width', w); ovRect.setAttribute('height', h);
-        ovRect.setAttribute('fill', 'rgba(60,20,0,0.55)');
-        ovRect.setAttribute('rx', '6');
-        g.appendChild(ovRect);
-        // Tablones: dos líneas diagonales cruzadas gruesas
-        const cx2 = x + w/2, cy2 = y + h/2;
-        const margen = 10;
-        const lineas = [
-          [x+margen, y+margen, x+w-margen, y+h-margen],
-          [x+w-margen, y+margen, x+margen, y+h-margen]
-        ];
-        lineas.forEach(([x1,y1,x2,y2]) => {
-          // Sombra del tablón
-          const sombra = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          sombra.setAttribute('x1', x1+1); sombra.setAttribute('y1', y1+1);
-          sombra.setAttribute('x2', x2+1); sombra.setAttribute('y2', y2+1);
-          sombra.setAttribute('stroke', '#1a0800'); sombra.setAttribute('stroke-width', '5');
-          sombra.setAttribute('stroke-linecap', 'round');
-          g.appendChild(sombra);
-          // Tablón
-          const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
-          ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
-          ln.setAttribute('stroke', '#a0520a'); ln.setAttribute('stroke-width', '4');
-          ln.setAttribute('stroke-linecap', 'round');
-          g.appendChild(ln);
-        });
-        // Tornillos en los extremos
-        [[x+margen,y+margen],[x+w-margen,y+margen],[x+margen,y+h-margen],[x+w-margen,y+h-margen]].forEach(([px,py]) => {
-          const circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          circ.setAttribute('cx', px); circ.setAttribute('cy', py); circ.setAttribute('r', '3');
-          circ.setAttribute('fill', '#cd8b30'); circ.setAttribute('stroke', '#1a0800'); circ.setAttribute('stroke-width', '1');
-          g.appendChild(circ);
-        });
+        rect.setAttribute('stroke', '#8b4513');
+        rect.setAttribute('stroke-width', '3');
+        rect.setAttribute('stroke-dasharray', '6,3');
+        rect.setAttribute('fill', '#1a0e06');
+        const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.setAttribute('x', x + w/2); lbl.setAttribute('y', y + h - 8);
+        lbl.setAttribute('text-anchor', 'middle');
+        lbl.setAttribute('font-size', '10'); lbl.setAttribute('fill', '#cd853f');
+        lbl.textContent = '— entrada bloqueada';
+        g.appendChild(lbl);
       }
       if (cerrada) {
         this._txt(g, '🔒', x+CELDA-18, y+CELDA-8, { anchor:'middle', size:15 });
@@ -346,8 +319,7 @@ const Mapa = {
 
       const esSeleccionado = idx === this._jugSelIdx;
       const color  = getPJColor(j.personaje);
-      const pjNomCorto = (PERSONAJES[j.personaje]?.nombre || j.personaje).replace(/^(El |La )/,'');
-      const nombre = pjNomCorto.length > 7 ? pjNomCorto.slice(0,6)+'.' : pjNomCorto;
+      const nombre = j.nombre.length > 7 ? j.nombre.slice(0,6)+'.' : j.nombre;
       // Avatar ya pre-cargado en _AV por precargarAvatares()
       const avatarUrl = getAvatarPJ(j.personaje, r*2);
 
@@ -464,7 +436,7 @@ const Mapa = {
       <span style="font-size:2rem;">${esDesmayo ? '😵' : '🌀'}</span>
       <div style="flex:1;">
         <div style="font-family:Cinzel,serif;font-size:.85rem;color:${esDesmayo ? '#e57373' : '#9c6fba'};font-weight:600;">
-          ${PERSONAJES[j.personaje]?.nombre || j.personaje} — ${esDesmayo ? 'DESMAYADO' : 'CRISIS NERVIOSA'}
+          ${j.nombre} — ${esDesmayo ? 'DESMAYADO' : 'CRISIS NERVIOSA'}
         </div>
         <div style="font-family:'EB Garamond',serif;font-size:.82rem;color:#a09080;margin-top:2px;">
           No puede actuar esta ronda. Recupera ${j.incapacitado.atributo} a 1 al inicio de la siguiente.
@@ -507,7 +479,7 @@ const Mapa = {
             ${PJ_ICONO[j.personaje]||'?'}
           </div>
           <div>
-            <div style="font-family:Cinzel,serif;font-size:.9rem;color:#fff;font-weight:600;">${PERSONAJES[j.personaje]?.nombre || j.personaje} — ${pjCorto}</div>
+            <div style="font-family:Cinzel,serif;font-size:.9rem;color:#fff;font-weight:600;">${j.nombre} — ${pjCorto}</div>
             <div style="font-family:EB Garamond,serif;font-size:.82rem;color:#a09080;">📍 ${losetaNom}</div>
           </div>
         </div>
@@ -591,8 +563,6 @@ const Mapa = {
     btnTerminar.innerHTML = `<span style="font-size:1.1rem;">⏭</span><span>Terminar turno</span>`;
     btnTerminar.addEventListener('click', e => {
       e.stopPropagation();
-      UI._mostrarBtnDeshacer(false);
-      UI._estadoAnterior = null;
       if (typeof pasarTurno === 'function') pasarTurno(this._jugSelIdx);
       this._jugSelIdx = null; this._accionActiva = null;
       this._resaltados = []; this._pnjResaltados = [];
@@ -696,13 +666,6 @@ const Mapa = {
       { id:'deducir',     icono:'📜', label:'Deducir',           disponible: !dedBlq,    bloqueado_por: dedBlq    },
       { id:'abrir_cerradura', icono:'🗝', label:'Abrir cerradura', disponible: !abrirBlq, bloqueado_por: abrirBlq },
       { id:'descansar',   icono:'🛌', label:'Descansar',         disponible: !descBlq,   bloqueado_por: descBlq   },
-      ...(j.personaje === 'periodista' ? [{
-        id: 'publicar',
-        icono: '📰',
-        label: 'Publicar',
-        disponible: !estado.flags?.publicar_usado,
-        bloqueado_por: estado.flags?.publicar_usado ? 'Ya usado esta partida' : null
-      }] : []),
     ];
   },
 
@@ -776,9 +739,10 @@ const Mapa = {
       this._accionActiva = null; this._jugSelIdx = null;
       this.renderizar(); UI.abrirExplorar(losetaJug, jugIdx); return;
     } else if (accionId === 'deducir') {
+      usarAccion(jugIdx, 'deducir');
+      guardarEstado();
       this._accionActiva = null; this._jugSelIdx = null;
-      this.renderizar();
-      UI.abrirPistasConAccion(jugIdx); return;
+      this.renderizar(); UI.abrirPistas(); return;
     } else if (accionId === 'interpretar') {
       this._accionActiva = null; this._jugSelIdx = null;
       this.renderizar();
@@ -800,14 +764,10 @@ const Mapa = {
       }
       return;
     } else if (accionId === 'descansar') {
-      UI._snapshot();
-      UI._mostrarBtnDeshacer(true);
       usarAccion(jugIdx, 'descansar');
       guardarEstado();
       this._accionActiva = null; this._jugSelIdx = null;
       this.renderizar(); this._confirmarDescanso(j); return;
-    } else if (accionId === 'publicar') {
-      this._ejecutarPublicar(jugIdx); return;
     }
 
     if (this._resaltados.length === 0 && this._pnjResaltados.length === 0) {
@@ -867,8 +827,6 @@ const Mapa = {
   },
 
   _ejecutarMovimiento(losetaId) {
-    UI._snapshot();
-    UI._mostrarBtnDeshacer(true);
     const bar = document.getElementById('mapa-instruccion');
     if (bar) bar.remove();
     const jugIdx = this._jugSelIdx;
@@ -968,7 +926,7 @@ const Mapa = {
     cont.appendChild(p);
     const d = document.createElement('p');
     d.style.cssText = 'font-family:"EB Garamond",serif;font-size:1rem;color:#c8b898;margin-bottom:1rem;';
-    d.textContent = `${PERSONAJES[j.personaje]?.nombre || j.personaje} se retira un momento. El tiempo en calma hace maravillas.`;
+    d.textContent = `${j.nombre} se retira un momento. El tiempo en calma hace maravillas.`;
     cont.appendChild(d);
     // Pasiva de loseta al descansar
     const jugIdx = estado.jugadores.findIndex(jj => jj === j);
@@ -981,18 +939,10 @@ const Mapa = {
       cont.appendChild(bonTxt);
     }
 
-    // Instrucción de cartas al descansar
-    const instrCartas = document.createElement('p');
-    instrCartas.style.cssText = 'font-family:"EB Garamond",serif;font-size:.95rem;color:#d4a840;background:rgba(180,140,40,.1);border:1px solid rgba(180,140,40,.25);border-radius:8px;padding:.6rem .85rem;margin-bottom:1rem;';
-    instrCartas.textContent = 'Descarta toda tu mano y roba 6 cartas nuevas del mazo de Resolución.';
-    cont.appendChild(instrCartas);
-
     const btn = document.createElement('button');
     btn.className = 'btn btn-p btn-bloque';
     btn.textContent = 'Confirmar descanso';
     btn.onclick = () => {
-      UI._snapshot();
-      UI._mostrarBtnDeshacer(true);
       if (jugIdx >= 0 && bonDesc && typeof aplicarPasivaDescanso === 'function') {
         const logsD = aplicarPasivaDescanso(jugIdx, losetaDesc);
         if (logsD.length) UI.mostrarNotifPasiva(logsD);
@@ -1011,7 +961,7 @@ const Mapa = {
     const tipos = { C:'Común', P:'Privada', S:'Sagrada', E:'Exterior', '!':'Peligrosa' };
     document.getElementById('loseta-info-nom').textContent = loseta.nombre;
     const pnjs = datosCaso.comun.pnj.filter(p => estado.pnj?.[p.id]?.loseta_actual === loseta.id).map(p=>p.nombre).join(', ');
-    const jugs = estado.jugadores.filter(j => j.loseta_actual === loseta.id).map(j => PERSONAJES[j.personaje]?.nombre || j.personaje).join(', ');
+    const jugs = estado.jugadores.filter(j => j.loseta_actual === loseta.id).map(j=>j.nombre).join(', ');
     const cerrada = isCerrada(loseta.id);
     let desc = `Tipo: ${tipos[losetaDef?.tipo]||'Común'}`;
     if (pnjs)    desc += `  ·  PNJ: ${pnjs}`;
@@ -1064,10 +1014,6 @@ const Mapa = {
       if (e.touches.length === 2) {
         const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
         this._pinch = Math.sqrt(dx*dx+dy*dy);
-        this._pinchMid = {
-          x: (e.touches[0].clientX+e.touches[1].clientX)/2,
-          y: (e.touches[0].clientY+e.touches[1].clientY)/2
-        };
       }
       lt = [...e.touches].map(t=>({x:t.clientX,y:t.clientY}));
     }, {passive:true});
@@ -1081,14 +1027,7 @@ const Mapa = {
       } else if (e.touches.length === 2 && lt?.length===2) {
         const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
         const d = Math.sqrt(dx*dx+dy*dy);
-        const ratio = d / this._pinch;
-        // Punto focal del gesto en coordenadas del contenedor
-        const mx = (e.touches[0].clientX+e.touches[1].clientX)/2 - container.getBoundingClientRect().left;
-        const my = (e.touches[0].clientY+e.touches[1].clientY)/2 - container.getBoundingClientRect().top;
-        // Ajustar tx/ty para que el punto bajo los dedos no se mueva
-        this._tx -= mx / this._sc * (ratio - 1);
-        this._ty -= my / this._sc * (ratio - 1);
-        this._sc = Math.max(0.35, Math.min(3.5, this._sc * ratio));
+        this._sc = Math.max(0.35, Math.min(3.5, this._sc * d/this._pinch));
         this._pinch = d;
         this._aplicarTransform();
       }
@@ -1118,16 +1057,6 @@ const Mapa = {
     }, {passive:false});
 
     container.style.cursor = 'grab';
-
-    // Recentrar automáticamente al rotar pantalla o cambiar tamaño
-    const _recentrar = () => {
-      const svg = document.getElementById('mapa-svg');
-      if (svg && container.offsetParent !== null) {
-        this._centrar(container, +svg.getAttribute('width'), +svg.getAttribute('height'));
-      }
-    };
-    window.addEventListener('resize', _recentrar);
-    screen.orientation?.addEventListener('change', _recentrar);
 
     // Botón centrar
     const b = document.createElement('button');
@@ -1190,32 +1119,29 @@ const Mapa = {
     const mayordomoYaIntento = (estado.mayordomo_intentos_cerradura || {})[losetaId];
     const sinAlertaMayord    = esMayord && !mayordomoYaIntento;
 
-    const tieneLlave = !!(estado.tokens_llave?.[jugIdx]);
-    const opcionesCerradura = [
-      ...(tieneLlave ? [{
+    UI._mostrarConfirmacion(
+      `🗝 Abrir "${nomLoseta}"`,
+      `¿Cómo abrís la cerradura?`,
+      null,
+      [
+        {
           label: '🔑 Usar llave (sin prueba, sin Alerta)',
           disponible: true,
           accion: () => this._ejecutarAbrirConLlave(jugIdx, losetaId)
-      }] : []),
-      {
+        },
+        {
           label: `🔧 Forzar con herramienta (FOR dif ${difForzarConH}, sin +Alerta)`,
           disponible: !!estado.herramienta_recogida,
           accion: () => this._ejecutarForzarCerradura(jugIdx, losetaId, true)
-      },
-      {
+        },
+        {
           label: sinAlertaMayord
             ? `💪 Forzar sin herramienta (FOR dif ${difForzarSinH}, sin +Alerta — 1er intento)`
             : `💪 Forzar sin herramienta (FOR dif ${difForzarSinH}${esMayord ? '' : ' · fracaso: +1 Alerta'})`,
           disponible: true,
           accion: () => this._ejecutarForzarCerradura(jugIdx, losetaId, false)
-      }
-    ];
-
-    UI._mostrarConfirmacion(
-      `🗝 Abrir "${nomLoseta}"`,
-      `¿Cómo abrís la cerradura?`,
-      null,
-      opcionesCerradura
+        }
+      ]
     );
   },
 
@@ -1230,8 +1156,6 @@ const Mapa = {
   },
 
   _ejecutarForzarCerradura(jugIdx, losetaId, conHerramientas) {
-    UI._snapshot();
-    UI._mostrarBtnDeshacer(true);
     const j         = estado.jugadores[jugIdx];
     const esMayord  = j.personaje === 'mayordomo';
     const difBase   = getDifCerradura(losetaId);
@@ -1289,65 +1213,5 @@ const Mapa = {
     guardarEstado();
     this.renderizar();
     UI.renderizarPartida();
-  },
-
-  _ejecutarPublicar(jugIdx) {
-    const j = estado.jugadores[jugIdx];
-    // Obtener pistas descubiertas pero no interpretadas
-    const descubiertas = (estado.pistas_descubiertas || []);
-    const interpretadas = (estado.pistas_interpretadas || []);
-    const candidatas = descubiertas.filter(p => !interpretadas.includes(p));
-
-    if (candidatas.length === 0) {
-      UI._mostrarConfirmacion(
-        '📰 Publicar',
-        'No hay pistas descubiertas pendientes de interpretar.',
-        null,
-        [{ label: 'Cerrar', disponible: true, accion: () => {} }]
-      );
-      return;
-    }
-
-    // Mostrar selector de pista a interpretar automáticamente
-    const opciones = candidatas.map(pid => {
-      const info = (typeof getInfoPista === 'function') ? getInfoPista(pid) : { nombre: pid };
-      return {
-        label: `${pid.replace('pista_', 'Pista #')} — ${info.nombre || pid}`,
-        disponible: true,
-        accion: () => {
-          UI._snapshot();
-          // Marcar como interpretada
-          if (!estado.pistas_interpretadas.includes(pid)) {
-            estado.pistas_interpretadas.push(pid);
-          }
-          // Marcar Publicar como usado
-          if (!estado.flags) estado.flags = {};
-          estado.flags.publicar_usado = true;
-          // +1 Alerta
-          subirAlerta(1, 'Publicar (Periodista)');
-          usarAccion(jugIdx, 'publicar');
-          guardarEstado();
-          if (typeof _verificarDesbloqueoAcusacion === 'function') _verificarDesbloqueoAcusacion();
-          UI._mostrarBtnDeshacer(true);
-          this._accionActiva = null; this._jugSelIdx = null;
-          this.renderizar();
-          // Notificar
-          const numPista = pid.replace('pista_', '#');
-          UI._mostrarConfirmacion(
-            '📰 Publicado',
-            `${j.nombre} publica sus hallazgos. La Pista ${numPista} queda interpretada.\n\n+1 Alerta.`,
-            null,
-            [{ label: 'Continuar', disponible: true, accion: () => {} }]
-          );
-        }
-      };
-    });
-
-    UI._mostrarConfirmacion(
-      '📰 Publicar — elige una pista',
-      'Elige qué pista descubierta interpretar automáticamente. +1 Alerta. Solo 1 vez por partida.',
-      null,
-      opciones
-    );
   }
 };

@@ -16,17 +16,8 @@ const Config = {
   ],
 
   inicializar() {
-    this._paso = 0; this._casoId = 'caso_1'; this._modoVariante = 'aleatoria'; this._varianteManual = null;
+    this._paso = 0; this._casoId = 'caso_1'; this._modoVariante = 'aleatoria';
     this._numJug = 3; this._jugadores = []; this._distribId = null;
-    // Limpiar selección visual de variante
-    document.querySelectorAll('#cfg-variante .opcion').forEach(e => e.classList.remove('sel'));
-    const optAleatoria = document.getElementById('opt-aleatoria');
-    if (optAleatoria) optAleatoria.classList.add('sel');
-    document.getElementById('sel-variante-manual').style.display = 'none';
-    ['A','B','C'].forEach(x => {
-      const b = document.getElementById('vbtn-' + x);
-      if (b) b.classList.remove('sel');
-    });
     this._renderPaso();
   },
 
@@ -54,9 +45,10 @@ const Config = {
 
   seleccionarCaso(id, el) {
     this._casoId = id;
-    document.querySelectorAll('#cfg-caso .caso-btn').forEach(e => e.classList.remove('sel'));
+    document.querySelectorAll('#cfg-caso .opcion').forEach(e => e.classList.remove('sel'));
     el.classList.add('sel');
-    setTimeout(() => this.siguientePaso(), 220);
+    // Avance automático con pequeño delay para que se vea la selección
+    setTimeout(() => this.siguientePaso(), 180);
   },
 
   selVariante(v, avanzar = true) {
@@ -65,6 +57,7 @@ const Config = {
       const b = document.getElementById('vbtn-' + x);
       if (b) b.classList.toggle('sel', x === v);
     });
+    // Avanzar automáticamente solo si venimos de una interacción directa del usuario
     if (avanzar && this._paso === 1 && this._modoVariante === 'manual') {
       setTimeout(() => this.siguientePaso(), 180);
     }
@@ -76,9 +69,11 @@ const Config = {
     el.classList.add('sel');
     document.getElementById('sel-variante-manual').style.display = modo === 'manual' ? 'block' : 'none';
     if (modo === 'manual') {
+      // Preseleccionar A si no hay ninguna seleccionada — selVariante ya llamará a siguientePaso
       if (!this._varianteManual) this.selVariante('A', false);
+      // No avanzamos aquí: el avance ocurre al seleccionar A/B/C
     } else {
-      // Aleatoria: avance automático siempre
+      // Aleatoria: avance automático
       setTimeout(() => this.siguientePaso(), 180);
     }
   },
@@ -94,33 +89,32 @@ const Config = {
 
   siguientePaso() {
     if (!this._validar()) return;
-    if (this._paso === 2) {
-      // Avanzar directamente al paso 3
-      this._paso++;
-      this._renderPaso();
-      return;
-    }
     if (this._paso < 3) { this._paso++; this._renderPaso(); }
-  },
-
-  _continuarTrasPJ() {
-    this._paso++;
-    this._renderPaso();
   },
 
   _validar() {
     if (this._paso === 2) {
-      const slots = document.querySelectorAll('.jug-slot');
-      const personajes = [];
+      // Leer datos actuales de los slots
+      const slots  = document.querySelectorAll('.jug-slot');
+      const nombres = [], personajes = [];
       for (const slot of slots) {
-        const pjSel = slot.querySelector('.pj-card.sel');
+        const nombre = slot.querySelector('input').value.trim();
+        const pjSel  = slot.querySelector('.pj-card.sel');
+        if (!nombre) {
+          slot.querySelector('input').focus();
+          slot.querySelector('input').style.borderColor = 'var(--sangre2)';
+          setTimeout(() => slot.querySelector('input').style.borderColor = '', 2000);
+          return false;
+        }
         if (!pjSel) {
           this._notif('Elige un personaje para cada jugador.');
           return false;
         }
+        nombres.push(nombre);
         personajes.push(pjSel.dataset.pj);
       }
-      this._jugadores = personajes.map(pj => ({ personaje: pj }));
+      // Guardar
+      this._jugadores = nombres.map((n, i) => ({ nombre: n, personaje: personajes[i] }));
     }
     if (this._paso === 3 && !this._distribId) {
       this._notif('Selecciona una distribución de losetas.');
@@ -154,6 +148,12 @@ const Config = {
       const num = document.createElement('span');
       num.className = 'jug-num'; num.textContent = i + 1;
       top.appendChild(num);
+
+      const inp = document.createElement('input');
+      inp.type = 'text'; inp.placeholder = `Nombre del jugador ${i + 1}`;
+      inp.value = guardado?.nombre || '';
+      inp.style.flex = '1';
+      top.appendChild(inp);
       slot.appendChild(top);
 
       // ─ Grid de personajes ───────────────────────────────────────────────
@@ -299,8 +299,9 @@ const Config = {
 
     // Recoger datos finales de jugadores
     document.querySelectorAll('.jug-slot').forEach((slot, i) => {
-      const pj = slot.querySelector('.pj-card.sel')?.dataset.pj;
-      this._jugadores[i] = { personaje: pj };
+      const nombre = slot.querySelector('input').value.trim();
+      const pj     = slot.querySelector('.pj-card.sel')?.dataset.pj;
+      this._jugadores[i] = { nombre, personaje: pj };
     });
 
     let variante = this._modoVariante === 'aleatoria'
@@ -316,36 +317,7 @@ const Config = {
     }
 
     iniciarPartida({ caso_id: this._casoId, variante, distribucion_id: this._distribId, jugadores: this._jugadores });
-
-    // Guardar datos de premisa para usar tras el overlay
-    const premisa = datosCaso?.premisa;
-    const titulo  = datosCaso?.titulo || '';
-    const casoNum = String(this._casoId).replace('caso_','').replace('caso','');
-    const casoNumInt = parseInt(casoNum) || 1;
-    if (premisa) {
-      UI._premisaPendiente = { casoNum: casoNumInt, titulo, premisa };
-    }
-    this._casoNumInt = casoNumInt;
-
-    // Mostrar portada directamente
-    this._mostrarPortada();
-  },
-
-  _mostrarPortada() {
-    const casoNumInt = this._casoNumInt || 1;
-    const premisa = UI._premisaPendiente;
-    if (premisa) {
-      const portadaImg = document.getElementById('portada-img');
-      portadaImg.src = `assets/Portada_Caso_${casoNumInt}.png`;
-      portadaImg.onerror = () => { UI.mostrarPremisa(); };
-      document.getElementById('overlay-portada').style.display = 'flex';
-    } else {
-      UI.irAPartida();
-    }
-  },
-
-  _continuarTrasPrep() {
-    this._mostrarPortada();
+    UI.irAPartida();
   },
 
   _notif(msg) { UI._mostrarNotificacion('Aviso', msg); }

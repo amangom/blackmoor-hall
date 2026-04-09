@@ -22,7 +22,8 @@ function _nomPJ(jugIdx) {
   const j  = estado.jugadores[jugIdx];
   if (!j) return '';
   const pj = PERSONAJES[j.personaje];
-  return pj?.nombre || j.personaje;
+  const nomPJ  = pj?.nombre || j.personaje;
+  return `${nomPJ} (${j.nombre})`;
 }
 
 // ── Nombre legible de PNJ ────────────────────────────────────────────────────
@@ -141,8 +142,8 @@ function registrarCambio(tipo, opts) {
 function _procesarCola() {
   if (_notifMostrando || _notifCola.length === 0) return;
 
-  // Mostrar UNA sola notificación cada vez
-  const n = _notifCola.shift();
+  // Agrupar todos los pendientes en una sola notificación
+  const todos = _notifCola.splice(0);
   _notifMostrando = true;
 
   const overlay = document.getElementById('overlay-notif-estado');
@@ -151,52 +152,53 @@ function _procesarCola() {
 
   cont.innerHTML = '';
 
-  const bloque = document.createElement('div');
-  bloque.style.cssText = 'display:flex;gap:.6rem;align-items:flex-start;';
+  todos.forEach((n, i) => {
+    if (i > 0) {
+      const sep = document.createElement('hr');
+      sep.style.cssText = 'border:none;border-top:1px solid #3a2e20;margin:.5rem 0;';
+      cont.appendChild(sep);
+    }
+    const bloque = document.createElement('div');
+    bloque.style.cssText = 'display:flex;gap:.6rem;align-items:flex-start;';
 
-  const ico = document.createElement('span');
-  ico.style.cssText = 'font-size:1.4rem;flex-shrink:0;line-height:1.3;';
-  ico.textContent = n.icono;
+    const ico = document.createElement('span');
+    ico.style.cssText = 'font-size:1.4rem;flex-shrink:0;line-height:1.3;';
+    ico.textContent = n.icono;
 
-  const textos = document.createElement('div');
-  textos.style.cssText = 'display:flex;flex-direction:column;gap:.15rem;';
-  n.lineas.forEach((l, li) => {
-    const p = document.createElement('p');
-    p.style.cssText = li === 0
-      ? 'font-family:Cinzel,serif;font-size:clamp(1rem,3.5vw,1.15rem);color:#f0e8d8;font-weight:600;margin:0;'
-      : 'font-family:"EB Garamond",serif;font-size:clamp(.9rem,3vw,1rem);color:#c8b898;margin:0;font-style:italic;';
-    p.textContent = l;
-    textos.appendChild(p);
+    const textos = document.createElement('div');
+    textos.style.cssText = 'display:flex;flex-direction:column;gap:.15rem;';
+    n.lineas.forEach((l, li) => {
+      const p = document.createElement('p');
+      p.style.cssText = li === 0
+        ? 'font-family:Cinzel,serif;font-size:clamp(1rem,3.5vw,1.15rem);color:#f0e8d8;font-weight:600;margin:0;'
+        : 'font-family:"EB Garamond",serif;font-size:clamp(.9rem,3vw,1rem);color:#c8b898;margin:0;font-style:italic;';
+      p.textContent = l;
+      textos.appendChild(p);
+    });
+
+    bloque.appendChild(ico);
+    bloque.appendChild(textos);
+    cont.appendChild(bloque);
+
+    // Bloque especial de reacción del Libro de Casos
+    if (n.reaccionTexto) {
+      const sepReac = document.createElement('div');
+      sepReac.style.cssText = 'margin:.6rem 0 .4rem;border-top:1px solid #5a4030;padding-top:.5rem;';
+      const titReac = document.createElement('p');
+      titReac.style.cssText = 'font-family:var(--f2);font-size:.7rem;letter-spacing:.12em;color:#a08060;margin:0 0 .4rem;text-transform:uppercase;';
+      titReac.style.display = 'none';
+      sepReac.appendChild(titReac);
+      const txtReac = document.createElement('p');
+      txtReac.style.cssText = 'font-family:"EB Garamond",serif;font-size:clamp(1rem,3.5vw,1.1rem);color:#e8dcc8;margin:0;line-height:1.65;font-style:normal;';
+      txtReac.textContent = n.reaccionTexto;
+      sepReac.appendChild(txtReac);
+      cont.appendChild(sepReac);
+    }
   });
 
-  bloque.appendChild(ico);
-  bloque.appendChild(textos);
-  cont.appendChild(bloque);
-
-  // Bloque especial de reacción del Libro de Casos
-  if (n.reaccionTexto) {
-    const sepReac = document.createElement('div');
-    sepReac.style.cssText = 'margin:.6rem 0 .4rem;border-top:1px solid #5a4030;padding-top:.5rem;';
-    const titReac = document.createElement('p');
-    titReac.style.cssText = 'font-family:var(--f2);font-size:.7rem;letter-spacing:.12em;color:#a08060;margin:0 0 .4rem;text-transform:uppercase;';
-    titReac.style.display = 'none';
-    sepReac.appendChild(titReac);
-    const txtReac = document.createElement('p');
-    txtReac.style.cssText = 'font-family:"EB Garamond",serif;font-size:clamp(1rem,3.5vw,1.1rem);color:#e8dcc8;margin:0;line-height:1.65;font-style:normal;';
-    txtReac.textContent = n.reaccionTexto;
-    sepReac.appendChild(txtReac);
-    cont.appendChild(sepReac);
-  }
-
-  // Indicador de cuántas quedan si hay más en cola
-  if (_notifCola.length > 0) {
-    const resto = document.createElement('p');
-    resto.style.cssText = 'font-family:Cinzel,serif;font-size:.7rem;letter-spacing:.1em;color:#6a5a40;margin:.8rem 0 0;text-align:right;text-transform:uppercase;';
-    resto.textContent = `${_notifCola.length} más →`;
-    cont.appendChild(resto);
-  }
-
   overlay.style.display = 'flex';
+
+  // Sin auto-dismiss — el jugador debe pulsar "Entendido"
   clearTimeout(window._notifTimeout);
 }
 

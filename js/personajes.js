@@ -8,7 +8,7 @@ const PERSONAJES = {
     atributos: { FOR: 2, INT: 4, TEM: 3 },
     habilidad_id: 'mente_analitica',
     habilidad_nombre: 'Mente analítica',
-    habilidad_desc: '−1 dif al interpretar pistas. Algunas cartas indican «Doctor: automático» o «Doctor: dif X».'
+    habilidad_desc: '−1 dif al interpretar pistas (prueba individual). Algunas cartas indican «Doctor: automático» o «Doctor: dif X».'
   },
   institutriz: {
     id: 'institutriz',
@@ -16,17 +16,17 @@ const PERSONAJES = {
     imagen: 'Institutriz.png',
     atributos: { FOR: 2, INT: 3, TEM: 4 },
     habilidad_id: 'intuicion_social',
-    habilidad_nombre: 'Empatía',
-    habilidad_desc: '−1 dif en exploración y en interrogatorios de Temple.'
+    habilidad_nombre: 'Intuición social',
+    habilidad_desc: 'Una vez por ronda, puede intentar un interrogatorio sin gastar acción. Solo si el PNJ tiene Sospecha ≤ 2.'
   },
   periodista: {
     id: 'periodista',
     nombre: 'El Periodista',
     imagen: 'Periodista.png',
-    atributos: { FOR: 2, INT: 4, TEM: 3 },
+    atributos: { FOR: 2, INT: 4, TEM: 2 },
     habilidad_id: 'olfato_periodistico',
     habilidad_nombre: 'Olfato periodístico',
-    habilidad_desc: 'Al fallar un interrogatorio con pista, la app puede mostrar la entrada [PRENSA], obteniendo un detalle adicional incluso en el fracaso.'
+    habilidad_desc: 'Al superar un interrogatorio con pista, consulta la entrada [PRENSA]. Publicar (1 vez por partida): interpreta automáticamente 1 pista DESCUBIERTA, +1 Alerta.'
   },
   medium: {
     id: 'medium',
@@ -35,7 +35,7 @@ const PERSONAJES = {
     atributos: { FOR: 2, INT: 2, TEM: 5 },
     habilidad_id: 'visiones',
     habilidad_nombre: 'Visiones',
-    habilidad_desc: 'Cada vez que pierde Temple (por cualquier causa), la app muestra una visión [VISIÓN] y la lee en voz alta. Hay 3 visiones por caso, en orden.'
+    habilidad_desc: 'Cada vez que pierda Temple, activa la siguiente visión de la variante en juego (en orden). Las visiones se leen en voz alta a todos.'
   },
   mayordomo: {
     id: 'mayordomo',

@@ -4,201 +4,11 @@ const UI = {
 
   // ─── NAVEGACIÓN ────────────────────────────────────────────────────────────
 
-  mostrarPremisa() {
-    document.getElementById('overlay-portada').style.display = 'none';
-    const d = this._premisaPendiente;
-    if (!d) { this.irAPartida(); return; }
-    document.getElementById('premisa-caso-num').textContent = d.casoNum;
-    document.getElementById('premisa-titulo').textContent   = d.titulo;
-    document.getElementById('premisa-texto').textContent    = d.premisa;
-    document.getElementById('overlay-premisa').style.display = 'flex';
-  },
-
-  mostrarMontajeTablero() {
-    const caso = datosCaso || {};
-    const comun = caso.comun || {};
-    const pnjs = comun.pnj || [];
-    const losetasDistrib = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
-
-    const nom = (id) => {
-      const l = datosLosetas?.losetas?.find(x => x.id === id);
-      return l ? l.nombre : id;
-    };
-
-    // Construir pasos
-    const pasos = [];
-
-    // Paso 1: Losetas
-    let htmlLosetas = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Losetas del caso</p>`;
-    if (losetasDistrib.length > 0) {
-      htmlLosetas += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.6;margin:0 0 .75rem;">Colocad las siguientes losetas según el diagrama de distribución:</p>`;
-      htmlLosetas += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0;padding-left:1.2rem;">`;
-      losetasDistrib.forEach(l => { htmlLosetas += `<li>${nom(l.id)}</li>`; });
-      htmlLosetas += `</ul>`;
-    } else {
-      htmlLosetas += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);">Consultad el diagrama de distribución de puertas del caso.</p>`;
-    }
-    pasos.push(htmlLosetas);
-
-    // Paso 2: Escena del crimen + PJs
-    const escena = caso.escena_crimen;
-    const inicio = caso.punto_inicio;
-    let htmlEscena = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Escena y posiciones iniciales</p>`;
-    if (escena) htmlEscena += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0 0 .75rem;">Colocad el token de cadáver en: <strong style="color:var(--oro2);">${nom(escena)}</strong></p>`;
-    if (inicio) htmlEscena += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Todos los jugadores comienzan en: <strong style="color:var(--oro2);">${nom(inicio)}</strong></p>`;
-    pasos.push(htmlEscena);
-
-    // Paso 3: PNJs
-    const pnjsConPos = pnjs.filter(p => p.posicion_inicial);
-    if (pnjsConPos.length > 0) {
-      let htmlPnj = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Posición inicial de los PNJ</p>`;
-      htmlPnj += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0;padding-left:1.2rem;">`;
-      pnjsConPos.forEach(p => {
-        htmlPnj += `<li><strong style="color:var(--txt);">${p.nombre}</strong> — ${nom(p.posicion_inicial)}</li>`;
-      });
-      htmlPnj += `</ul>`;
-      pasos.push(htmlPnj);
-    }
-
-    // Paso 4: Cerraduras + Herramienta
-    const cerraduras = caso.losetas_cerradas_inicial || [];
-    const herramienta = caso.herramienta_ganzua;
-    let htmlCerr = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Cerraduras y herramienta</p>`;
-    if (cerraduras.length > 0) {
-      htmlCerr += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);margin:0 0 .5rem;">Colocad un token de cerradura en:</p>`;
-      htmlCerr += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0 0 .75rem;padding-left:1.2rem;">`;
-      cerraduras.forEach(c => {
-        htmlCerr += `<li><strong style="color:var(--txt);">${nom(c.id)}</strong> (FOR ${c.dificultad_for} para forzar)</li>`;
-      });
-      htmlCerr += `</ul>`;
-    }
-    if (herramienta) htmlCerr += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Colocad el token de herramienta en: <strong style="color:var(--oro2);">${nom(herramienta)}</strong></p>`;
-    pasos.push(htmlCerr);
-
-    // Mostrar pasos secuencialmente
-    this._montajePasos = pasos;
-    this._montajePasoActual = 0;
-    this._mostrarPasoMontaje();
-  },
-
-  _mostrarPasoMontaje() {
-    const pasos = this._montajePasos || [];
-    const idx = this._montajePasoActual || 0;
-    const cont = document.getElementById('montaje-contenido');
-    const btn  = document.getElementById('montaje-btn');
-    if (!cont || !btn) { console.warn('[Montaje] elementos no encontrados'); return; }
-
-    cont.innerHTML = pasos[idx] || '';
-
-    const esUltimo = idx >= pasos.length - 1;
-    btn.textContent = esUltimo ? '✓ Hecho, preparar las cartas' : 'Siguiente →';
-    btn.onclick = () => {
-      if (esUltimo) {
-        document.getElementById('overlay-montaje').classList.remove('activo'); document.getElementById('overlay-montaje').style.display = '';
-        UI.mostrarPrepMaterial();
-      } else {
-        this._montajePasoActual++;
-        this._mostrarPasoMontaje();
-      }
-    };
-
-    // Indicador de paso
-    const ind = document.getElementById('montaje-indicador');
-    if (ind) ind.textContent = `${idx + 1} / ${pasos.length}`;
-
-    document.getElementById('overlay-montaje').classList.add('activo');
-  },
-
-  mostrarPrepMaterial() {
-    const pasos = [
-      `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Cartas de Pista</p>
-       <p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Preparad las cartas de Pista del caso en dos mazos boca abajo: el mazo de <strong>pistas descubiertas</strong> y el mazo de <strong>pistas interpretadas</strong>.</p>`,
-
-      `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Cartas de Exploración</p>
-       <p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Sacad las cartas de Exploración del caso. Colocad cada carta <strong>boca abajo en su loseta correspondiente</strong>, ordenadas de menor a mayor dificultad — la de menor dificultad queda arriba del todo. Incluye las cartas de la escena del crimen.</p>`,
-
-      `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Mazo de Resolución</p>
-       <p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Barajad el mazo de Resolución. Cada jugador roba <strong>6 cartas</strong> (límite de mano: 6).</p>`,
-
-      `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Reloj y Alerta</p>
-       <p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Colocad el Reloj en posición <strong>1 (Anochecer)</strong>. Alerta en <strong>0</strong>.</p>`,
-    ];
-
-    this._prepPasos = pasos;
-    this._prepPasoActual = 0;
-    this._mostrarPasoPrep();
-  },
-
-  _mostrarPasoPrep() {
-    const pasos = this._prepPasos || [];
-    const idx = this._prepPasoActual || 0;
-    const cont = document.getElementById('prep-contenido');
-    const btn  = document.getElementById('prep-btn');
-    const ind  = document.getElementById('prep-indicador');
-    if (!cont || !btn) { console.warn('[Prep] elementos no encontrados'); return; }
-
-    cont.innerHTML = pasos[idx] || '';
-    if (ind) ind.textContent = `${idx + 1} / ${pasos.length}`;
-
-    const esUltimo = idx >= pasos.length - 1;
-    btn.textContent = esUltimo ? '✓ Hecho, comenzar investigación' : 'Siguiente →';
-    btn.onclick = () => {
-      if (esUltimo) {
-        document.getElementById('overlay-prep-cartas').classList.remove('activo');
-        document.getElementById('overlay-prep-cartas').style.display = '';
-        this.irAPartida();
-      } else {
-        this._prepPasoActual++;
-        this._mostrarPasoPrep();
-      }
-    };
-
-    document.getElementById('overlay-prep-cartas').classList.add('activo');
-  },
-
-  // ─── DESHACER ÚLTIMA ACCIÓN ────────────────────────────────────────────────
-  _snapshot() {
-    try {
-      this._estadoAnterior = JSON.parse(JSON.stringify(estado));
-    } catch(e) {
-      this._estadoAnterior = null;
-    }
-  },
-
-  _mostrarBtnDeshacer(visible) {
-    const btn = document.getElementById('btn-deshacer');
-    if (btn) btn.style.display = visible ? 'flex' : 'none';
-  },
-
-  deshacerAccion() {
-    if (!this._estadoAnterior) return;
-    if (!confirm('¿Deshacer la última acción?')) return;
-    estado = this._estadoAnterior;
-    this._estadoAnterior = null;
-    guardarEstado();
-    this._mostrarBtnDeshacer(false);
-    this.cerrarOverlay('resultado');
-    this.cerrarOverlay('interrogatorio');
-    this.cerrarOverlay('pistas');
-    this.renderizarPartida();
-    this._renderAlerta();
-    this._renderSospecha();
-    Mapa.renderizar();
-  },
-
   irAInicio() {
-    document.querySelectorAll('.overlay-modal').forEach(o => {
-      o.style.display = '';
-      o.classList.remove('activo');
-    });
     this._mostrarPantalla('inicio');
   },
 
   irAConfig() {
-    document.querySelectorAll('.overlay-modal').forEach(o => {
-      o.style.display = '';
-      o.classList.remove('activo');
-    });
     Config.inicializar();
     this._mostrarPantalla('config');
   },
@@ -206,9 +16,9 @@ const UI = {
   irAPartida() {
     this._mostrarPantalla('partida');
     Promise.all([
-      typeof cargarSucesos === 'function' ? cargarSucesos() : Promise.resolve(),
+      cargarSucesos(),
       typeof precargarAvatares === 'function' ? precargarAvatares() : Promise.resolve(),
-      typeof cargarCartasExploracion === 'function' ? cargarCartasExploracion(estado?.caso_id) : Promise.resolve()
+      typeof cargarCartasExploracion === 'function' ? cargarCartasExploracion(estado.caso_id) : Promise.resolve()
     ]).then(() => {
       this.renderizarPartida();
       setTimeout(() => Mapa.renderizar(), 80);
@@ -284,12 +94,12 @@ const UI = {
       const div = document.createElement('div');
       div.className = 'casilla-alerta';
       if (i <= estado.alerta) {
-        if (i <= 2)       div.classList.add('a-verde');
-        else if (i <= 4)  div.classList.add('a-lima');
-        else if (i <= 6)  div.classList.add('a-ambar');
-        else if (i <= 8)  div.classList.add('a-naranja');
-        else if (i === 9) div.classList.add('a-rojo');
-        else              div.classList.add('a-critico');
+        if (i <= 2)       div.classList.add('a0');
+        else if (i <= 4)  div.classList.add('a3');
+        else if (i <= 6)  div.classList.add('a5');
+        else if (i <= 8)  div.classList.add('a7');
+        else if (i === 9) div.classList.add('a9');
+        else              div.classList.add('a10');
       }
       container.appendChild(div);
     }
@@ -383,7 +193,7 @@ const UI = {
              onerror="this.style.display='none'"
              style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid ${colorUI};flex-shrink:0;">
         <div class="jug-info">
-          <p class="jug-nombre">${pjCorto}</p>
+          <p class="jug-nombre">${j.nombre}</p>
           <p class="jug-pj" style="color:${colorUI};">${pjCorto}</p>
           <p class="jug-hab">${pj.habilidad_nombre}</p>
           <p class="jug-loseta">📍 ${this._nombreLoseta(j.loseta_actual)}</p>
@@ -421,104 +231,83 @@ const UI = {
 
   // Muestra todas las reacciones de la transición de fase en una sola pantalla
   _mostrarReaccionesFase(fase, reacciones_por_pnj) {
-    const pasos = [];
-    pasos.push({ tipo: 'intro', fase });
+    // reacciones_por_pnj: [{ pnj_id, reacciones: [{nivel, reaccion}] }]
+    const container = document.getElementById('reaccion-cont');
+    container.innerHTML = '';
+
+    // Encabezado de transición
+    const tit = document.createElement('p');
+    tit.className = 'drw-titulo';
+    const nomFase = { medianoche: 'Medianoche', madrugada: 'Madrugada' };
+    tit.textContent = `Cambio de fase — ${nomFase[fase] || fase}`;
+    container.appendChild(tit);
+
+    const intro = document.createElement('p');
+    intro.style.cssText = 'font-family:var(--f3);font-size:.95rem;color:#a09080;font-style:italic;margin:0 0 1rem;text-align:center;';
+    const _faseTextos = { medianoche: 'La oscuridad se instala en Blackmoor Hall. Los ánimos se crispan.', madrugada: 'Las horas avanzan sin piedad. Nadie puede ya disimular sus nervios.' };
+    intro.textContent = _faseTextos[fase] || 'La tensión se intensifica.';
+    // Indicador mecánico separado
+    const _introMec = document.createElement('p');
+    _introMec.style.cssText = 'font-family:var(--f2);font-size:.72rem;letter-spacing:.1em;color:#a08060;margin:0 0 .75rem;text-align:center;';
+    _introMec.textContent = 'Sospecha +1 a todos los personajes';
+    container.insertBefore(_introMec, intro.nextSibling);
+    container.appendChild(intro);
+
+    // Reacciones de cada PNJ con texto del Libro de Casos
     reacciones_por_pnj.forEach(({ pnj_id, reacciones }) => {
+      const pnjDef = getPNJ(pnj_id);
       reacciones.forEach(({ nivel, reaccion }) => {
         if (!reaccion?.texto) return;
-        pasos.push({ tipo: 'reaccion', pnj_id, nivel, reaccion });
-      });
-    });
 
-    let idx = 0;
-    const nomFase = { medianoche: 'Medianoche', madrugada: 'Madrugada' };
-    const _faseTextos = {
-      medianoche: 'La oscuridad se instala en Blackmoor Hall. Los ánimos se crispan.',
-      madrugada:  'Las horas avanzan sin piedad. Nadie puede ya disimular sus nervios.'
-    };
+        const sep = document.createElement('div');
+        sep.style.cssText = 'border-top:1px solid #3a2e20;margin:.75rem 0 .6rem;';
+        container.appendChild(sep);
 
-    const renderPaso = () => {
-      const container = document.getElementById('reaccion-cont');
-      container.innerHTML = '';
-      const paso = pasos[idx];
-      const esUltimo = idx === pasos.length - 1;
-
-      if (paso.tipo === 'intro') {
-        const tit = document.createElement('p');
-        tit.className = 'drw-titulo';
-        tit.textContent = `Cambio de fase \u2014 ${nomFase[paso.fase] || paso.fase}`;
-        container.appendChild(tit);
-
-        const mec = document.createElement('p');
-        mec.style.cssText = 'font-family:var(--f2);font-size:.72rem;letter-spacing:.1em;color:#a08060;margin:0 0 .75rem;text-align:center;';
-        mec.textContent = 'Sospecha +1 a todos los personajes';
-        container.appendChild(mec);
-
-        const intro = document.createElement('p');
-        intro.style.cssText = 'font-family:var(--f3);font-size:.95rem;color:#a09080;font-style:italic;margin:0 0 1rem;text-align:center;';
-        intro.textContent = _faseTextos[paso.fase] || 'La tensión se intensifica.';
-        container.appendChild(intro);
-
-        if (pasos.length === 1) {
-          const noReac = document.createElement('p');
-          noReac.style.cssText = 'font-family:var(--f3);color:#a09080;font-style:italic;margin-top:.5rem;';
-          noReac.textContent = 'Los personajes encajan la noticia en silencio.';
-          container.appendChild(noReac);
-        }
-
-      } else {
-        const pnjDef = getPNJ(paso.pnj_id);
         const badge = document.createElement('div');
         badge.style.cssText = 'margin-bottom:.5rem;';
-        badge.innerHTML = `<span class="badge badge-rojo">${pnjDef?.nombre || paso.pnj_id}</span>`;
+        badge.innerHTML = `<span class="badge badge-rojo">${pnjDef?.nombre || pnj_id}</span>`;
         container.appendChild(badge);
 
         const box = document.createElement('div');
         box.className = 'interrog-texto';
-        box.innerHTML = this._renderTextoNarrativo(paso.reaccion.texto);
+        box.innerHTML = this._renderTextoNarrativo(reaccion.texto);
         container.appendChild(box);
 
-        const efectos = paso.reaccion.efectos || paso.reaccion.efectos_inmediatos || [];
+        // Efectos si los hay
+        const efectos = reaccion.efectos || reaccion.efectos_inmediatos || [];
         if (efectos.length > 0) {
-          const efDiv = document.createElement('div');
-          efDiv.className = 'respuesta-efectos';
+          const efectosDiv = document.createElement('div');
+          efectosDiv.className = 'respuesta-efectos';
           efectos.forEach(ef => {
-            const txt = this._textoEfecto(ef);
-            if (!txt) return;
             const chip = document.createElement('span');
+            const _efTxt1 = this._textoEfecto(ef);
+            if (!_efTxt1) return;
             chip.className = 'badge badge-rojo';
-            chip.textContent = txt;
-            efDiv.appendChild(chip);
+            chip.textContent = _efTxt1;
+            efectosDiv.appendChild(chip);
           });
-          container.appendChild(efDiv);
+          container.appendChild(efectosDiv);
         }
-      }
+      });
+    });
 
-      if (pasos.length > 1) {
-        const prog = document.createElement('p');
-        prog.style.cssText = 'font-family:var(--f2);font-size:.7rem;color:#6a5a40;text-align:center;margin:.75rem 0 0;';
-        prog.textContent = `${idx + 1} / ${pasos.length}`;
-        container.appendChild(prog);
-      }
+    // Si no hay reacciones con texto: mostrar solo la intro
+    const hayTexto = reacciones_por_pnj.some(r => r.reacciones.some(({reaccion}) => reaccion?.texto));
+    if (!hayTexto) {
+      const noReac = document.createElement('p');
+      noReac.style.cssText = 'font-family:var(--f3);color:#a09080;font-style:italic;margin-top:.5rem;';
+      noReac.textContent = 'Los personajes encajan la noticia en silencio.';
+      container.appendChild(noReac);
+    }
 
-      const btn = document.createElement('button');
-      btn.className = 'btn btn-primario btn-bloque mt-md';
-      btn.textContent = esUltimo ? 'Continuar' : 'Siguiente \u2192';
-      btn.onclick = () => {
-        if (esUltimo) {
-          this.cerrarOverlay('reaccion');
-          // Si venimos de un cambio de fase, mostrar el overlay de inicio de fase ahora
-          setTimeout(() => this.mostrarInicioFase(estado.ronda, estado.fase), 150);
-        }
-        else { idx++; renderPaso(); }
-      };
-      container.appendChild(btn);
-    };
+    const btnCerrar = document.createElement('button');
+    btnCerrar.className = 'btn btn-primario btn-bloque mt-md';
+    btnCerrar.textContent = 'Continuar';
+    btnCerrar.onclick = () => this.cerrarOverlay('reaccion');
+    container.appendChild(btnCerrar);
 
-    renderPaso();
     this._abrirOverlay('reaccion');
   },
-
 
   _mostrarReacciones(pnj_id, reacciones) {
     const pnjDef = getPNJ(pnj_id);
@@ -797,9 +586,11 @@ const UI = {
       // Verificar si ya se usó esta pista con este PNJ
       const entradaFound = typeof _encontrarEntrada === 'function' ? _encontrarEntrada(pnj_id, pista_id) : null;
       if (!entradaFound) return; // Sin entrada ni _resto: no mostrar
-      // Bloquear si ya se usó la entrada específica para esta pista con este PNJ
-      const esResto = entradaFound.key.endsWith('_resto');
-      const yaUsada = !esResto && estado.pnj[pnj_id].interrogatorios_usados.includes(entradaFound.key);
+      const entradaId = entradaFound.key;
+      // Para entradas _resto: nunca bloquear (la respuesta genérica siempre está disponible)
+      // Para entradas específicas: bloquear si ya se usó esa entrada concreta
+      const esResto = entradaId.endsWith('_resto');
+      const yaUsada = !esResto && estado.pnj[pnj_id].interrogatorios_usados.includes(entradaId);
       if (yaUsada) return;
 
       const btn = document.createElement('button');
@@ -822,7 +613,6 @@ const UI = {
   },
 
   _resolverInterrogatorioUI(pnj_id, pista_id) {
-    this._snapshot();
     const calc = calcularDificultad(pnj_id, pista_id);
     if (!calc || calc.bloqueado) {
       this._mostrarNotificacion('Bloqueado', calc?.razon || 'No hay entrada para esta combinación.');
@@ -838,7 +628,7 @@ const UI = {
 
     const jugIdx = this._jugIdxInterrogatorio ?? 0;
     const jug = estado.jugadores[jugIdx];
-    const pjNombre = PERSONAJES[jug?.personaje]?.nombre || jug?.personaje || '';
+    const pjNombre = PERSONAJES[jug?.personaje]?.nombre || jug?.nombre || '';
 
     const container = document.getElementById('interrog-cont');
     container.innerHTML = '';
@@ -873,33 +663,6 @@ const UI = {
     instrEl.textContent = '¿Cuál es el resultado de la prueba?';
     container.appendChild(instrEl);
 
-    // Selector de enfoque
-    let _enfoqueDecididoInt = false;
-    const enfoqueWrapInt = document.createElement('div');
-    enfoqueWrapInt.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.75rem;';
-    const mkEBI = (label) => {
-      const b = document.createElement('button');
-      b.style.cssText = 'flex:1;padding:.5rem .4rem;border-radius:8px;font-family:var(--f2);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;touch-action:manipulation;';
-      b.textContent = label;
-      return b;
-    };
-    const btnCautInt = mkEBI('🛡 Cauteloso');
-    const btnDecInt  = mkEBI('⚔ Decidido · +1 Alerta');
-    const actualizarEnfoqueInt = () => {
-      btnCautInt.style.background  = !_enfoqueDecididoInt ? 'rgba(80,160,80,.2)'  : 'rgba(0,0,0,.2)';
-      btnCautInt.style.borderColor = !_enfoqueDecididoInt ? 'rgba(80,160,80,.5)'  : 'rgba(255,255,255,.1)';
-      btnCautInt.style.color       = !_enfoqueDecididoInt ? '#81c784' : '#555';
-      btnDecInt.style.background   =  _enfoqueDecididoInt ? 'rgba(200,80,40,.2)'  : 'rgba(0,0,0,.2)';
-      btnDecInt.style.borderColor  =  _enfoqueDecididoInt ? 'rgba(200,80,40,.5)'  : 'rgba(255,255,255,.1)';
-      btnDecInt.style.color        =  _enfoqueDecididoInt ? '#e07050' : '#555';
-    };
-    btnCautInt.onclick = () => { _enfoqueDecididoInt = false; actualizarEnfoqueInt(); };
-    btnDecInt.onclick  = () => { _enfoqueDecididoInt = true;  actualizarEnfoqueInt(); };
-    actualizarEnfoqueInt();
-    enfoqueWrapInt.appendChild(btnCautInt);
-    enfoqueWrapInt.appendChild(btnDecInt);
-    container.appendChild(enfoqueWrapInt);
-
     const resultados = [
       { id: 'exito',   label: '✓ Éxito',   color: '#4caf50' },
       { id: 'fracaso', label: '✗ Fracaso', color: '#ef9a9a' },
@@ -913,7 +676,6 @@ const UI = {
       btn.style.marginBottom = '0.375rem';
       btn.textContent = label;
       btn.onclick = () => {
-        if (_enfoqueDecididoInt) subirAlerta(1, 'Enfoque decidido');
         const res = resolverInterrogatorio(pnj_id, pista_id, id);
         if (res) this._mostrarResultadoInterrogatorio(pnj_id, pista_id, res);
       };
@@ -928,7 +690,6 @@ const UI = {
   },
 
   _mostrarResultadoInterrogatorio(pnj_id, pista_id, res) {
-    this._mostrarBtnDeshacer(true);
     if (!res || res.bloqueado) {
       this._mostrarNotificacion('Bloqueado', res?.razon || 'Error en interrogatorio.');
       return;
@@ -986,8 +747,8 @@ const UI = {
       container.appendChild(ojoDiv);
     }
 
-    // Prensa (solo Periodista en fracaso/pifia)
-    if (res.prensa && personaje.habilidad_id === 'olfato_periodistico' && (res.tipo_resultado === 'fracaso' || res.tipo_resultado === 'pifia')) {
+    // Prensa (solo Periodista en éxito)
+    if (res.prensa && personaje.habilidad_id === 'olfato_periodistico' && res.tipo_resultado !== 'fracaso') {
       const prensaDiv = document.createElement('div');
       prensaDiv.className = 'interrog-texto';
       prensaDiv.style.borderColor = '#1a5276';
@@ -999,10 +760,7 @@ const UI = {
     btnCerrar.className = 'btn btn-primario btn-bloque mt-md';
     btnCerrar.textContent = 'Continuar';
     btnCerrar.onclick = () => {
-      // Aplicar efectos AHORA, después de que el jugador ha leído el resultado
-      confirmarInterrogatorio(res);
-
-      // Marcar acción como ejecutada
+      // Marcar acción como ejecutada SOLO ahora (el interrogatorio fue efectivo)
       if (this._pendienteAccionInterrogatorio) {
         this._pendienteAccionInterrogatorio();
         this._pendienteAccionInterrogatorio = null;
@@ -1027,11 +785,6 @@ const UI = {
   },
 
   // ─── PISTAS & DEDUCCIONES ──────────────────────────────────────────────────
-
-  abrirPistasConAccion(jugIdx) {
-    this._pendienteAccionDeducir = jugIdx;
-    this.abrirPistas();
-  },
 
   abrirPistas() {
     const container = document.getElementById('pistas-cont');
@@ -1070,10 +823,9 @@ const UI = {
         const flex = document.createElement('div');
         flex.style.cssText = 'display:flex; flex-wrap:wrap; gap:0.375rem; margin-bottom:1rem;';
         pendientesInterp.forEach(p_id => {
-          const color = typeof getColorPista === 'function' ? getColorPista(p_id) : null;
           const chip = document.createElement('span');
-          chip.className = 'pista-chip descubierta' + (color ? ` pista-${color}` : '');
-          chip.textContent = (color ? '◆ ' : '') + _nomPista(p_id);
+          chip.className = 'pista-chip descubierta';
+          chip.textContent = `${_nomPista(p_id)}`;
           flex.appendChild(chip);
         });
         container.appendChild(flex);
@@ -1093,9 +845,8 @@ const UI = {
       const flex2 = document.createElement('div');
       flex2.style.cssText = 'display:flex; flex-wrap:wrap; gap:0.375rem; margin-bottom:1rem;';
       estado.pistas_interpretadas.forEach(p_id => {
-        const color = typeof getColorPista === 'function' ? getColorPista(p_id) : null;
         const chip = document.createElement('span');
-        chip.className = 'pista-chip interpretada' + (color ? ` pista-${color}` : '');
+        chip.className = 'pista-chip interpretada';
         chip.textContent = `◆ ${_nomPista(p_id)}`;
         flex2.appendChild(chip);
       });
@@ -1117,7 +868,7 @@ const UI = {
       const desc = document.createElement('p');
       desc.className = 'texto-sutil italica';
       desc.style.marginBottom = '0.75rem';
-      desc.textContent = `Selecciona dos pistas interpretadas para combinarlas. (Variante ${estado.variante || '?'})`;
+      desc.textContent = 'Selecciona dos pistas interpretadas para combinarlas.';
       container.appendChild(desc);
 
       this._renderSelectorDeduccion(container);
@@ -1127,8 +878,6 @@ const UI = {
   },
 
   _renderSelectorDeduccion(container) {
-    if (this._pendienteAccionDeducir == null) return;
-
     let seleccionadas = [];
     const _cartasDed = (typeof _CARTAS_DATOS !== 'undefined' && _CARTAS_DATOS)
       ? (_CARTAS_DATOS[estado.caso_id]?.cartas || []) : [];
@@ -1136,20 +885,13 @@ const UI = {
       const c = _cartasDed.find(x => x.pista_id === pid);
       return c ? (c.pista_nombre || c.titulo || pid) : pid;
     };
-    const _color = (pid) => typeof getColorPista === 'function' ? getColorPista(pid) : null;
-
-    const avisoColor = document.createElement('p');
-    avisoColor.className = 'texto-sutil italica';
-    avisoColor.style.cssText = 'margin-bottom:0.5rem; min-height:1.2em;';
-    avisoColor.textContent = '';
 
     const flex = document.createElement('div');
     flex.style.cssText = 'display:flex; flex-wrap:wrap; gap:0.375rem; margin-bottom:0.75rem;';
     estado.pistas_interpretadas.forEach(p_id => {
-      const col = _color(p_id);
       const chip = document.createElement('button');
-      chip.className = 'pista-chip interpretada' + (col ? ` pista-${col}` : '');
-      chip.textContent = '◆ ' + _nomPista(p_id);
+      chip.className = 'pista-chip interpretada';
+      chip.textContent = _nomPista(p_id);
       chip.dataset.id = p_id;
       chip.onclick = () => {
         if (chip.classList.contains('seleccionada')) {
@@ -1159,41 +901,17 @@ const UI = {
           chip.classList.add('seleccionada');
           seleccionadas.push(p_id);
         }
-        if (seleccionadas.length === 2) {
-          const c0 = _color(seleccionadas[0]);
-          const c1 = _color(seleccionadas[1]);
-          if (c0 && c1 && c0 !== c1) {
-            avisoColor.textContent = '⚠ Para deducir necesitas dos pistas del mismo color.';
-            avisoColor.style.color = '#c87c50';
-            btnDeducir.disabled = true;
-          } else {
-            const pluralColor = c0 === 'azul' ? 'azules' : 'rojas';
-            avisoColor.textContent = c0 ? `Deducción de ${pluralColor} lista.` : '';
-            avisoColor.style.color = c0 === 'roja' ? '#c85050' : '#5080c8';
-            btnDeducir.disabled = false;
-          }
-        } else {
-          avisoColor.textContent = '';
-          btnDeducir.disabled = seleccionadas.length !== 2;
-        }
+        btnDeducir.disabled = seleccionadas.length !== 2;
       };
       flex.appendChild(chip);
     });
     container.appendChild(flex);
-    container.appendChild(avisoColor);
 
     const btnDeducir = document.createElement('button');
     btnDeducir.className = 'btn btn-primario btn-bloque';
     btnDeducir.textContent = 'Deducir';
     btnDeducir.disabled = true;
     btnDeducir.onclick = () => {
-      this._snapshot();
-      // Consumir acción ahora que se ejecuta la deducción
-      if (this._pendienteAccionDeducir != null) {
-        usarAccion(this._pendienteAccionDeducir, 'deducir');
-        guardarEstado();
-        this._pendienteAccionDeducir = null;
-      }
       const res = resolverDeduccion(seleccionadas[0], seleccionadas[1]);
       const nomsSel = seleccionadas.map(pid => {
         const c = (typeof _CARTAS_DATOS !== 'undefined' && _CARTAS_DATOS)
@@ -1206,7 +924,6 @@ const UI = {
   },
 
   _mostrarResultadoDeduccion(res, pistas, noms) {
-    this._mostrarBtnDeshacer(true);
     const container = document.getElementById('resultado-cont');
     const etiquetas = noms || pistas;
     document.getElementById('resultado-tit').textContent = `Deducción: ${etiquetas.join(' + ')}`;
@@ -1216,7 +933,7 @@ const UI = {
       const box = document.createElement('div');
       box.className = 'interrog-texto';
       box.style.borderColor = 'var(--gris-claro)';
-      box.textContent = `Esta combinación no tiene relación en la Variante ${estado.variante || '?'}. Comprueba que estás consultando el libro de caso correcto.`;
+      box.textContent = 'No encontráis relación directa entre estas dos pistas. Quizás necesitáis más contexto.';
       container.appendChild(box);
     } else {
       const box = document.createElement('div');
@@ -1244,17 +961,6 @@ const UI = {
         aviso.style.display = 'block; text-align:center; padding:0.5rem;';
         aviso.textContent = '⚖ ¡Acusación desbloqueada!';
         container.appendChild(aviso);
-      } else {
-        // Mostrar progreso: qué colores faltan
-        const tieneRoja = estado.deducciones_resueltas?.some(d => d.color === 'roja');
-        const tieneAzul = estado.deducciones_resueltas?.some(d => d.color === 'azul');
-        if (tieneRoja || tieneAzul) {
-          const progreso = document.createElement('p');
-          progreso.style.cssText = 'font-family:var(--f2);font-size:.75rem;letter-spacing:.08em;color:#a09060;text-align:center;margin-top:.75rem;';
-          const falta = !tieneRoja ? '🔴 Falta una deducción roja' : '🔵 Falta una deducción azul';
-          progreso.textContent = falta;
-          container.appendChild(progreso);
-        }
       }
     }
 
@@ -1323,14 +1029,6 @@ const UI = {
           ? `${descEfecto} en ${rl.losetaNom}. No había nadie allí.`
           : `No había nadie en ${rl.losetaNom}.`;
       }
-    } else if (carta._resultado_rumores) {
-      const r = carta._resultado_rumores;
-      const umbral = carta.efectos?.find(e => e.tipo === 'alerta_si_sospecha')?.umbral || 2;
-      mecaTexto = `${r.pnjNombre}: +1 Sospecha (${r.sosp_antes} → ${r.sosp_despues}).`;
-      if (r.sosp_despues >= umbral) mecaTexto += ` Sospecha ≥${umbral}: +1 Alerta.`;
-    } else if (carta._resultado_puerta_bloqueada) {
-      const r = carta._resultado_puerta_bloqueada;
-      mecaTexto = `${r.losetaNombre} queda bloqueada hasta final de la próxima ronda. +1 Alerta.`;
     }
     document.getElementById('suc-mecanica').textContent = mecaTexto;
 
@@ -1408,17 +1106,6 @@ const UI = {
         logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#c8d8b8;line-height:1.7;">Hobbes completa su ronda sin novedades. Esta noche no hay nada que reprocharos.</p>`;
       }
 
-    } else if (carta._resultado_lluvia) {
-      const r = carta._resultado_lluvia;
-      logEl.style.display = 'block';
-      if (r.pnjs.length === 0) {
-        logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:var(--txt3);line-height:1.7;">No había nadie en el Jardín. El efecto de dificultad se aplica igualmente hasta final de la próxima ronda.</p>`;
-      } else {
-        const nombres = r.pnjs.map(p => `<strong>${p.nombre}</strong>`).join(', ');
-        const verbo = r.pnjs.length === 1 ? 'se refugia' : 'se refugian';
-        logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;">${nombres} ${verbo} en <em>${r.nomDest}</em>.</p>`;
-      }
-
     } else if (carta._resultado_viento) {
       const mov = carta._resultado_viento;
       logEl.style.display = 'block';
@@ -1427,35 +1114,6 @@ const UI = {
       } else {
         logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;"><strong>${mov.pnjNombre}</strong> permanece inmóvil.</p>`;
       }
-
-    } else if (carta._resultado_rumores) {
-      const r = carta._resultado_rumores;
-      logEl.style.display = 'block';
-      const sosp_umbral = carta.efectos?.find(e => e.tipo === 'alerta_si_sospecha')?.umbral || 2;
-      const subeAlerta = r.sosp_despues >= sosp_umbral;
-      let html = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;">`;
-      html += `<strong>${r.pnjNombre}</strong> se agita: +1 Sospecha (${r.sosp_antes} → ${r.sosp_despues}).`;
-      if (subeAlerta) html += ` Sospecha ≥${sosp_umbral}: +1 Alerta.`;
-      html += `</p>`;
-      logEl.innerHTML = html;
-
-    } else if (carta._resultado_movimiento_general) {
-      const r = carta._resultado_movimiento_general;
-      logEl.style.display = 'block';
-      const lineas = r.movs.map(m => {
-        if (m.yaEstaba) return `<strong>${m.nombre}</strong> ya está en ${r.nomDestino}.`;
-        if (m.hasta)    return `<strong>${m.nombre}</strong>: ${m.nomDesde} → <em>${m.nomHasta}</em>.`;
-        return `<strong>${m.nombre}</strong> no puede moverse.`;
-      });
-      logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.9;">${lineas.join('<br>')}</p>`;
-
-    } else if (carta._resultado_puerta_bloqueada) {
-      const r = carta._resultado_puerta_bloqueada;
-      logEl.style.display = 'block';
-      logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;">
-        <strong>${r.losetaNombre}</strong> queda bloqueada hasta final de la próxima ronda.<br>
-        Nadie puede entrar ni salir. Aparece en el mapa con el icono de tablones.
-      </p>`;
     }
   },
 
@@ -1532,7 +1190,7 @@ const UI = {
     // Construir texto narrativo de afectados
     const nombresAf = jPresentes.map(j => {
       const pjNom = PERSONAJES[j.personaje]?.nombre || j.personaje;
-      return pjNom;
+      return `${pjNom} (${j.nombre})`;
     });
     const listaAf = nombresAf.length === 0 ? null
       : nombresAf.length === 1 ? nombresAf[0]
@@ -1540,10 +1198,6 @@ const UI = {
 
     // Construir texto narrativo de efectos mecánicos
     const efectoTextos = (ef.efecto_sobre_jugadores || []).map(eaf => {
-      if (eaf.tipo === 'carta_resolucion') {
-        const signo = eaf.modificador > 0 ? '+' : '';
-        return `<span style="color:${eaf.modificador < 0 ? '#ef9a9a' : '#81c784'};">Carta de Resolución ${signo}${eaf.modificador}</span>`;
-      }
       const signo = eaf.modificador > 0 ? '+' : '';
       return `<span style="color:${eaf.modificador < 0 ? '#ef9a9a' : '#81c784'};">${eaf.atributo} ${signo}${eaf.modificador}</span>`;
     }).join(' · ');
@@ -1598,7 +1252,7 @@ const UI = {
 
       const carta   = cartas[0];
       const jugador = estado.jugadores[jugIdx != null ? jugIdx : 0];
-      const nomJug  = PERSONAJES[jugador?.personaje]?.nombre || jugador?.personaje || 'Jugador';
+      const nomJug  = jugador?.nombre || 'Jugador';
 
       // Ajuste especial (Doctor: dif. X, etc.)
       let difDisplay = carta.dificultad;
@@ -1614,24 +1268,15 @@ const UI = {
       // Modificadores de pasiva de loseta
       const jugIdxReal = jugIdx != null ? jugIdx : 0;
       if (typeof getPasivaExploracion === 'function') {
-        const pas = getPasivaExploracion(jugIdxReal, loseta, carta.atributo);
+        const pas = getPasivaExploracion(jugIdxReal, loseta);
         if (pas.modDif !== 0) {
-          difDisplay = Math.max(0, difDisplay + pas.modDif);
+          difDisplay = Math.max(1, difDisplay + pas.modDif);
         }
         if (pas.notas.length) {
           notaEsp = (notaEsp ? notaEsp + ' · ' : '') + pas.notas.join(' · ');
         }
         if (pas.anulaAlerta) {
           notaEsp = (notaEsp ? notaEsp + ' · ' : '') + 'Alerta no sube';
-        }
-      }
-
-      // Bonus de confidencia
-      if (typeof getBonusConfidenciaExploracion === 'function') {
-        const bonusConf = getBonusConfidenciaExploracion(jugIdxReal, loseta);
-        if (bonusConf !== 0) {
-          difDisplay = Math.max(0, difDisplay + bonusConf);
-          notaEsp = (notaEsp ? notaEsp + ' · ' : '') + '★ Confidencia −2 dif.';
         }
       }
 
@@ -1642,10 +1287,10 @@ const UI = {
       cab.innerHTML =
         // Atributo + dificultad destacada
         '<div style="display:flex;gap:.6rem;align-items:center;margin-bottom:.6rem;">' +
-          '<span style="font-family:var(--f2);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;' +
-            'color:#a08040;background:rgba(160,128,64,.15);border:1px solid rgba(160,128,64,.35);' +
-            'border-radius:5px;padding:4px 11px;">' + carta.atributo + '</span>' +
-          '<span style="font-family:var(--f1);font-size:1.9rem;font-weight:700;color:' + difColor + ';' +
+          '<span style="font-family:var(--f2);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;' +
+            'color:#a08040;background:rgba(160,128,64,.12);border:1px solid rgba(160,128,64,.3);' +
+            'border-radius:5px;padding:3px 9px;">' + carta.atributo + '</span>' +
+          '<span style="font-family:var(--f1);font-size:1.5rem;font-weight:700;color:' + difColor + ';' +
             'text-shadow:0 0 12px ' + difColor + '44;">Dif. ' + difDisplay + '</span>' +
         '</div>' +
         // Modificadores activos
@@ -1662,34 +1307,6 @@ const UI = {
       cartasEl.appendChild(cab);
 
       instrEl.textContent = '';
-
-      // Selector de enfoque cauteloso/decidido
-      let _enfoqueDecidido = false;
-      const enfoqueWrap = document.createElement('div');
-      enfoqueWrap.style.cssText = 'display:flex;gap:.5rem;margin-bottom:1rem;';
-      const mkEB = (label, esDec) => {
-        const b = document.createElement('button');
-        b.style.cssText = 'flex:1;padding:.55rem .4rem;border-radius:8px;font-family:var(--f2);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;touch-action:manipulation;';
-        b.innerHTML = label;
-        return b;
-      };
-      const btnCaut = mkEB('🛡 Cauteloso', false);
-      const btnDec  = mkEB('⚔ Decidido · +1 Alerta', true);
-      const actualizarEnfoque = () => {
-        btnCaut.style.cssText = btnCaut.style.cssText.replace(/background:[^;]+;/,'');
-        btnCaut.style.background  = !_enfoqueDecidido ? 'rgba(80,160,80,.2)'  : 'rgba(0,0,0,.2)';
-        btnCaut.style.borderColor = !_enfoqueDecidido ? 'rgba(80,160,80,.5)'  : 'rgba(255,255,255,.1)';
-        btnCaut.style.color       = !_enfoqueDecidido ? '#81c784' : '#555';
-        btnDec.style.background   =  _enfoqueDecidido ? 'rgba(200,80,40,.2)'  : 'rgba(0,0,0,.2)';
-        btnDec.style.borderColor  =  _enfoqueDecidido ? 'rgba(200,80,40,.5)'  : 'rgba(255,255,255,.1)';
-        btnDec.style.color        =  _enfoqueDecidido ? '#e07050' : '#555';
-      };
-      btnCaut.onclick = () => { _enfoqueDecidido = false; actualizarEnfoque(); };
-      btnDec.onclick  = () => { _enfoqueDecidido = true;  actualizarEnfoque(); };
-      actualizarEnfoque();
-      enfoqueWrap.appendChild(btnCaut);
-      enfoqueWrap.appendChild(btnDec);
-      cartasEl.appendChild(enfoqueWrap);
 
       // Botones de resultado — sin texto de carta (el jugador ya tiene la carta física)
       const resultados = [
@@ -1709,10 +1326,7 @@ const UI = {
         btn.innerHTML =
           '<span style="font-size:1.5rem;flex-shrink:0;color:' + r.color + ';line-height:1;">' + r.icono + '</span>' +
           '<span style="font-family:var(--f2);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;color:' + r.color + ';">' + r.label + '</span>';
-        btn.onclick = () => {
-          if (_enfoqueDecidido) subirAlerta(1, 'Enfoque decidido');
-          this._aplicarResultadoExploracion(carta, r.key, jugIdx != null ? jugIdx : 0);
-        };
+        btn.onclick = () => this._aplicarResultadoExploracion(carta, r.key, jugIdx != null ? jugIdx : 0);
         cartasEl.appendChild(btn);
       });
 
@@ -1732,8 +1346,6 @@ const UI = {
     }
   },
   _aplicarResultadoExploracion(carta, resultado, jugIdx) {
-    this._snapshot();
-    this._mostrarBtnDeshacer(true);
     // Marcar carta como jugada
     if (!estado.exploraciones_jugadas) estado.exploraciones_jugadas = [];
     if (!estado.exploraciones_jugadas.includes(carta.id)) {
@@ -1862,8 +1474,6 @@ const UI = {
   },
 
   _ejecutarAvanceRonda() {
-    this._snapshot();
-    this._mostrarBtnDeshacer(true);
     if (!avanzarRonda()) {
       this._mostrarNotificacion('El tiempo se ha agotado', 'Las doce campanadas resuenan en Blackmoor Hall. Ya es demasiado tarde.');
       this.renderizarPartida(); Mapa.renderizar(); return;
@@ -1895,57 +1505,6 @@ const UI = {
         if (res?.reaccionesNuevas?.length > 0)
           reacciones_pendientes.push({ pnj_id: pnj.id, reacciones: res.reaccionesNuevas });
       });
-
-      // Mover PNJs a su loseta de fase
-      const claveMovimiento = estado.ronda === 5 ? 'anochecer_medianoche' : 'medianoche_madrugada';
-      const movsFase = [];
-      datosCaso.comun.pnj.forEach(pnjDef => {
-        const mov = pnjDef.movimiento?.[claveMovimiento];
-        if (!mov) return;
-        const actual = estado.pnj?.[pnjDef.id]?.loseta_actual || pnjDef.posicion_inicial;
-
-        let destino = null;
-
-        if (mov === 'patrulla' || pnjDef.movimiento?.patrulla === true) {
-          // Movimiento aleatorio por loseta conectada
-          const res = resolverMovimientoPatrulla(pnjDef.id);
-          if (res.movio) {
-            movsFase.push({ nombre: pnjDef.nombre, nomDesde: this._nombreLoseta(actual), nomHasta: this._nombreLoseta(res.destino) });
-          }
-          return;
-        }
-
-        if (typeof mov === 'object' && mov.condicion) {
-          // Movimiento condicional: evaluar condición
-          const cond = mov.condicion;
-          let cumple = true;
-          if (cond.sospecha_min !== undefined) {
-            cumple = (estado.pnj?.[pnjDef.id]?.sospecha || 0) >= cond.sospecha_min;
-          }
-          destino = cumple ? mov.destino : (mov.fallback || null);
-        } else if (typeof mov === 'string') {
-          destino = mov;
-        }
-
-        if (!destino || destino === actual) return;
-        if (typeof moverPNJ === 'function') moverPNJ(pnjDef.id, destino);
-        movsFase.push({ nombre: pnjDef.nombre, nomDesde: this._nombreLoseta(actual), nomHasta: this._nombreLoseta(destino) });
-      });
-
-      if (movsFase.length > 0) {
-        const faseNom = { medianoche: 'Medianoche', madrugada: 'Madrugada' };
-        const titulo = `Cambio de fase — ${faseNom[estado.fase] || estado.fase}`;
-        const lineas = movsFase.map(m => `${m.nombre} se retira a ${m.nomHasta}.`).join('\n');
-        setTimeout(() => this._mostrarNotificacion(titulo, lineas), 200);
-      }
-
-      // Notificación: todos los jugadores roban 2 cartas de Resolución
-      const faseNomCartas = { medianoche: 'Medianoche', madrugada: 'Madrugada' };
-      setTimeout(() => this._mostrarNotificacion(
-        `${faseNomCartas[estado.fase] || 'Nueva fase'} — Cartas de Resolución`,
-        'Todos los jugadores roban 2 cartas del mazo de Resolución.'
-      ), 250);
-
       // Mostrar todas las reacciones en una sola pantalla (no una por PNJ)
       setTimeout(() => this._mostrarReaccionesFase(estado.fase, reacciones_pendientes), 350);
     }
@@ -1953,10 +1512,7 @@ const UI = {
     this.renderizarPartida();
     Mapa.renderizar();
     // Mostrar overlay de inicio de nueva fase de jugadores
-    // En cambio de fase, se encadena DESPUÉS de las reacciones (ver _mostrarReaccionesFase)
-    if (estado.ronda !== 5 && estado.ronda !== 9) {
-      setTimeout(() => this.mostrarInicioFase(estado.ronda, estado.fase), 300);
-    }
+    setTimeout(() => this.mostrarInicioFase(estado.ronda, estado.fase), 300);
   },
 
 
@@ -2002,12 +1558,12 @@ const UI = {
       const d = document.createElement('div');
       d.className = 'hud-alerta-pip';
       if (i <= estado.alerta) {
-        if      (i <= 2)  d.classList.add('a-verde');
-        else if (i <= 4)  d.classList.add('a-lima');
-        else if (i <= 6)  d.classList.add('a-ambar');
-        else if (i <= 8)  d.classList.add('a-naranja');
-        else if (i === 9) d.classList.add('a-rojo');
-        else              d.classList.add('a-critico');
+        if      (i <= 2)  d.classList.add('a0');
+        else if (i <= 4)  d.classList.add('a3');
+        else if (i <= 6)  d.classList.add('a5');
+        else if (i <= 8)  d.classList.add('a7');
+        else if (i === 9) d.classList.add('a9');
+        else              d.classList.add('a10');
       }
       bar.appendChild(d);
     }
@@ -2075,7 +1631,7 @@ const UI = {
       info.style.cssText = 'flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;';
       const pjCorto = pj.nombre.replace('El ','').replace('La ','');
       info.innerHTML =
-        '<span style="font-family:Cinzel,serif;font-size:.8rem;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + pjCorto + '</span>' +
+        '<span style="font-family:Cinzel,serif;font-size:.8rem;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + j.nombre + '</span>' +
         '<span style="font-family:Cinzel,serif;font-size:.7rem;color:' + colorUI + ';">' + pjCorto + '</span>' +
         '<span style="font-family:\"EB Garamond\",serif;font-size:.75rem;color:#a09080;">📍 ' + this._nombreLoseta(j.loseta_actual) + '</span>';
 
@@ -2179,107 +1735,8 @@ const UI = {
   // ─── CLÍMAX ────────────────────────────────────────────────────────────────
 
   abrirClimax() {
-    // Resetear a paso 1
-    document.getElementById('climax-paso1').style.display  = 'block';
-    document.getElementById('climax-paso2').style.display  = 'none';
-    document.getElementById('climax-paso3').style.display  = 'none';
-    document.getElementById('climax-paso4').style.display  = 'none';
-    document.getElementById('climax-paso4b').style.display = 'none';
-    document.getElementById('climax-paso5').style.display  = 'none';
-    document.getElementById('overlay-climax').style.display = 'flex';
-  },
-
-  climaxRevelarVerdad() {
-    const ac = datosVariante?.acusacion;
-    if (!ac) return;
-    document.getElementById('climax-texto-verdad').textContent = ac.texto_verdad || '';
-    document.getElementById('climax-texto-resultado').textContent = ac.texto_victoria || '';
-    document.getElementById('climax-paso1').style.display = 'none';
-    document.getElementById('climax-paso2').style.display = 'block';
-  },
-
-  climaxMostrarEpilogos() {
-    document.getElementById('climax-variante').textContent = estado.variante || '';
-    document.getElementById('climax-paso2').style.display = 'none';
-    document.getElementById('climax-paso3').style.display = 'block';
-  },
-
-  climaxMostrarPuntuacion() {
-    document.getElementById('climax-paso3').style.display = 'none';
-    document.getElementById('climax-paso4').style.display = 'block';
-  },
-
-  climaxElementos(pts) {
-    estado._pts_resolucion = pts;
-    guardarEstado();
-    document.getElementById('climax-paso4').style.display  = 'none';
-    document.getElementById('climax-paso4b').style.display = 'block';
-  },
-
-  climaxImplicado(opcion) {
-    // Puntos por cada categoría
-    // — Resolución del caso
-    const ptsResolucion = estado._pts_resolucion || 0;
-
-    // — Implicado
-    const ptsImplicado = {
-      'no_token':        0,
-      'token_correcto':  3,
-      'token_nadie':     0,
-      'token_equivocado': -2,
-      'token_no_habia':  -2,
-    }[opcion] ?? 0;
-
-    // — Alerta final
-    const alerta = estado.alerta || 0;
-    const ptsAlerta = alerta <= 2 ? 3 : alerta <= 4 ? 2 : alerta <= 6 ? 1 : 0;
-
-    // — Ronda de resolución
-    const ronda = estado.ronda || 1;
-    const ptsRonda = estado.partida_terminada && !estado._alerta10
-      ? (ronda <= 8 ? 3 : ronda <= 10 ? 2 : 1)
-      : 0;
-
-    const total = Math.max(0, ptsResolucion + ptsImplicado + ptsAlerta + ptsRonda);
-
-    // Escala de resultado
-    const escala = total <= 4  ? { etiqueta: 'Fiasco',                desc: 'La verdad queda enterrada. El culpable escapa.' }
-                 : total <= 9  ? { etiqueta: 'Investigación mediocre', desc: 'Demasiados cabos sueltos. El caso se cierra con sombras de duda.' }
-                 : total <= 13 ? { etiqueta: 'Buena investigación',    desc: 'El caso se cierra con dignidad. Quedan algunos misterios sin resolver.' }
-                 : total <= 16 ? { etiqueta: 'Investigación brillante', desc: 'Pocos cabos sueltos. Blackmoor Hall puede respirar.' }
-                 :               { etiqueta: 'Resolución magistral',   desc: 'Scotland Yard os quiere en su plantilla. La verdad ha triunfado.' };
-
-    // Textos descriptivos de implicado
-    const textoImplicado = {
-      'no_token':         'Sin token de Implicado',
-      'token_correcto':   'Token en mesa · acusación correcta',
-      'token_nadie':      'Token en mesa · sin acusación',
-      'token_equivocado': 'Token en mesa · jugador equivocado',
-      'token_no_habia':   'Token en mesa · sin Implicado real',
-    }[opcion] || '';
-
-    // Desglose
-    const desglose = document.getElementById('climax-puntos-desglose');
-    desglose.innerHTML = `
-      <div style="display:grid;grid-template-columns:1fr auto;gap:.4rem .75rem;font-family:var(--f3);font-size:.9rem;">
-        <span style="color:var(--txt2);">Resolución del caso</span>
-        <span style="color:var(--oro);font-weight:700;text-align:right;">${ptsResolucion} pts</span>
-        <span style="color:var(--txt2);">Implicado <span style="font-size:.78rem;color:#8a7a5a;">(${textoImplicado})</span></span>
-        <span style="color:${ptsImplicado < 0 ? '#c85050' : 'var(--oro)'};font-weight:700;text-align:right;">${ptsImplicado >= 0 ? '+' : ''}${ptsImplicado} pts</span>
-        <span style="color:var(--txt2);">Alerta final <span style="font-size:.78rem;color:#8a7a5a;">(nivel ${alerta})</span></span>
-        <span style="color:var(--oro);font-weight:700;text-align:right;">+${ptsAlerta} pts</span>
-        <span style="color:var(--txt2);">Ronda de resolución <span style="font-size:.78rem;color:#8a7a5a;">(ronda ${ronda})</span></span>
-        <span style="color:var(--oro);font-weight:700;text-align:right;">+${ptsRonda} pts</span>
-        <span style="color:var(--txt2);border-top:1px solid rgba(138,104,24,.3);padding-top:.4rem;font-weight:700;">TOTAL</span>
-        <span style="color:var(--oro);border-top:1px solid rgba(138,104,24,.3);padding-top:.4rem;font-weight:700;text-align:right;">${total} pts</span>
-      </div>`;
-
-    document.getElementById('climax-puntos-total').textContent = `${total} puntos`;
-    document.getElementById('climax-puntos-escala').textContent = escala.etiqueta.toUpperCase();
-    document.getElementById('climax-puntos-desc').textContent = escala.desc;
-
-    document.getElementById('climax-paso4b').style.display = 'none';
-    document.getElementById('climax-paso5').style.display = 'block';
+    // Se implementará en siguiente sesión
+    this._mostrarNotificacion('Clímax', 'La pantalla de acusación final estará disponible en la próxima versión.');
   },
 
   // ─── MENÚ ──────────────────────────────────────────────────────────────────
@@ -2330,7 +1787,7 @@ const UI = {
 
     const quien = document.createElement('div');
     quien.style.cssText = `font-family:var(--f2);font-size:.8rem;color:${color};letter-spacing:.08em;margin-bottom:.75rem;`;
-    quien.textContent = pj?.nombre || j.personaje;
+    quien.textContent = `${pj?.nombre || j.personaje} (${j.nombre})`;
     cont.appendChild(quien);
 
     pendientes.forEach(pid => {
@@ -2354,25 +1811,13 @@ const UI = {
       if (!metodos.length) {
         // Sin datos de métodos aún (casos 2–5 pendientes)
         const fallback = document.createElement('div');
-        fallback.style.cssText = 'display:flex;align-items:center;gap:.75rem;margin-bottom:8px;';
-        const fbColor = info.dificultad <= 2 ? '#81c784' : info.dificultad <= 4 ? '#ffd54f' : '#ef9a9a';
-        fallback.innerHTML =
-          `<span style="font-family:var(--f2);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;` +
-          `color:#a08040;background:rgba(160,128,64,.15);border:1px solid rgba(160,128,64,.35);` +
-          `border-radius:5px;padding:4px 11px;">${info.atributo}</span>` +
-          `<span style="font-family:var(--f1);font-size:1.9rem;font-weight:700;color:${fbColor};` +
-          `text-shadow:0 0 12px ${fbColor}44;line-height:1;">Dif. ${info.dificultad}</span>`;
+        fallback.style.cssText = 'font-family:var(--f3);font-size:.85rem;color:#a09080;margin-bottom:6px;';
+        fallback.textContent = `Prueba: ${info.atributo} dif. ${info.dificultad}`;
         bloque.appendChild(fallback);
         bloque.appendChild(this._crearBotonesResultado(jugIdx, pid, info, { atributo: info.atributo, dificultad: info.dificultad }, null, onFin));
       } else {
         metodos.forEach(m => {
           try {
-            // Ocultar método si la condición oculto_si se cumple
-            if (m.oculto_si) {
-              const os = m.oculto_si;
-              if (os.pista_descubierta && (estado.pistas_descubiertas || []).includes(os.pista_descubierta)) return;
-              if (os.pista_interpretada && (estado.pistas_interpretadas || []).includes(os.pista_interpretada)) return;
-            }
             // Inyectar pista_id para calcular bonus_interpretacion
             m._pista_id = pid;
             const disp  = evaluarDisponibilidadMetodo(m, jugIdx);
@@ -2434,92 +1879,25 @@ const UI = {
       return wrap;
     }
 
-    // Bloque de dificultad destacado
-    const difBlock = document.createElement('div');
-    difBlock.style.cssText = 'display:flex;align-items:center;gap:.75rem;margin-bottom:10px;flex-wrap:wrap;';
-
-    const difColor = calc.dif <= 2 ? '#81c784' : calc.dif <= 4 ? '#ffd54f' : '#ef9a9a';
-
-    // Píldora atributo
-    const attrPill = document.createElement('span');
-    attrPill.style.cssText = 'font-family:var(--f2);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;' +
-      'color:#a08040;background:rgba(160,128,64,.15);border:1px solid rgba(160,128,64,.35);' +
-      'border-radius:5px;padding:4px 11px;white-space:nowrap;';
-    attrPill.textContent = calc.attr;
-    difBlock.appendChild(attrPill);
-
-    // Número de dificultad grande
-    const difNum = document.createElement('span');
-    difNum.style.cssText = `font-family:var(--f1);font-size:1.9rem;font-weight:700;color:${difColor};` +
-      `text-shadow:0 0 12px ${difColor}44;line-height:1;`;
-    difNum.textContent = `Dif. ${calc.dif}`;
-    difBlock.appendChild(difNum);
-
-    // Modificadores si los hay
-    if (calc.mods.length) {
-      const modSpan = document.createElement('span');
-      modSpan.style.cssText = 'font-family:var(--f3);font-size:.8rem;color:#ddc87a;' +
-        'background:rgba(200,175,80,.09);border:1px solid rgba(200,175,80,.22);' +
-        'border-radius:5px;padding:3px 8px;white-space:nowrap;';
-      modSpan.textContent = calc.mods.join(' · ');
-      difBlock.appendChild(modSpan);
-    }
-
-    wrap.appendChild(difBlock);
-
-    // Efectos en éxito/fracaso (línea secundaria)
-    const efectosLinea = [];
+    // Mostrar dificultad final con modificadores
+    const difLine = document.createElement('div');
+    difLine.style.cssText = 'font-family:var(--f2);font-size:.72rem;letter-spacing:.08em;color:#c0a060;margin-bottom:6px;';
+    let difTxt = `${calc.attr}  dif. ${calc.dif}`;
+    if (calc.mods.length) difTxt += `  (${calc.mods.join(', ')})`;
+    // Efecto adicional al éxito
     if (metodo.efecto_adicional) {
       const ea = metodo.efecto_adicional;
-      if (ea.tipo === 'sospecha_pnj') efectosLinea.push(`Éxito: +${ea.valor} Sospecha ${ea.pnj}`);
-      else if (ea.tipo === 'alerta') efectosLinea.push(`Éxito: +${ea.valor} Alerta`);
+      if (ea.tipo === 'sospecha_pnj') difTxt += `  ·  +${ea.valor} Sospecha ${ea.pnj}`;
+      else if (ea.tipo === 'alerta') difTxt += `  ·  +${ea.valor} Alerta`;
     }
-    if (metodo.efecto_fracaso) {
-      const ef = metodo.efecto_fracaso;
-      if (ef.tipo === 'sospecha_pnj') efectosLinea.push(`Fracaso: +${ef.valor} Sospecha ${ef.pnj}`);
-      else if (ef.tipo === 'alerta') efectosLinea.push(`Fracaso: +${ef.valor} Alerta`);
-    }
-    if (efectosLinea.length) {
-      const efLine = document.createElement('div');
-      efLine.style.cssText = 'font-family:var(--f2);font-size:.72rem;letter-spacing:.07em;color:#c08050;margin-bottom:6px;';
-      efLine.textContent = efectosLinea.join('  ·  ');
-      wrap.appendChild(efLine);
-    }
+    difLine.textContent = difTxt;
+    wrap.appendChild(difLine);
 
     wrap.appendChild(this._crearBotonesResultado(jugIdx, pid, info, calc, metodo, onFin));
     return wrap;
   },
 
   _crearBotonesResultado(jugIdx, pid, info, calc, metodo, onFin) {
-    const wrapper = document.createElement('div');
-
-    // Selector de enfoque cauteloso/decidido
-    let _enfoqueDecididoInterp = false;
-    const enfoqueWrapInterp = document.createElement('div');
-    enfoqueWrapInterp.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.6rem;';
-    const mkEBInterp = (label) => {
-      const b = document.createElement('button');
-      b.style.cssText = 'flex:1;padding:.45rem .3rem;border-radius:8px;font-family:var(--f2);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;touch-action:manipulation;';
-      b.textContent = label;
-      return b;
-    };
-    const btnCautInterp = mkEBInterp('🛡 Cauteloso');
-    const btnDecInterp  = mkEBInterp('⚔ Decidido · +1 Alerta');
-    const actualizarEnfoqueInterp = () => {
-      btnCautInterp.style.background  = !_enfoqueDecididoInterp ? 'rgba(80,160,80,.2)'  : 'rgba(0,0,0,.2)';
-      btnCautInterp.style.borderColor = !_enfoqueDecididoInterp ? 'rgba(80,160,80,.5)'  : 'rgba(255,255,255,.1)';
-      btnCautInterp.style.color       = !_enfoqueDecididoInterp ? '#81c784' : '#555';
-      btnDecInterp.style.background   =  _enfoqueDecididoInterp ? 'rgba(200,80,40,.2)'  : 'rgba(0,0,0,.2)';
-      btnDecInterp.style.borderColor  =  _enfoqueDecididoInterp ? 'rgba(200,80,40,.5)'  : 'rgba(255,255,255,.1)';
-      btnDecInterp.style.color        =  _enfoqueDecididoInterp ? '#e07050' : '#555';
-    };
-    btnCautInterp.onclick = () => { _enfoqueDecididoInterp = false; actualizarEnfoqueInterp(); };
-    btnDecInterp.onclick  = () => { _enfoqueDecididoInterp = true;  actualizarEnfoqueInterp(); };
-    actualizarEnfoqueInterp();
-    enfoqueWrapInterp.appendChild(btnCautInterp);
-    enfoqueWrapInterp.appendChild(btnDecInterp);
-    wrapper.appendChild(enfoqueWrapInterp);
-
     const row = document.createElement('div');
     row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;';
     [
@@ -2531,10 +1909,9 @@ const UI = {
       const btn = document.createElement('button');
       btn.style.cssText = `background:rgba(10,7,4,0.8);border:1px solid ${res.color}55;border-radius:8px;` +
         `color:${res.color};font-family:Cinzel,serif;font-size:.7rem;padding:8px 2px;cursor:pointer;` +
-        `display:flex;flex-direction:column;align-items:center;gap:2px;min-height:50px;touch-action:manipulation;`;
+        `display:flex;flex-direction:column;align-items:center;gap:2px;min-height:50px;`;
       btn.innerHTML = `<span style="font-size:1.1rem;">${res.icon}</span><span>${res.label}</span>`;
       btn.addEventListener('click', () => {
-        if (_enfoqueDecididoInterp) subirAlerta(1, 'Enfoque decidido');
         this._resolverInterpretacion(jugIdx, pid, info, metodo, res.key, onFin);
       });
       row.appendChild(btn);
@@ -2576,14 +1953,9 @@ const UI = {
       if (!estado.pistas_interpretadas.includes(pid)) {
         estado.pistas_interpretadas.push(pid);
       }
-      if (estado.bonus_interpretacion?.[pid]) {
-        delete estado.bonus_interpretacion[pid][jugIdx];
-        if (Object.keys(estado.bonus_interpretacion[pid]).length === 0) {
-          delete estado.bonus_interpretacion[pid];
-        }
-      }
+      if (estado.bonus_interpretacion) delete estado.bonus_interpretacion[pid];
 
-      // Efectos adicionales del método (Sospecha PNJ, Alerta) — campo legacy
+      // Efectos adicionales del método (Sospecha PNJ, Alerta)
       if (metodo?.efecto_adicional) {
         const ea = metodo.efecto_adicional;
         const motivo = `Interpretar ${info.nombre}`;
@@ -2591,78 +1963,28 @@ const UI = {
         else if (ea.tipo === 'alerta')   subirAlerta(ea.valor, motivo);
       }
 
-      // Efectos en éxito — nuevo formato (array)
-      // Se guardan como pendientes para aplicar DESPUÉS de mostrar el texto
-      this._efectosPendientesInterpretacion = null;
-      const efectosExitoBase = metodo?.efecto_exito || [];
-
-      // Efectos variante-dependientes: se aplican DESPUÉS de mostrar el texto
-      if (metodo?.exito_variante) {
-        const varLetra = (estado.variante || 'A').toUpperCase();
-        const vd = metodo.exito_variante[varLetra];
-        const efectosCombinados = [...efectosExitoBase, ...(vd?.efectos || [])];
-        if (efectosCombinados.length) {
-          this._efectosPendientesInterpretacion = { efectos: efectosCombinados, motivo: `Registro — ${info.nombre}` };
-        }
-      } else if (efectosExitoBase.length) {
-        // Efectos sin variante — también diferidos
-        this._efectosPendientesInterpretacion = { efectos: efectosExitoBase, motivo: `Interpretar ${info.nombre}` };
-      }
-
       usarAccion(jugIdx, 'interpretar');
       guardarEstado();
       if (typeof _verificarDesbloqueoAcusacion === 'function') _verificarDesbloqueoAcusacion();
 
-      titulo = resultado === 'critico' ? '★ Interpretación brillante' : '✓ Pista interpretada';
-
-      if (metodo?.exito_variante) {
-        const varLetra = (estado.variante || 'A').toUpperCase();
-        const vd = metodo.exito_variante[varLetra];
-        const textoComun = metodo.exito_variante.texto_comun || '';
-        texto = textoComun + (textoComun && vd?.texto ? '\n\n' : '') + (vd?.texto || '');
-      } else {
-        texto = resultado === 'critico'
-          ? `La mente de ${PERSONAJES[j.personaje]?.nombre || j.personaje} encaja todas las piezas. "${info.nombre}" revela su significado con absoluta claridad.`
-          : `Tras reflexionar detenidamente, ${PERSONAJES[j.personaje]?.nombre || j.personaje} comprende el alcance de "${info.nombre}".`;
-      }
-      // Confirmar pista obtenida al final del texto
-      const _numPista = pid.replace('pista_', '#');
-      texto = (texto ? texto + '\n\n' : '') + `❆ Has obtenido la Pista ${_numPista} Interpretada.`;
+      titulo    = resultado === 'critico' ? '★ Interpretación brillante' : '✓ Pista interpretada';
+      texto     = resultado === 'critico'
+        ? `La mente de ${j.nombre} encaja todas las piezas. "${info.nombre}" revela su significado con absoluta claridad.`
+        : `Tras reflexionar detenidamente, ${j.nombre} comprende el alcance de "${info.nombre}".`;
       refLibro  = metodo?.ref_libro || null;
 
     } else if (resultado === 'fracaso') {
-      // Efectos adicionales en fracaso
-      if (metodo?.efecto_fracaso) {
-        const ef = metodo.efecto_fracaso;
-        const motivo = `Fracaso al interpretar ${info.nombre}`;
-        if (ef.tipo === 'sospecha_pnj') subirSospecha(ef.pnj, ef.valor, motivo);
-        else if (ef.tipo === 'alerta')   subirAlerta(ef.valor, motivo);
-      }
-      // Si el método permite reintento en fracaso, no consumir acción
-      if (!metodo?.fracaso_reintento) {
-        usarAccion(jugIdx, 'interpretar');
-      }
+      usarAccion(jugIdx, 'interpretar');
       guardarEstado();
       titulo = '✗ El significado se resiste';
-      if (metodo?.fracaso_texto) {
-        texto = metodo.fracaso_texto;
-      } else {
-        texto = `Por más que lo intenta, ${PERSONAJES[j.personaje]?.nombre || j.personaje} no logra extraer conclusiones de "${info.nombre}". Quizás otro enfoque, o más tiempo, lo aclare.`;
-      }
+      texto  = `Por más que lo intenta, ${j.nombre} no logra extraer conclusiones de "${info.nombre}". Quizás otro enfoque, o más tiempo, lo aclare.`;
 
     } else { // pifia
-      // Efectos adicionales en pifia (también se aplica efecto_fracaso si existe)
-      if (metodo?.efecto_fracaso) {
-        const ef = metodo.efecto_fracaso;
-        const motivo = `Pifia al interpretar ${info.nombre}`;
-        if (ef.tipo === 'sospecha_pnj') subirSospecha(ef.pnj, ef.valor, motivo);
-        else if (ef.tipo === 'alerta')   subirAlerta(ef.valor, motivo);
-      }
       subirAlerta(1, `Pifia al interpretar ${info.nombre}`);
       usarAccion(jugIdx, 'interpretar');
       guardarEstado();
       titulo = '☠ Un error grave';
-      texto  = `La torpeza de ${PERSONAJES[j.personaje]?.nombre || j.personaje} al examinar "${info.nombre}" llama la atención. Voces indiscretas, un ruido inapropiado... la guardia se eleva.`;
+      texto  = `La torpeza de ${j.nombre} al examinar "${info.nombre}" llama la atención. Voces indiscretas, un ruido inapropiado... la guardia se eleva.`;
     }
 
     const cont  = document.getElementById('resultado-cont');
@@ -2683,16 +2005,6 @@ const UI = {
         mecPifia.style.cssText = 'font-family:var(--f2);font-size:.72rem;letter-spacing:.1em;color:#ef9a9a;margin-bottom:.75rem;';
         mecPifia.textContent = 'Alerta ↑';
         cont.appendChild(mecPifia);
-      }
-
-      // Indicador mecánico de efecto_fracaso en fracaso o pifia
-      if ((resultado === 'fracaso' || resultado === 'pifia') && metodo?.efecto_fracaso) {
-        const ef = metodo.efecto_fracaso;
-        const mecFrac = document.createElement('div');
-        mecFrac.style.cssText = 'font-family:var(--f2);font-size:.72rem;letter-spacing:.1em;color:#ef9a9a;margin-bottom:.75rem;';
-        if (ef.tipo === 'sospecha_pnj') mecFrac.textContent = `Sospecha ${ef.pnj} +${ef.valor}`;
-        else if (ef.tipo === 'alerta')  mecFrac.textContent = `Alerta +${ef.valor}`;
-        cont.appendChild(mecFrac);
       }
 
       // Referencia al Libro de Caso si la hay
@@ -2724,22 +2036,6 @@ const UI = {
       btnCerrar.style.cssText = 'min-height:52px;font-size:1rem;margin-top:.5rem;';
       btnCerrar.textContent = 'Continuar';
       btnCerrar.onclick = () => {
-        // Aplicar efectos diferidos (sospecha, alerta) del registro de habitación
-        if (this._efectosPendientesInterpretacion) {
-          const { efectos, motivo } = this._efectosPendientesInterpretacion;
-          for (const ef of efectos) {
-            if (ef.tipo === 'sospecha_pnj') {
-              if (ef.condicional === 'si_tiene') {
-                if ((estado.pnj?.[ef.pnj]?.sospecha || 0) > 0) subirSospecha(ef.pnj, ef.valor, motivo);
-              } else {
-                subirSospecha(ef.pnj, ef.valor, motivo);
-              }
-            } else if (ef.tipo === 'alerta') {
-              subirAlerta(ef.valor, motivo);
-            }
-          }
-          this._efectosPendientesInterpretacion = null;
-        }
         this.cerrarOverlay('resultado');
         if (typeof onFin === 'function') onFin();
       };
@@ -2885,26 +2181,19 @@ const UI = {
 
   cerrarOverlay(id) {
     document.getElementById(`overlay-${id}`).classList.remove('activo');
-    if (id === 'pistas') this._pendienteAccionDeducir = null;
   },
 
   // ── Visiones de la Médium ──────────────────────────────────────────────────
   // Llamada desde state.js cuando la Médium pierde Temple
-  _mostrarSiguienteVision() {
-    if (!this._colaVisiones || this._colaVisiones.length === 0) return;
-    const jugIdx = this._colaVisiones[0];
-    this._activarVisionMedium_impl(jugIdx);
-  },
-
   _activarVisionMedium_impl(jugIdx) {
     // Las visiones están en datosVariante (la variante activa del caso)
     const visiones = (typeof datosVariante !== 'undefined' && datosVariante?.visiones)
       ? datosVariante.visiones
       : [];
-    if (!visiones.length) { if (this._colaVisiones) this._colaVisiones.shift(); return; }
+    if (!visiones.length) return;
 
     const idx = estado.visiones_activadas || 0;
-    if (idx >= visiones.length) { if (this._colaVisiones) this._colaVisiones.shift(); return; }
+    if (idx >= visiones.length) return; // Ya se mostraron todas
 
     const textoVision = visiones[idx];
     estado.visiones_activadas = idx + 1;
@@ -2944,19 +2233,8 @@ const UI = {
 
     const btn = document.createElement('button');
     btn.className = 'btn btn-primario btn-bloque';
-    // Si hay más visiones en cola, el botón lo indica
-    const masVisiones = this._colaVisiones && this._colaVisiones.length > 1;
-    btn.textContent = masVisiones ? 'Siguiente visión →' : 'Entendido';
-    btn.onclick = () => {
-      // Quitar esta visión de la cola y mostrar la siguiente si existe
-      if (this._colaVisiones) this._colaVisiones.shift();
-      if (this._colaVisiones && this._colaVisiones.length > 0) {
-        // Hay más visiones pendientes — mostrar la siguiente
-        this._mostrarSiguienteVision();
-      } else {
-        this.cerrarOverlay('reaccion');
-      }
-    };
+    btn.textContent = 'Entendido';
+    btn.onclick = () => this.cerrarOverlay('reaccion');
     container.appendChild(btn);
 
     this._abrirOverlay('reaccion');
@@ -2998,33 +2276,6 @@ const UI = {
       : 'Fracaso: el ruido llama la atención — Alerta ↑';
     cont.appendChild(nota);
 
-    // Selector de enfoque cauteloso/decidido
-    let _enfoqueDecididoCerr = false;
-    const enfoqueWrapCerr = document.createElement('div');
-    enfoqueWrapCerr.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.75rem;';
-    const mkEBC = (label) => {
-      const b = document.createElement('button');
-      b.style.cssText = 'flex:1;padding:.5rem .4rem;border-radius:8px;font-family:var(--f2);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;touch-action:manipulation;';
-      b.textContent = label;
-      return b;
-    };
-    const btnCautCerr = mkEBC('🛡 Cauteloso');
-    const btnDecCerr  = mkEBC('⚔ Decidido · +1 Alerta');
-    const actualizarEnfoqueCerr = () => {
-      btnCautCerr.style.background  = !_enfoqueDecididoCerr ? 'rgba(80,160,80,.2)'  : 'rgba(0,0,0,.2)';
-      btnCautCerr.style.borderColor = !_enfoqueDecididoCerr ? 'rgba(80,160,80,.5)'  : 'rgba(255,255,255,.1)';
-      btnCautCerr.style.color       = !_enfoqueDecididoCerr ? '#81c784' : '#555';
-      btnDecCerr.style.background   =  _enfoqueDecididoCerr ? 'rgba(200,80,40,.2)'  : 'rgba(0,0,0,.2)';
-      btnDecCerr.style.borderColor  =  _enfoqueDecididoCerr ? 'rgba(200,80,40,.5)'  : 'rgba(255,255,255,.1)';
-      btnDecCerr.style.color        =  _enfoqueDecididoCerr ? '#e07050' : '#555';
-    };
-    btnCautCerr.onclick = () => { _enfoqueDecididoCerr = false; actualizarEnfoqueCerr(); };
-    btnDecCerr.onclick  = () => { _enfoqueDecididoCerr = true;  actualizarEnfoqueCerr(); };
-    actualizarEnfoqueCerr();
-    enfoqueWrapCerr.appendChild(btnCautCerr);
-    enfoqueWrapCerr.appendChild(btnDecCerr);
-    cont.appendChild(enfoqueWrapCerr);
-
     // Botones de resultado
     const resultados = [
       { id:'critico', label:'⭐ Crítico',  desc:'' },
@@ -3038,7 +2289,6 @@ const UI = {
       btn.style.marginBottom = '.5rem';
       btn.innerHTML = `<strong>${r.label}</strong> <span style="font-size:.82rem;color:#8a7a68;">(${r.desc})</span>`;
       btn.onclick = () => {
-        if (_enfoqueDecididoCerr) subirAlerta(1, 'Enfoque decidido');
         this._abrirOverlay('resultado'); // mantener abierto — callback lo cierra
         this.cerrarOverlay('resultado');
         callback(r.id);
@@ -3133,19 +2383,12 @@ const UI = {
     document.body.appendChild(ov);
   },
 
-  _mostrarNotificacion(titulo, texto, badge) {
-    const ov  = document.getElementById('overlay-aviso');
-    const tit = document.getElementById('aviso-titulo');
-    const txt = document.getElementById('aviso-texto');
-    const bdg = document.getElementById('aviso-badge');
-    const btn = document.getElementById('aviso-btn-ok');
-    if (!ov) return;
-    tit.textContent = titulo || '';
-    txt.textContent = texto  || '';
-    if (badge) { bdg.textContent = badge; bdg.style.display = 'inline-block'; }
-    else        { bdg.style.display = 'none'; }
-    ov.classList.add('activo');
-    btn.onclick = () => { ov.classList.remove('activo'); };
+  _mostrarNotificacion(titulo, texto) {
+    const notif = document.getElementById('notif');
+    document.getElementById('notif-tit').textContent = titulo;
+    document.getElementById('notif-txt').textContent = texto;
+    notif.classList.add('vis');
+    // Sin auto-dismiss — el jugador debe cerrarlo
   },
 
 
@@ -3220,18 +2463,8 @@ const UI = {
 
     const desc = document.createElement('p');
     desc.className = 'interrog-texto';
-    desc.innerHTML = 'Los pasadizos son angostos y peligrosos. Solo los más fuertes los atraviesan sin dificultad.';
+    desc.innerHTML = 'Los pasadizos son angostos y peligrosos. Solo los más fuertes los atraviesan sin dificultad.<br><br><span style="font-family:var(--f2);font-size:.75rem;letter-spacing:.08em;color:#c0a060;">FOR · Dif. 3</span>';
     cont.appendChild(desc);
-
-    const difPas = document.createElement('div');
-    difPas.style.cssText = 'display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;';
-    difPas.innerHTML =
-      '<span style="font-family:var(--f2);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;' +
-      'color:#a08040;background:rgba(160,128,64,.15);border:1px solid rgba(160,128,64,.35);' +
-      'border-radius:5px;padding:4px 11px;">FOR</span>' +
-      '<span style="font-family:var(--f1);font-size:1.9rem;font-weight:700;color:#ffd54f;' +
-      'text-shadow:0 0 12px #ffd54f44;line-height:1;">Dif. 3</span>';
-    cont.appendChild(difPas);
 
     ['exito', 'fracaso'].forEach(res => {
       const btn = document.createElement('button');
