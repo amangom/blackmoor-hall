@@ -1891,7 +1891,7 @@ const UI = {
     if (estado.ronda === 5 || estado.ronda === 9) {
       const reacciones_pendientes = [];
       datosCaso.comun.pnj.forEach(pnj => {
-        const res = subirSospecha(pnj.id, 1);
+        const res = subirSospecha(pnj.id, 1, true);
         if (res?.reaccionesNuevas?.length > 0)
           reacciones_pendientes.push({ pnj_id: pnj.id, reacciones: res.reaccionesNuevas });
       });

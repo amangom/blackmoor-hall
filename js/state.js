@@ -259,7 +259,7 @@ function bajarAlerta(valor = 1, motivo) {
   return estado.alerta;
 }
 
-function subirSospecha(pnj_id, valor = 1) {
+function subirSospecha(pnj_id, valor = 1, silencioso = false) {
   valor = Math.min(1, Math.max(0, valor)); // máximo +1 por llamada
   const pnjDef = getPNJ(pnj_id);
   if (!pnjDef) return null;
@@ -284,7 +284,7 @@ function subirSospecha(pnj_id, valor = 1) {
   }
 
   guardarEstado();
-  if (typeof notifSospecha === 'function') notifSospecha(pnj_id, anterior, nuevo);
+  if (!silencioso && typeof notifSospecha === 'function') notifSospecha(pnj_id, anterior, nuevo);
   return { anterior, nuevo, reaccionesNuevas };
 }
 
