@@ -97,14 +97,15 @@ function registrarCambio(tipo, opts) {
       lineas.push(esDesmayo
         ? `${nomPJ} cae al suelo sin fuerzas.`
         : `Los nervios de ${nomPJ} se quiebran por completo.`);
+      const motivoKO = opts.motivo ? ` por ${opts.motivo}` : '';
       lineas.push(esDesmayo
-        ? 'Pierde la próxima ronda. Se recupera al inicio de la siguiente.'
-        : 'Pierde la próxima ronda. Se recupera al inicio de la siguiente.');
+        ? `FOR llega a 0${motivoKO}. No puede actuar la próxima ronda. Sube FOR a 1 en su track.`
+        : `TEM llega a 0${motivoKO}. No puede actuar la próxima ronda. Sube TEM a 1 en su track.`);
     } else if (opts.anterior === 0 && opts.nuevo === 1 && (attr === 'FOR' || attr === 'TEM')) {
       icono = '🌅';
       lineas.push(attr === 'FOR'
-        ? `${nomPJ} recobra fuerzas y puede actuar de nuevo.`
-        : `${nomPJ} recobra la compostura y puede actuar de nuevo.`);
+        ? `${nomPJ} recobra fuerzas y puede actuar de nuevo. FOR sube a 1.`
+        : `${nomPJ} recobra la compostura y puede actuar de nuevo. TEM sube a 1.`);
     } else if (attr === 'FOR') {
       icono = delta > 0 ? '💪' : '🩸';
       lineas.push(delta > 0

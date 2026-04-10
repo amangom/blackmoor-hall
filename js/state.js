@@ -372,7 +372,7 @@ function modificarAtributoJugador(jugIdx, atributo, modificador, motivo) {
   // Detectar FOR=0 (desmayo) o TEM=0 (crisis nerviosa)
   if (nuevo === 0 && anterior > 0 && (atributo === 'FOR' || atributo === 'TEM') && !j.incapacitado) {
     const tipo = atributo === 'FOR' ? 'desmayo' : 'crisis';
-    j.incapacitado = { tipo, atributo, ronda_recuperacion: estado.ronda + 1 };
+    j.incapacitado = { tipo, atributo, ronda_recuperacion: estado.ronda + 2 };
     // Marcar turno terminado
     if (j.turno) j.turno.turno_terminado = true;
   }
