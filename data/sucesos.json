@@ -372,8 +372,8 @@
       "tipo": "caso_1",
       "caso": 1,
       "narrativa": "",
-      "mecanica": "Catherine se mueve con determinación hacia una habitación que esconde secretos. Catherine se mueve a una loseta con carta de Secreto no descubierta. La carta queda DESCUBIERTA (sin prueba). Si otorga Pista, se coloca como DESCUBIERTA sin interpretar.",
-      "texto_completo": "Catherine se mueve con determinación hacia una habitación que esconde secretos. Catherine se mueve a una loseta con carta de Secreto no descubierta. La carta queda DESCUBIERTA (sin prueba). Si otorga Pista, se coloca como DESCUBIERTA sin interpretar.",
+      "mecanica": "Catherine se mueve con determinación hacia una habitación que esconde secretos. Catherine se mueve a una loseta con carta de Exploración no descubierta. La carta queda DESCUBIERTA (sin prueba). Si otorga Pista, se coloca como DESCUBIERTA sin interpretar.",
+      "texto_completo": "Catherine se mueve con determinación hacia una habitación que esconde secretos. Catherine se mueve a una loseta con carta de Exploración no descubierta. La carta queda DESCUBIERTA (sin prueba). Si otorga Pista, se coloca como DESCUBIERTA sin interpretar.",
       "efectos": [
         {
           "tipo": "pnj_descubre_secreto",

@@ -1352,6 +1352,24 @@ const UI = {
         this.renderizarPartida();
         Mapa.renderizar();
       });
+    } else if (carta.id === 'catherine_investiga') {
+      document.getElementById('suc-btn-confirmar').onclick = () => {
+        const resultado = aplicarCatherineInvestiga();
+        overlay.classList.remove('activo');
+        if (resultado) {
+          const losetaNom = getLoseta(resultado.loseta_id)?.nombre || resultado.loseta_id;
+          if (resultado.pista_id) {
+            UI._mostrarNotificacion('Catherine investiga', `Catherine se dirige a ${losetaNom}. Carta descubierta: "${resultado.titulo}". La pista queda DESCUBIERTA sin interpretar.`);
+          } else {
+            UI._mostrarNotificacion('Catherine investiga', `Catherine se dirige a ${losetaNom}. Carta descubierta sin pista. Se aplica el efecto de éxito.`);
+          }
+        } else {
+          UI._mostrarNotificacion('Catherine investiga', 'No quedan cartas de exploración disponibles.');
+        }
+        this.renderizarPartida();
+        Mapa.renderizar();
+      };
+      overlay.onclick = (e) => { if (e.target === overlay) e.target.classList.remove('activo'); };
     } else {
       document.getElementById('suc-btn-confirmar').onclick = () => {
         aplicarEfectosSuceso(carta);

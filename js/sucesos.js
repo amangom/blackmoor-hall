@@ -603,3 +603,18 @@ function aplicarEfectosSuceso(carta) {
   guardarEstado();
   return log;
 }
+
+function aplicarCatherineInvestiga() {
+  const caso_id = estado.caso_id || 'caso_1';
+  const todasCartas = getCartasExploracionCaso(caso_id) || [];
+  const jugadas = estado.exploraciones_jugadas || [];
+  const disponibles = todasCartas.filter(c => !jugadas.includes(c.id));
+  if (disponibles.length === 0) return null;
+  const carta = disponibles[Math.floor(Math.random() * disponibles.length)];
+  moverPNJ('catherine', carta.loseta_id);
+  if (!estado.exploraciones_jugadas) estado.exploraciones_jugadas = [];
+  estado.exploraciones_jugadas.push(carta.id);
+  if (carta.pista_id) descubrirPista(carta.pista_id);
+  guardarEstado();
+  return carta;
+}
