@@ -1485,10 +1485,12 @@ const UI = {
     btnConf.style.display = 'none';
 
     // Obtener losetas adyacentes al jugador con más TEM (excluye cerradas y ya bloqueadas)
-    const conexiones = typeof getConexionesDistribucion === 'function' ? getConexionesDistribucion() : {};
-    const adyIds = (conexiones[rb.losetaActual] || [])
+    const conexiones = typeof getConexionesDistribucion === 'function' ? getConexionesDistribucion() : [];
+    const adyIds = conexiones
+      .filter(c => c.desde === rb.losetaActual || c.hasta === rb.losetaActual)
+      .map(c => c.desde === rb.losetaActual ? c.hasta : c.desde)
       .filter(id => {
-        const cerrada  = isCerrada(id);
+        const cerrada  = typeof isCerrada === 'function' && isCerrada(id);
         const bloqueada = typeof isLosetaBloqueada === 'function' && isLosetaBloqueada(id);
         return !cerrada && !bloqueada;
       });
