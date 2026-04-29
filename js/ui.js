@@ -111,7 +111,7 @@ const UI = {
     overlay.appendChild(btn);
 
     // Renderizar mapa en modo setup (con nombres)
-    if (typeof Mapa !== 'undefined') Mapa.renderizarSetup();
+    setTimeout(() => { if (typeof Mapa !== 'undefined') Mapa.renderizarSetup(); }, 50);
   },
 
   _mostrarPasoMontaje() {
