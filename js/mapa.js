@@ -53,6 +53,97 @@ const Mapa = {
   // Constantes del mapa
   CELDA: 120, GAP: 10, PAD: 14,
 
+  renderizarSetup() {
+    const container = document.getElementById('mapa-container');
+    if (!container) return;
+
+    const losetas    = getLosetasDistribucion();
+    const conexiones = getConexionesDistribucion();
+    if (!losetas.length) return;
+
+    const { CELDA, GAP, PAD } = this;
+    const SVG_W = 4 * (CELDA + GAP) + PAD * 2;
+    const SVG_H = 4 * (CELDA + GAP) + PAD * 2;
+
+    container.innerHTML = '';
+    container.style.cssText = 'position:relative;overflow:auto;background:#0a0806;flex:1;display:flex;align-items:center;justify-content:center;';
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', `0 0 ${SVG_W} ${SVG_H}`);
+    svg.setAttribute('width', SVG_W);
+    svg.setAttribute('height', SVG_H);
+    svg.style.cssText = 'display:block;max-width:100%;max-height:100%;';
+    container.appendChild(svg);
+
+    const pos = l => ({
+      x:  PAD + l.col  * (CELDA + GAP),
+      y:  PAD + l.fila * (CELDA + GAP),
+      cx: PAD + l.col  * (CELDA + GAP) + CELDA / 2,
+      cy: PAD + l.fila * (CELDA + GAP) + CELDA / 2,
+    });
+
+    // Conexiones (puertas)
+    conexiones.forEach(({ desde, hasta }) => {
+      const la = losetas.find(l => l.id === desde);
+      const lb = losetas.find(l => l.id === hasta);
+      if (!la || !lb) return;
+      const pa = pos(la), pb = pos(lb);
+      this._el(svg, 'line', { x1:pa.cx, y1:pa.cy, x2:pb.cx, y2:pb.cy, stroke:'#000', 'stroke-width':14, 'stroke-linecap':'round', opacity:0.4 });
+      this._el(svg, 'line', { x1:pa.cx, y1:pa.cy, x2:pb.cx, y2:pb.cy, stroke:'#1e1710', 'stroke-width':9, 'stroke-linecap':'round' });
+      this._el(svg, 'line', { x1:pa.cx, y1:pa.cy, x2:pb.cx, y2:pb.cy, stroke:'#3d3020', 'stroke-width':3, 'stroke-linecap':'round', 'stroke-dasharray':'6 8' });
+      const mx=(pa.cx+pb.cx)/2, my=(pa.cy+pb.cy)/2;
+      this._el(svg, 'rect', { x:mx-7, y:my-7, width:14, height:14, rx:3, fill:'#1e1710', stroke:'#8a6818', 'stroke-width':1.5 });
+      this._el(svg, 'circle', { cx:mx, cy:my, r:2.5, fill:'#d4a840', opacity:0.9 });
+    });
+
+    // Losetas con imagen y nombre
+    losetas.forEach(l => {
+      const { x, y, cx } = pos(l);
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+      // Fondo
+      this._el(g, 'rect', { x, y, width:CELDA, height:CELDA, rx:10, fill:'#2a1e12', stroke:'#6b4c2a', 'stroke-width':1.5 });
+
+      // Imagen de la loseta
+      const losInfo = datosLosetas?.losetas?.find(lo => lo.id === l.id);
+      if (losInfo?.imagen) {
+        const clipId = `clip-setup-${l.id}`;
+        const defs = svg.querySelector('defs') || svg.insertBefore(document.createElementNS('http://www.w3.org/2000/svg','defs'), svg.firstChild);
+        const clip = document.createElementNS('http://www.w3.org/2000/svg','clipPath');
+        clip.setAttribute('id', clipId);
+        this._el(clip, 'rect', { x, y, width:CELDA, height:CELDA, rx:10 });
+        defs.appendChild(clip);
+        const img = document.createElementNS('http://www.w3.org/2000/svg','image');
+        img.setAttribute('href', `assets/img/${losInfo.imagen}`);
+        img.setAttribute('x', x); img.setAttribute('y', y);
+        img.setAttribute('width', CELDA); img.setAttribute('height', CELDA);
+        img.setAttribute('clip-path', `url(#${clipId})`);
+        img.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+        g.appendChild(img);
+        // Overlay oscuro para legibilidad del nombre
+        this._el(g, 'rect', { x, y, width:CELDA, height:CELDA, rx:10, fill:'rgba(0,0,0,0.45)' });
+      }
+
+      // Nombre de la loseta centrado
+      const nombre = losInfo?.nombre || l.id;
+      const palabras = nombre.split(' ');
+      const lineas = [];
+      let linea = '';
+      palabras.forEach(p => {
+        if ((linea + ' ' + p).trim().length > 12) { lineas.push(linea.trim()); linea = p; }
+        else linea = (linea + ' ' + p).trim();
+      });
+      if (linea) lineas.push(linea);
+      const totalH = lineas.length * 13;
+      const startY = y + CELDA/2 - totalH/2 + 10;
+      lineas.forEach((ln, i) => {
+        this._txt(g, ln, cx, startY + i*13, { anchor:'middle', size:10, fill:'#fff', family:'Cinzel,serif', weight:'bold' });
+      });
+
+      svg.appendChild(g);
+    });
+  },
+
   renderizar() {
     const container = document.getElementById('mapa-container');
     if (!container || !estado) return;

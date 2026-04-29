@@ -28,18 +28,6 @@ const UI = {
     // Construir pasos
     const pasos = [];
 
-    // Paso 1: Losetas
-    let htmlLosetas = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Losetas del caso</p>`;
-    if (losetasDistrib.length > 0) {
-      htmlLosetas += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.6;margin:0 0 .75rem;">Colocad las siguientes losetas según el diagrama de distribución:</p>`;
-      htmlLosetas += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0;padding-left:1.2rem;">`;
-      losetasDistrib.forEach(l => { htmlLosetas += `<li>${nom(l.id)}</li>`; });
-      htmlLosetas += `</ul>`;
-    } else {
-      htmlLosetas += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);">Consultad el diagrama de distribución de puertas del caso.</p>`;
-    }
-    pasos.push(htmlLosetas);
-
     // Paso 2: Escena del crimen + PJs
     const escena = caso.escena_crimen;
     const inicio = caso.punto_inicio;
@@ -76,9 +64,54 @@ const UI = {
     pasos.push(htmlCerr);
 
     // Mostrar pasos secuencialmente
+    this._mostrarColocacionTablero(() => {
+      this._montajePasos = pasos;
+      this._montajePasoActual = 0;
+      this._mostrarPasoMontaje();
+    });
+    return;
     this._montajePasos = pasos;
     this._montajePasoActual = 0;
     this._mostrarPasoMontaje();
+  },
+
+  _mostrarColocacionTablero(onFin) {
+    // Crear overlay si no existe
+    let overlay = document.getElementById('overlay-colocacion');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'overlay-colocacion';
+      overlay.style.cssText = 'position:fixed;inset:0;background:#0a0806;z-index:200;display:flex;flex-direction:column;align-items:center;overflow:hidden;';
+      document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = '';
+    overlay.style.display = 'flex';
+
+    // Título
+    const tit = document.createElement('p');
+    tit.style.cssText = 'font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:1rem 0 .5rem;flex-shrink:0;';
+    tit.textContent = 'Colocad las losetas según este diagrama';
+    overlay.appendChild(tit);
+
+    // Contenedor del mapa
+    const mapaDiv = document.createElement('div');
+    mapaDiv.id = 'mapa-container';
+    mapaDiv.style.cssText = 'flex:1;width:100%;overflow:hidden;position:relative;';
+    overlay.appendChild(mapaDiv);
+
+    // Botón
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-principal';
+    btn.style.cssText = 'margin:1rem;flex-shrink:0;';
+    btn.textContent = 'Leer premisa →';
+    btn.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      onFin();
+    });
+    overlay.appendChild(btn);
+
+    // Renderizar mapa en modo setup (con nombres)
+    if (typeof Mapa !== 'undefined') Mapa.renderizarSetup();
   },
 
   _mostrarPasoMontaje() {
