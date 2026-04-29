@@ -169,7 +169,7 @@ const Mapa = {
       const strokeW = (esDestino || esActual) ? 3 : esEscena ? 3 : 1.5;
       const filterAttr = esDestino ? 'url(#glow-verde)' : esActual ? 'url(#glow-oro)' : 'url(#fs)';
 
-      this._el(g, 'rect', { x, y, width:CELDA, height:CELDA, rx:10, fill, stroke:strokeColor, 'stroke-width':strokeW, filter:filterAttr });
+      const rect = this._el(g, 'rect', { x, y, width:CELDA, height:CELDA, rx:10, fill, stroke:strokeColor, 'stroke-width':strokeW, filter:filterAttr });
 
       // Overlay verde pulsante si es destino
       if (esDestino) {
@@ -188,49 +188,29 @@ const Mapa = {
       if (esEscena) {
         this._el(g, 'rect', { x:cx-34, y:y+CELDA-18, width:68, height:16, rx:3, fill:'rgba(140,0,0,0.92)' });
         this._txt(g, '✝ ESCENA', cx, y+CELDA-7, { anchor:'middle', size:10, fill:'#ffcccc', family:'Cinzel,serif', weight:'bold' });
+        const imgCad = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        imgCad.setAttribute('href', 'assets/tokens/Cadaver.png');
+        imgCad.setAttribute('x', x + 6); imgCad.setAttribute('y', y + 6);
+        imgCad.setAttribute('width', 28); imgCad.setAttribute('height', 28);
+        g.appendChild(imgCad);
       }
       const bloqueada = typeof isLosetaBloqueada === 'function' && isLosetaBloqueada(l.id);
       if (bloqueada) {
-        // Overlay semitransparente oscuro
-        const ovRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        ovRect.setAttribute('x', x); ovRect.setAttribute('y', y);
-        ovRect.setAttribute('width', w); ovRect.setAttribute('height', h);
-        ovRect.setAttribute('fill', 'rgba(60,20,0,0.55)');
-        ovRect.setAttribute('rx', '6');
-        g.appendChild(ovRect);
-        // Tablones: dos líneas diagonales cruzadas gruesas
-        const cx2 = x + w/2, cy2 = y + h/2;
-        const margen = 10;
-        const lineas = [
-          [x+margen, y+margen, x+w-margen, y+h-margen],
-          [x+w-margen, y+margen, x+margen, y+h-margen]
-        ];
-        lineas.forEach(([x1,y1,x2,y2]) => {
-          // Sombra del tablón
-          const sombra = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          sombra.setAttribute('x1', x1+1); sombra.setAttribute('y1', y1+1);
-          sombra.setAttribute('x2', x2+1); sombra.setAttribute('y2', y2+1);
-          sombra.setAttribute('stroke', '#1a0800'); sombra.setAttribute('stroke-width', '5');
-          sombra.setAttribute('stroke-linecap', 'round');
-          g.appendChild(sombra);
-          // Tablón
-          const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
-          ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
-          ln.setAttribute('stroke', '#a0520a'); ln.setAttribute('stroke-width', '4');
-          ln.setAttribute('stroke-linecap', 'round');
-          g.appendChild(ln);
-        });
-        // Tornillos en los extremos
-        [[x+margen,y+margen],[x+w-margen,y+margen],[x+margen,y+h-margen],[x+w-margen,y+h-margen]].forEach(([px,py]) => {
-          const circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          circ.setAttribute('cx', px); circ.setAttribute('cy', py); circ.setAttribute('r', '3');
-          circ.setAttribute('fill', '#cd8b30'); circ.setAttribute('stroke', '#1a0800'); circ.setAttribute('stroke-width', '1');
-          g.appendChild(circ);
-        });
+        rect.setAttribute('stroke', '#8b4513');
+        rect.setAttribute('stroke-width', '3');
+        rect.setAttribute('stroke-dasharray', '6,3');
+        const imgBlq = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        imgBlq.setAttribute('href', 'assets/tokens/Bloqueada.png');
+        imgBlq.setAttribute('x', x + 6); imgBlq.setAttribute('y', y + CELDA - 34);
+        imgBlq.setAttribute('width', 28); imgBlq.setAttribute('height', 28);
+        g.appendChild(imgBlq);
       }
       if (cerrada) {
-        this._txt(g, '🔒', x+CELDA-18, y+CELDA-8, { anchor:'middle', size:15 });
+        const imgCerrada = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        imgCerrada.setAttribute('href', 'assets/tokens/Cerrada.png');
+        imgCerrada.setAttribute('x', x + CELDA - 34); imgCerrada.setAttribute('y', y + CELDA - 34);
+        imgCerrada.setAttribute('width', 28); imgCerrada.setAttribute('height', 28);
+        g.appendChild(imgCerrada);
       }
 
       // Destino: flecha pulsante
@@ -247,7 +227,11 @@ const Mapa = {
       const { x, y } = pos(cobertizo);
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       this._el(g, 'rect', { x:x+CELDA-28, y:y+6, width:23, height:23, rx:4, fill:'rgba(180,130,40,0.2)', stroke:'#d4a840', 'stroke-width':1 });
-      this._txt(g, '🔧', x+CELDA-17, y+21, { anchor:'middle', size:15 });
+        const imgHerr = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        imgHerr.setAttribute('href', 'assets/tokens/Herramientas.png');
+        imgHerr.setAttribute('x', x + CELDA - 34); imgHerr.setAttribute('y', y + 6);
+        imgHerr.setAttribute('width', 28); imgHerr.setAttribute('height', 28);
+        g.appendChild(imgHerr);
       svg.appendChild(g);
     }
 
@@ -330,6 +314,22 @@ const Mapa = {
 
       svg.appendChild(g);
     });
+
+    // ── TOKEN LLAVE ──────────────────────────────────────────────────────────
+    if (estado.tokens_llave) {
+      Object.entries(estado.tokens_llave).forEach(([jugIdx, losetaId]) => {
+        const l = losetas.find(l => l.id === losetaId);
+        if (!l) return;
+        const { x, y } = pos(l);
+        const gL = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        const imgLlave = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        imgLlave.setAttribute('href', 'assets/tokens/Llave.png');
+        imgLlave.setAttribute('x', x + 6); imgLlave.setAttribute('y', y + 6);
+        imgLlave.setAttribute('width', 28); imgLlave.setAttribute('height', 28);
+        gL.appendChild(imgLlave);
+        svg.appendChild(gL);
+      });
+    }
 
     // ── TOKENS PJ ─────────────────────────────────────────────────────────────
     estado.jugadores.forEach((j, idx) => {
