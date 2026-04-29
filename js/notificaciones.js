@@ -111,19 +111,19 @@ function registrarCambio(tipo, opts) {
       lineas.push(delta > 0
         ? `${nomPJ} recupera fuerzas.`
         : `${nomPJ} acusa el agotamiento físico.`);
-      lineas.push(`FOR ${delta > 0 ? '↑' : '↓'} ${opts.nuevo}`);
+      lineas.push(`FOR ${delta > 0 ? '↑' : '↓'} ${Math.abs(delta)}`);
     } else if (attr === 'INT') {
       icono = delta > 0 ? '🔍' : '🌫';
       lineas.push(delta > 0
         ? `La mente de ${nomPJ} se afila.`
         : `${nomPJ} no consigue concentrarse.`);
-      lineas.push(`INT ${delta > 0 ? '↑' : '↓'} ${opts.nuevo}`);
+      lineas.push(`INT ${delta > 0 ? '↑' : '↓'} ${Math.abs(delta)}`);
     } else if (attr === 'TEM') {
       icono = delta > 0 ? '🕯' : '😨';
       lineas.push(delta > 0
         ? `${nomPJ} recupera la calma.`
         : `${nomPJ} siente cómo los nervios le consumen.`);
-      lineas.push(`TEM ${delta > 0 ? '↑' : '↓'} ${opts.nuevo}`);
+      lineas.push(`TEM ${delta > 0 ? '↑' : '↓'} ${Math.abs(delta)}`);
     } else {
       icono = delta > 0 ? '💪' : '💔';
       lineas.push(`${nomPJ}: ${attr} ${delta > 0 ? '↑' : '↓'} ${opts.nuevo}`);

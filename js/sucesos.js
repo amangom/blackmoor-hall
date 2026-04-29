@@ -132,17 +132,22 @@ function calcularResultadosSuceso(carta) {
   if (!carta?.efectos) return;
   carta.efectos.forEach(ef => {
     if (ef.tipo === 'bloqueo_loseta_adyacente') {
-      // Determinar el jugador con más TEM (empate: aleatorio entre los empatados)
-      const jugsActivos = estado.jugadores.filter(j => !j.incapacitado);
-      if (jugsActivos.length) {
-        const maxTEM = Math.max(...jugsActivos.map(j => j.atributos?.TEM ?? 0));
-        const candidatos = jugsActivos.filter(j => (j.atributos?.TEM ?? 0) === maxTEM);
-        // En empate, aleatorio
-        const elegido = candidatos[Math.floor(Math.random() * candidatos.length)];
-        const elegidoIdx = estado.jugadores.indexOf(elegido);
-        const pjDef = typeof PERSONAJES !== 'undefined' ? PERSONAJES[elegido.personaje] : null;
-        const pjNom = pjDef?.nombre || elegido.personaje;
-        carta._resultado_bloqueo = { jugIdx: elegidoIdx, jugNom: pjNom, tem: maxTEM, losetaActual: elegido.loseta_actual, empate: candidatos.length > 1 };
+      // Elegir la loseta con más jugadores (excluyendo cerradas y ya bloqueadas)
+      const conteo = {};
+      estado.jugadores.forEach(j => {
+        if (!j.incapacitado && j.loseta_actual) {
+          conteo[j.loseta_actual] = (conteo[j.loseta_actual] || 0) + 1;
+        }
+      });
+      const candidatas = Object.entries(conteo)
+        .filter(([id]) => !isCerrada(id) && !(typeof isLosetaBloqueada === 'function' && isLosetaBloqueada(id)))
+        .sort((a, b) => b[1] - a[1]);
+      if (candidatas.length) {
+        const maxVal = candidatas[0][1];
+        const empatadas = candidatas.filter(([,v]) => v === maxVal).map(([id]) => id);
+        const elegida = empatadas[Math.floor(Math.random() * empatadas.length)];
+        const nom = typeof getLoseta === 'function' ? (getLoseta(elegida)?.nombre || elegida) : elegida;
+        carta._resultado_bloqueo = { losetaId: elegida, losetaNom: nom, jugadores: conteo[elegida], empate: empatadas.length > 1 };
       }
     } else if (ef.tipo === 'loseta_mas_jugadores') {
       if (!carta._pendiente_loseta) carta._pendiente_loseta = ef;
@@ -374,8 +379,8 @@ function aplicarEfectosSuceso(carta) {
 
   carta.efectos.forEach(ef => {
     if (ef.tipo === 'bloqueo_loseta_adyacente') {
-      if (carta._losetaBloqueadaElegida && typeof bloquearLoseta === 'function') {
-        bloquearLoseta(carta._losetaBloqueadaElegida, estado.ronda + 1, motivo);
+      if (carta._resultado_bloqueo?.losetaId && typeof bloquearLoseta === 'function') {
+        bloquearLoseta(carta._resultado_bloqueo.losetaId, estado.ronda + 1, 'Corriente de aire');
       }
     } else if (ef.tipo === 'alerta' && ef.valor > 0) {
       subirAlerta(ef.valor, motivo);
