@@ -112,7 +112,50 @@ const UI = {
       overlay.appendChild(btn);
 
       // Renderizar mapa en modo setup (sin PJs, sin PNJs, con nombres)
-      Mapa.renderizarSetup();
+      Mapa.renderizar();
+      // Ocultar PJs y PNJs del SVG tras renderizar
+      setTimeout(() => {
+        const svg = document.getElementById('mapa-svg');
+        if (!svg) return;
+        // Ocultar avatares de PJs y PNJs (círculos con imágenes)
+        svg.querySelectorAll('image[href*="personajes"], image[href*="avatar"], image[href*="pnj"]').forEach(el => {
+          el.closest('g')?.setAttribute('opacity', '0');
+        });
+        // Mostrar nombres de losetas
+        const losetas = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
+        losetas.forEach(l => {
+          const losInfo = typeof getLoseta === 'function' ? getLoseta(l.id) : null;
+          if (!losInfo) return;
+          const { CELDA, GAP, PAD } = Mapa;
+          const x = PAD + l.col * (CELDA + GAP);
+          const y = PAD + l.fila * (CELDA + GAP);
+          const cx = x + CELDA / 2;
+          const nombre = losInfo.nombre || l.id;
+          const palabras = nombre.split(' ');
+          const lineas = [];
+          let linea = '';
+          palabras.forEach(p => {
+            if ((linea + ' ' + p).trim().length > 12) { lineas.push(linea.trim()); linea = p; }
+            else linea = (linea + ' ' + p).trim();
+          });
+          if (linea) lineas.push(linea);
+          const totalH = lineas.length * 13;
+          const startY = y + CELDA / 2 - totalH / 2 + 6;
+          lineas.forEach((ln, i) => {
+            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('x', cx);
+            txt.setAttribute('y', startY + i * 13);
+            txt.setAttribute('text-anchor', 'middle');
+            txt.setAttribute('font-size', '10');
+            txt.setAttribute('font-family', 'Cinzel,serif');
+            txt.setAttribute('font-weight', 'bold');
+            txt.setAttribute('fill', '#fff');
+            txt.setAttribute('filter', 'url(#fs)');
+            txt.textContent = ln;
+            svg.appendChild(txt);
+          });
+        });
+      }, 150);
     }, 100);
   },
 
