@@ -107,7 +107,8 @@ const Mapa = {
 
       // Imagen de la loseta
       const losInfo = datosLosetas?.losetas?.find(lo => lo.id === l.id);
-      if (losInfo?.imagen) {
+      const imgSrc = LOSETA_IMAGEN[l.id];
+      if (imgSrc) {
         const clipId = `clip-setup-${l.id}`;
         const defs = svg.querySelector('defs') || svg.insertBefore(document.createElementNS('http://www.w3.org/2000/svg','defs'), svg.firstChild);
         const clip = document.createElementNS('http://www.w3.org/2000/svg','clipPath');
@@ -115,14 +116,14 @@ const Mapa = {
         this._el(clip, 'rect', { x, y, width:CELDA, height:CELDA, rx:10 });
         defs.appendChild(clip);
         const img = document.createElementNS('http://www.w3.org/2000/svg','image');
-        img.setAttribute('href', `assets/img/${losInfo.imagen}`);
+        img.setAttribute('href', imgSrc);
         img.setAttribute('x', x); img.setAttribute('y', y);
         img.setAttribute('width', CELDA); img.setAttribute('height', CELDA);
         img.setAttribute('clip-path', `url(#${clipId})`);
         img.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+        img.setAttribute('opacity', '0.82');
         g.appendChild(img);
-        // Overlay oscuro para legibilidad del nombre
-        this._el(g, 'rect', { x, y, width:CELDA, height:CELDA, rx:10, fill:'rgba(0,0,0,0.45)' });
+        this._el(g, 'rect', { x, y, width:CELDA, height:CELDA, rx:10, fill:'rgba(0,0,0,0.35)' });
       }
 
       // Nombre de la loseta centrado
