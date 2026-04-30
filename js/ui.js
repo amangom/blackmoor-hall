@@ -109,6 +109,7 @@ const UI = {
         if (hudAcc) hudAcc.style.display = '';
         if (hud) hud.style.visibility = '';
         if (hudAcc) hudAcc.style.visibility = '';
+        const leyenda = document.querySelector('.mapa-leyenda');
         if (leyenda) leyenda.style.display = '';
         onFin();
       });
