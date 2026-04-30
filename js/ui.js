@@ -33,6 +33,7 @@ const UI = {
   },
 
   _iniciarMontajePostPremisa() {
+    this._premisaPendiente = null;
     document.getElementById('overlay-premisa').style.display = 'none';
     this._montajePasoActual = 0;
     this._mostrarPasoMontaje();
@@ -97,14 +98,14 @@ const UI = {
       const btn = document.createElement('button');
       btn.className = 'btn btn-principal';
       btn.style.cssText = 'pointer-events:all;';
-      btn.textContent = 'Leer premisa →';
+      btn.textContent = 'Preparar el tablero →';
       btn.addEventListener('click', () => {
         overlay.style.display = 'none';
         this._modoSetup = false;
         if (hudTop) hudTop.style.display = '';
         if (hudPanel) hudPanel.style.display = '';
         if (btnFinFase) btnFinFase.style.display = '';
-        this._mostrarPortadaCaso();
+        this._iniciarMontajePostPremisa();
       });
       overlay.appendChild(btn);
       setTimeout(() => Mapa.renderizarSetup(), 300);
