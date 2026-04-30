@@ -73,8 +73,8 @@ const Config = {
     const casoNum = id.replace('caso_', '');
     UI._premisaPendiente = {
       casoNum,
-      titulo: datosCaso?.comun?.titulo || '',
-      premisa: datosCaso?.comun?.premisa || ''
+      titulo: datosCaso?.titulo || datosCaso?.comun?.titulo || '',
+      premisa: datosCaso?.premisa || datosCaso?.comun?.premisa || ''
     };
     UI._onPremisaConfirmada = () => {
       document.getElementById('overlay-premisa').style.display = 'none';
