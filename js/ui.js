@@ -159,7 +159,7 @@ const UI = {
           });
         });
       }, 300);
-    }, 500);
+    }, 800);
   },
 
   _mostrarPasoMontaje() {
