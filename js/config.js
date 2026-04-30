@@ -316,19 +316,12 @@ const Config = {
     }
 
     iniciarPartida({ caso_id: this._casoId, variante, distribucion_id: this._distribId, jugadores: this._jugadores });
-
-    // Guardar datos de premisa para usar tras el overlay
-    const premisa = datosCaso?.premisa;
-    const titulo  = datosCaso?.titulo || '';
-    const casoNum = String(this._casoId).replace('caso_','').replace('caso','');
-    const casoNumInt = parseInt(casoNum) || 1;
-    if (premisa) {
-      UI._premisaPendiente = { casoNum: casoNumInt, titulo, premisa };
-    }
-    this._casoNumInt = casoNumInt;
-
-    // Mostrar portada directamente
-    this._mostrarPortada();
+    UI._premisaPendiente = {
+      casoNum: this._casoId.replace('caso_', ''),
+      titulo: datosCaso?.comun?.titulo || '',
+      premisa: datosCaso?.comun?.premisa || ''
+    };
+    UI.mostrarMontajeTablero();
   },
 
   _mostrarPortada() {
