@@ -73,7 +73,7 @@ const Mapa = {
     svg.setAttribute('viewBox', `0 0 ${SVG_W} ${SVG_H}`);
     svg.setAttribute('width', SVG_W);
     svg.setAttribute('height', SVG_H);
-    svg.style.cssText = 'display:block;max-width:100%;max-height:100%;';
+    svg.style.cssText = 'display:block;width:100%;height:auto;';
     container.appendChild(svg);
 
     const pos = l => ({

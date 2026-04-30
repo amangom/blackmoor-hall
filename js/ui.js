@@ -96,7 +96,7 @@ const UI = {
     // Contenedor del mapa
     const mapaDiv = document.createElement('div');
     mapaDiv.id = 'mapa-container';
-    mapaDiv.style.cssText = 'flex:1;width:100%;overflow:hidden;position:relative;';
+    mapaDiv.style.cssText = 'flex:1;width:100%;min-height:0;overflow:auto;position:relative;display:flex;align-items:center;justify-content:center;';
     overlay.appendChild(mapaDiv);
 
     // Botón
