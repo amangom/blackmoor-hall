@@ -121,67 +121,7 @@ const UI = {
       overlay.appendChild(btn);
 
       setTimeout(() => {
-        Mapa.renderizar();
-        console.log('[Setup-render] ejecutando renderizar');
-        const svg = document.getElementById('mapa-svg');
-        if (!svg) return;
-
-        const leyenda = document.querySelector('.mapa-leyenda');
-        const btnCentrar = document.getElementById('btn-centrar') || document.querySelector('button[onclick*="centrar"]');
-        if (leyenda) leyenda.style.display = 'none';
-        if (btnCentrar) btnCentrar.style.display = 'none';
-        svg.querySelectorAll('g').forEach(g => {
-          const imgs = Array.from(g.querySelectorAll('image'));
-          const tieneLosetaImg = imgs.some(img => (img.getAttribute('href') || '').includes('assets/losetas/'));
-          const tieneTokenImg  = imgs.some(img => (img.getAttribute('href') || '').includes('assets/tokens/'));
-          const tieneDataImg   = imgs.some(img => (img.getAttribute('href') || '').startsWith('data:image'));
-          if (!tieneLosetaImg && !tieneTokenImg && tieneDataImg) g.style.display = 'none';
-          if (!tieneLosetaImg && !tieneTokenImg && !tieneDataImg && g.textContent.trim() && !g.querySelector('rect')) g.style.display = 'none';
-        });
-
-        const losetas = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
-        const { CELDA, GAP, PAD } = Mapa;
-        losetas.forEach(l => {
-          const losInfo = typeof getLoseta === 'function' ? getLoseta(l.id) : null;
-          if (!losInfo) return;
-          const x = PAD + l.col * (CELDA + GAP);
-          const y = PAD + l.fila * (CELDA + GAP);
-          const cx = x + CELDA / 2;
-          const nombre = losInfo.nombre || l.id;
-          const lineas = [];
-          let linea = '';
-          nombre.split(' ').forEach(p => {
-            if ((linea + ' ' + p).trim().length > 12) { lineas.push(linea.trim()); linea = p; }
-            else linea = (linea + ' ' + p).trim();
-          });
-          if (linea) lineas.push(linea);
-          const startY = y + CELDA / 2 - (lineas.length * 13) / 2 + 6;
-          lineas.forEach((ln, i) => {
-            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            txt.setAttribute('x', cx);
-            txt.setAttribute('y', startY + i * 13);
-            txt.setAttribute('text-anchor', 'middle');
-            txt.setAttribute('font-size', '10');
-            txt.setAttribute('font-family', 'Cinzel,serif');
-            txt.setAttribute('font-weight', 'bold');
-            txt.setAttribute('fill', '#fff');
-            txt.setAttribute('filter', 'url(#fs)');
-            txt.textContent = ln;
-            svg.appendChild(txt);
-          });
-        });
-        svg.querySelectorAll('g').forEach(g => {
-          const imgs = g.querySelectorAll('image');
-          Array.from(imgs).forEach(img => {
-            const href = img.getAttribute('href') || '';
-            if (href.includes('tokens/')) g.style.display = 'none';
-          });
-        });
-        svg.querySelectorAll('g').forEach(g => {
-          if (g.textContent.includes('= Investigador') || g.textContent.includes('= PNJ')) {
-            g.style.display = 'none';
-          }
-        });
+        Mapa.renderizarSetup();
       }, 300);
     }, 800);
   },
