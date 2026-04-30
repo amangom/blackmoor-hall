@@ -19,6 +19,10 @@ const UI = {
   },
 
   mostrarPremisa() {
+    console.log('[Premisa] _premisaPendiente:', JSON.stringify(this._premisaPendiente));
+    console.log('[Premisa] overlay-premisa:', document.getElementById('overlay-premisa'));
+    console.log('[Premisa] premisa-titulo:', document.getElementById('premisa-titulo'));
+    console.log('[Premisa] premisa-texto:', document.getElementById('premisa-texto'));
     document.getElementById('overlay-portada').style.display = 'none';
     const d = this._premisaPendiente;
     if (!d) { this._iniciarMontajePostPremisa(); return; }
