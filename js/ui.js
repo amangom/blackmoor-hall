@@ -115,15 +115,8 @@ const UI = {
         const svg = document.getElementById('mapa-svg');
         if (!svg) return;
 
-        const NOMBRES_PJ_PNJ = ['doctor', 'inspector', 'medium', 'mayordomo', 'institutriz', 'periodista', 'catherine', 'hobbes', 'harold', 'marsh', 'whitfield', 'pemberton'];
-        svg.querySelectorAll('g').forEach(g => {
-          for (const img of g.querySelectorAll('image')) {
-            const href = img.getAttribute('href') || '';
-            if (NOMBRES_PJ_PNJ.some(n => href.includes(n))) {
-              g.style.display = 'none';
-              return;
-            }
-          }
+        svg.querySelectorAll('g image').forEach(img => {
+          console.log('[IMG href]', img.getAttribute('href'));
         });
 
         const losetas = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
