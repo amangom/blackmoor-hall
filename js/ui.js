@@ -76,13 +76,19 @@ const UI = {
     this.irAPartida();
 
     setTimeout(() => {
-      const hud = document.getElementById('hud');
-      console.log('[Setup-500] hud:', hud, 'hud-acc:', document.getElementById('hud-acc'), 'leyenda:', document.querySelector('.mapa-leyenda'));
-      const hudAcc = document.getElementById('hud-acc');
-      const leyenda = document.querySelector('.mapa-leyenda');
-      if (hud) hud.style.display = 'none';
-      if (hudAcc) hudAcc.style.display = 'none';
-      if (leyenda) leyenda.style.display = 'none';
+      const hudTop = document.getElementById('hud-top');
+      const hudPanel = document.getElementById('hud-panel');
+      const btnFinFase = document.getElementById('btn-fin-fase');
+      if (hudTop) hudTop.style.display = 'none';
+      if (hudPanel) hudPanel.style.display = 'none';
+      if (btnFinFase) btnFinFase.style.display = 'none';
+
+      // Ocultar leyenda del mapa (buscar por texto o posición)
+      document.querySelectorAll('div').forEach(div => {
+        if (div.textContent.includes('= Investigador') && div.textContent.includes('= PNJ')) {
+          div.style.display = 'none';
+        }
+      });
 
       let overlay = document.getElementById('overlay-colocacion');
       if (!overlay) {
@@ -105,8 +111,9 @@ const UI = {
       btn.textContent = 'Leer premisa →';
       btn.addEventListener('click', () => {
         overlay.style.display = 'none';
-        if (hud) hud.style.display = '';
-        if (hudAcc) hudAcc.style.display = '';
+        if (hudTop) hudTop.style.display = '';
+        if (hudPanel) hudPanel.style.display = '';
+        if (btnFinFase) btnFinFase.style.display = '';
         onFin();
       });
       overlay.appendChild(btn);
@@ -156,6 +163,13 @@ const UI = {
             txt.setAttribute('filter', 'url(#fs)');
             txt.textContent = ln;
             svg.appendChild(txt);
+          });
+        });
+        svg.querySelectorAll('g').forEach(g => {
+          const imgs = g.querySelectorAll('image');
+          Array.from(imgs).forEach(img => {
+            const href = img.getAttribute('href') || '';
+            if (href.includes('tokens/')) g.style.display = 'none';
           });
         });
       }, 300);
