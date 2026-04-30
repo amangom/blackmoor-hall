@@ -71,7 +71,12 @@ const Config = {
       titulo: datosCaso?.comun?.titulo || '',
       premisa: datosCaso?.comun?.premisa || ''
     };
-    UI._onPremisaConfirmada = () => { setTimeout(() => this.siguientePaso(), 100); };
+    UI._onPremisaConfirmada = () => {
+      document.getElementById('overlay-premisa').style.display = 'none';
+      setTimeout(() => this.siguientePaso(), 100);
+    };
+    const btnPremisa = document.querySelector('#overlay-premisa button');
+    if (btnPremisa) btnPremisa.textContent = 'Continuar →';
     UI._mostrarPortadaCaso();
   },
 
@@ -333,6 +338,8 @@ const Config = {
 
     iniciarPartida({ caso_id: this._casoId, variante, distribucion_id: this._distribId, jugadores: this._jugadores });
     UI._onPremisaConfirmada = null;
+    const btnPremisa = document.querySelector('#overlay-premisa button');
+    if (btnPremisa) btnPremisa.textContent = '▶ Preparar el tablero';
     UI.mostrarMontajeTablero();
   },
 
