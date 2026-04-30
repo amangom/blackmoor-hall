@@ -107,6 +107,9 @@ const UI = {
         overlay.style.display = 'none';
         if (hud) hud.style.display = '';
         if (hudAcc) hudAcc.style.display = '';
+        if (hud) hud.style.visibility = '';
+        if (hudAcc) hudAcc.style.visibility = '';
+        if (leyenda) leyenda.style.display = '';
         onFin();
       });
       overlay.appendChild(btn);
@@ -153,6 +156,30 @@ const UI = {
             txt.setAttribute('filter', 'url(#fs)');
             txt.textContent = ln;
             svg.appendChild(txt);
+          });
+        });
+        // Ocultar HUD
+        const hud = document.getElementById('hud');
+        const hudAcc = document.getElementById('hud-acc');
+        const leyenda = document.querySelector('.mapa-leyenda');
+        const centrar = document.getElementById('btn-centrar') || document.querySelector('[id*="centrar"]');
+        if (hud) hud.style.visibility = 'hidden';
+        if (hudAcc) hudAcc.style.visibility = 'hidden';
+        if (leyenda) leyenda.style.display = 'none';
+        if (centrar) centrar.style.display = 'none';
+
+        // Ocultar grupos de PJs y PNJs del SVG (svg ya declarado arriba)
+        svg.querySelectorAll('g').forEach(g => {
+          const imgs = g.querySelectorAll('image');
+          imgs.forEach(img => {
+            const href = img.getAttribute('href') || '';
+            if (href.includes('personajes') || href.includes('pnj') || href.includes('avatar') ||
+                href.includes('doctor') || href.includes('inspector') || href.includes('medium') ||
+                href.includes('mayordomo') || href.includes('institutriz') || href.includes('periodista') ||
+                href.includes('catherine') || href.includes('hobbes') || href.includes('harold') ||
+                href.includes('marsh') || href.includes('whitfield') || href.includes('pemberton')) {
+              g.style.display = 'none';
+            }
           });
         });
       }, 150);
