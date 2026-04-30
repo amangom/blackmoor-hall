@@ -55,11 +55,12 @@ const Mapa = {
 
   renderizarSetup() {
     const container = document.getElementById('mapa-container');
-    if (!container) return;
+    if (!container) { console.error('[Setup] mapa-container no encontrado'); return; }
 
     const losetas    = getLosetasDistribucion();
     const conexiones = getConexionesDistribucion();
-    if (!losetas.length) return;
+    console.log('[Setup] losetas:', losetas.length, 'conexiones:', conexiones.length, 'estado.distribucion_id:', estado?.distribucion_id);
+    if (!losetas.length) { console.warn('[Setup] sin losetas — abortando render'); return; }
 
     const { CELDA, GAP, PAD } = this;
     const SVG_W = 4 * (CELDA + GAP) + PAD * 2;

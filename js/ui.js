@@ -179,7 +179,7 @@ const UI = {
       if (esUltimo) {
         document.getElementById('overlay-prep-cartas').classList.remove('activo');
         document.getElementById('overlay-prep-cartas').style.display = '';
-        this.irAPartida();
+        this.mostrarPremisa();
       } else {
         this._prepPasoActual++;
         this._mostrarPasoPrep();
