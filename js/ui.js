@@ -70,9 +70,6 @@ const UI = {
       this._mostrarPasoMontaje();
     });
     return;
-    this._montajePasos = pasos;
-    this._montajePasoActual = 0;
-    this._mostrarPasoMontaje();
   },
 
   _mostrarColocacionTablero(onFin) {
@@ -112,6 +109,10 @@ const UI = {
 
     // Renderizar mapa en modo setup (con nombres)
     setTimeout(() => { if (typeof Mapa !== 'undefined') Mapa.renderizarSetup(); }, 50);
+    setTimeout(() => {
+      const cont = document.getElementById('mapa-container');
+      console.log('[Colocacion] mapa-container:', cont, 'offsetWidth:', cont?.offsetWidth, 'offsetHeight:', cont?.offsetHeight, 'SVG hijos:', cont?.querySelectorAll('svg').length);
+    }, 200);
   },
 
   _mostrarPasoMontaje() {
