@@ -67,14 +67,49 @@ const Mapa = {
     const SVG_H = 4 * (CELDA + GAP) + PAD * 2;
 
     container.innerHTML = '';
-    container.style.cssText = 'position:relative;overflow:auto;background:#0a0806;flex:1;display:flex;align-items:center;justify-content:center;';
+    container.style.cssText = 'position:relative;overflow:hidden;background:#0a0806;cursor:grab;flex:1;';
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'mapa-wrapper';
+    wrapper.style.cssText = 'position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;';
+    container.appendChild(wrapper);
 
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.id = 'mapa-svg';
     svg.setAttribute('viewBox', `0 0 ${SVG_W} ${SVG_H}`);
     svg.setAttribute('width', SVG_W);
     svg.setAttribute('height', SVG_H);
-    svg.style.cssText = 'display:block;width:100%;height:auto;';
-    container.appendChild(svg);
+    svg.style.display = 'block';
+    wrapper.appendChild(svg);
+
+    // Inicializar pan/zoom igual que renderizar()
+    this._sc = 1; this._tx = 0; this._ty = 0; this._drag = false;
+    container.addEventListener('mousedown', e => { this._drag=true; this._lx=e.clientX; this._ly=e.clientY; container.style.cursor='grabbing'; });
+    container.addEventListener('mousemove', e => { if (!this._drag) return; this._tx+=(e.clientX-this._lx)/this._sc; this._ty+=(e.clientY-this._ly)/this._sc; this._lx=e.clientX; this._ly=e.clientY; this._aplicarTransform(); });
+    container.addEventListener('mouseup', () => { this._drag=false; container.style.cursor='grab'; });
+    container.addEventListener('mouseleave', () => { this._drag=false; container.style.cursor='grab'; });
+    container.addEventListener('wheel', e => {
+      e.preventDefault();
+      const rect = container.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) / this._sc - this._tx;
+      const mouseY = (e.clientY - rect.top)  / this._sc - this._ty;
+      const factor = e.deltaY < 0 ? 1.1 : 0.9;
+      const newSc  = Math.max(0.35, Math.min(3.5, this._sc * factor));
+      this._tx = (e.clientX - rect.left) / newSc - mouseX;
+      this._ty = (e.clientY - rect.top)  / newSc - mouseY;
+      this._sc = newSc;
+      this._aplicarTransform();
+    }, {passive:false});
+
+    // Botón centrar
+    const b = document.createElement('button');
+    b.textContent = '⊙ Centrar';
+    b.style.cssText = 'position:absolute;bottom:10px;right:10px;z-index:25;background:rgba(0,0,0,0.8);color:#d4a840;border:1px solid #8a6818;border-radius:6px;padding:8px 14px;font-family:Cinzel,serif;font-size:13px;cursor:pointer;';
+    b.addEventListener('click', e => { e.stopPropagation(); this._centrar(container, SVG_W, SVG_H); });
+    container.appendChild(b);
+
+    // Centrar inicialmente
+    setTimeout(() => this._centrar(container, SVG_W, SVG_H), 50);
 
     const pos = l => ({
       x:  PAD + l.col  * (CELDA + GAP),
