@@ -4,6 +4,21 @@ const UI = {
 
   // ─── NAVEGACIÓN ────────────────────────────────────────────────────────────
 
+  _mostrarPortadaCaso() {
+    const d = this._premisaPendiente;
+    if (!d) { this.irAPartida(); return; }
+    const casoNum = d.casoNum;
+    const portada = document.getElementById('overlay-portada');
+    const portadaImg = document.getElementById('portada-img');
+    if (portada && portadaImg) {
+      portadaImg.src = `assets/Caso_${casoNum}.png`;
+      portadaImg.onerror = () => { this.mostrarPremisa(); };
+      portada.style.display = 'flex';
+    } else {
+      this.mostrarPremisa();
+    }
+  },
+
   mostrarPremisa() {
     document.getElementById('overlay-portada').style.display = 'none';
     const d = this._premisaPendiente;
@@ -191,7 +206,7 @@ const UI = {
       if (esUltimo) {
         document.getElementById('overlay-prep-cartas').classList.remove('activo');
         document.getElementById('overlay-prep-cartas').style.display = '';
-        this.mostrarPremisa();
+        this._mostrarPortadaCaso();
       } else {
         this._prepPasoActual++;
         this._mostrarPasoPrep();
