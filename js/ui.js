@@ -115,8 +115,14 @@ const UI = {
         const svg = document.getElementById('mapa-svg');
         if (!svg) return;
 
-        svg.querySelectorAll('g image').forEach(img => {
-          console.log('[IMG href]', img.getAttribute('href'));
+        const leyenda = document.querySelector('.mapa-leyenda');
+        const btnCentrar = document.getElementById('btn-centrar') || document.querySelector('button[onclick*="centrar"]');
+        if (leyenda) leyenda.style.display = 'none';
+        if (btnCentrar) btnCentrar.style.display = 'none';
+        svg.querySelectorAll('g').forEach(g => {
+          const imgs = g.querySelectorAll('image');
+          const tieneDataImage = Array.from(imgs).some(img => (img.getAttribute('href') || '').startsWith('data:image'));
+          if (tieneDataImage) g.style.display = 'none';
         });
 
         const losetas = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
