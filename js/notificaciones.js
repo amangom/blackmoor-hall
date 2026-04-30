@@ -57,7 +57,7 @@ function registrarCambio(tipo, opts) {
     } else {
       lineas.push('La tensión afloja ligeramente. Quizás nadie notó nada.');
     }
-    lineas.push(`Alerta ${delta > 0 ? '↑' : '↓'} ${opts.nuevo}`);
+    lineas.push(`Alerta ${delta > 0 ? '↑' : '↓'} ${Math.abs(delta)}`);
 
   } else if (tipo === 'sospecha') {
     const delta = opts.nuevo - opts.anterior;
@@ -75,7 +75,7 @@ function registrarCambio(tipo, opts) {
     } else {
       lineas.push(`${nomPNJ} parece menos receloso. La situación mejora.`);
     }
-    lineas.push(`Sospecha ${nomPNJ} ${delta > 0 ? '↑' : '↓'} ${opts.nuevo}`);
+    lineas.push(`Sospecha ${nomPNJ} ${delta > 0 ? '↑' : '↓'} ${Math.abs(delta)}`);
     // Reacción del Libro de Casos
     if (delta > 0 && opts.nuevo > opts.anterior) {
       const caso_id = (typeof estado !== 'undefined' && estado?.caso_id) || 'caso_1';
