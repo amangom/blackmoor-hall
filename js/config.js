@@ -52,11 +52,27 @@ const Config = {
     if (this._paso === 3) this._renderDistrib();
   },
 
-  seleccionarCaso(id, el) {
+  async seleccionarCaso(id, el) {
     this._casoId = id;
     document.querySelectorAll('#cfg-caso .caso-btn').forEach(e => e.classList.remove('sel'));
     el.classList.add('sel');
-    setTimeout(() => this.siguientePaso(), 220);
+
+    // Cargar datos del caso para mostrar premisa
+    try {
+      await cargarDatosBase();
+      await cargarDatosCaso(id);
+    } catch(e) {
+      this._notif('Error cargando datos del caso.'); return;
+    }
+
+    const casoNum = id.replace('caso_', '');
+    UI._premisaPendiente = {
+      casoNum,
+      titulo: datosCaso?.comun?.titulo || '',
+      premisa: datosCaso?.comun?.premisa || ''
+    };
+    UI._onPremisaConfirmada = () => { setTimeout(() => this.siguientePaso(), 100); };
+    UI._mostrarPortadaCaso();
   },
 
   selVariante(v, avanzar = true) {
@@ -316,11 +332,7 @@ const Config = {
     }
 
     iniciarPartida({ caso_id: this._casoId, variante, distribucion_id: this._distribId, jugadores: this._jugadores });
-    UI._premisaPendiente = {
-      casoNum: this._casoId.replace('caso_', ''),
-      titulo: datosCaso?.comun?.titulo || '',
-      premisa: datosCaso?.comun?.premisa || ''
-    };
+    UI._onPremisaConfirmada = null;
     UI.mostrarMontajeTablero();
   },
 

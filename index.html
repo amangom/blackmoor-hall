@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" sizes="144x144" href="/blackmoor-hall/icons/icon-144x144.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
-  <link rel="stylesheet" href="css/main.css?v=1777556811">
+  <link rel="stylesheet" href="css/main.css?v=1777557439">
 </head>
 <body>
 <div id="app">
@@ -27,7 +27,7 @@
     <h1>Blackmoor<br>Hall</h1>
     <div class="linea-oro" style="max-width:200px;margin:.75rem auto;"></div>
     <p class="inicio-subtitulo">Misterio victoriano cooperativo</p>
-    <p style="font-family:var(--f2);font-size:.75rem;color:#555;margin-top:.5rem;">v112.35</p>
+    <p style="font-family:var(--f2);font-size:.75rem;color:#555;margin-top:.5rem;">v112.36</p>
   </div>
   <div class="inicio-acciones">
     <button class="btn btn-p btn-bloque" onclick="UI.irAConfig()">✦ Nueva partida</button>
@@ -271,19 +271,19 @@
   </div>
 </div>
 
-<script src="js/personajes.js?v=1777556811"></script>
-<script src="js/state.js?v=1777556811"></script>
+<script src="js/personajes.js?v=1777557439"></script>
+<script src="js/state.js?v=1777557439"></script>
 <script src="js/exploracion.js"></script>
   <script src="js/pistas.js"></script>
 <script src="js/notificaciones.js"></script>
   <script src="js/pasivas.js"></script>
   <script src="js/confidencias.js"></script>
-  <script src="js/sucesos.js?v=1777556811"></script>
-  <script src="js/avatares.js?v=1777556811"></script>
-  <script src="js/mapa.js?v=1777556811"></script>
-<script src="js/ui.js?v=1777556811"></script>
-<script src="js/config.js?v=1777556811"></script>
-<script src="js/app.js?v=1777556811"></script>
+  <script src="js/sucesos.js?v=1777557439"></script>
+  <script src="js/avatares.js?v=1777557439"></script>
+  <script src="js/mapa.js?v=1777557439"></script>
+<script src="js/ui.js?v=1777557439"></script>
+<script src="js/config.js?v=1777557439"></script>
+<script src="js/app.js?v=1777557439"></script>
 
 <!-- ═══════════════════════ OVERLAY SUCESO ═══════════════════════ -->
 <div id="overlay-suceso" class="overlay" style="z-index:110;">
@@ -336,7 +336,7 @@
     <div style="font-family:var(--f2);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#0d0a07;background:var(--oro);padding:.3rem .8rem;border-radius:10px;display:inline-block;margin-bottom:.75rem;">CASO <span id="premisa-caso-num"></span></div>
     <h2 id="premisa-titulo" style="font-family:var(--f1);font-size:clamp(1.3rem,5vw,1.9rem);color:var(--oro2);margin:.3rem 0 1rem;"></h2>
     <p id="premisa-texto" style="font-family:var(--f3);font-size:clamp(.9rem,3vw,1rem);color:var(--txt2);line-height:1.75;margin-bottom:1.5rem;text-align:left;"></p>
-    <button onclick="UI._iniciarMontajePostPremisa()" class="btn btn-p btn-bloque" style="min-height:56px;font-size:1.05rem;max-width:320px;margin:0 auto;">▶ Preparar el tablero</button>
+    <button onclick="(UI._onPremisaConfirmada ? UI._onPremisaConfirmada() : UI._iniciarMontajePostPremisa())" class="btn btn-p btn-bloque" style="min-height:56px;font-size:1.05rem;max-width:320px;margin:0 auto;">▶ Preparar el tablero</button>
   </div>
 </div>
 
