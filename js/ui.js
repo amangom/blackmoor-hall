@@ -175,6 +175,15 @@ const UI = {
           });
         });
       }, 300);
+
+      const svg = document.getElementById('mapa-svg');
+      if (svg) {
+        svg.querySelectorAll('g').forEach(g => {
+          if (g.textContent.includes('= Investigador') || g.textContent.includes('= PNJ')) {
+            g.style.display = 'none';
+          }
+        });
+      }
     }, 800);
   },
 
