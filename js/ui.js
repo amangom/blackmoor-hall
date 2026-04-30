@@ -6,110 +6,70 @@ const UI = {
 
   _mostrarPortadaCaso() {
     const d = this._premisaPendiente;
-    if (!d) { this.irAPartida(); return; }
-    const casoNum = d.casoNum;
+    if (!d) { this._iniciarMontajePostPremisa(); return; }
     const portada = document.getElementById('overlay-portada');
     const portadaImg = document.getElementById('portada-img');
     if (portada && portadaImg) {
-      portadaImg.src = `assets/Caso_${casoNum}.png`;
-      portadaImg.onerror = () => { this.mostrarPremisa(); };
+      portadaImg.src = `assets/Caso_${d.casoNum}.png`;
+      portadaImg.onerror = () => { portadaImg.onerror = null; this.mostrarPremisa(); };
       portada.style.display = 'flex';
-      const btnPremisa = portada.querySelector('button, [onclick*="mostrarPremisa"]');
-      if (btnPremisa) {
-        const oldOnclick = btnPremisa.onclick;
-        btnPremisa.onclick = () => { if (oldOnclick) oldOnclick(); this._ejecutarTrasPortada(); };
-      }
     } else {
       this.mostrarPremisa();
     }
   },
 
-  _ejecutarTrasPortada() {
-    this.mostrarPremisa();
-  },
-
   mostrarPremisa() {
     document.getElementById('overlay-portada').style.display = 'none';
     const d = this._premisaPendiente;
-    if (!d) { this.irAPartida(); return; }
-    const _onFin = this._onFinColocacion;
-    this._onFinColocacion = null;
+    if (!d) { this._iniciarMontajePostPremisa(); return; }
     document.getElementById('premisa-caso-num').textContent = d.casoNum;
     document.getElementById('premisa-titulo').textContent   = d.titulo;
     document.getElementById('premisa-texto').textContent    = d.premisa;
     document.getElementById('overlay-premisa').style.display = 'flex';
+  },
 
-    if (_onFin) {
-      const btnPrem = document.querySelector('#overlay-premisa button');
-      if (btnPrem) {
-        const oldClick = btnPrem.onclick;
-        btnPrem.onclick = () => { if (oldClick) oldClick.call(btnPrem); _onFin(); };
-      }
-    }
+  _iniciarMontajePostPremisa() {
+    document.getElementById('overlay-premisa').style.display = 'none';
+    this._montajePasoActual = 0;
+    this._mostrarPasoMontaje();
   },
 
   mostrarMontajeTablero() {
     const caso = datosCaso || {};
     const comun = caso.comun || {};
     const pnjs = comun.pnj || [];
-    const losetasDistrib = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
-
-    const nom = (id) => {
-      const l = datosLosetas?.losetas?.find(x => x.id === id);
-      return l ? l.nombre : id;
-    };
-
-    // Construir pasos
+    const nom = (id) => { const l = datosLosetas?.losetas?.find(x => x.id === id); return l ? l.nombre : id; };
     const pasos = [];
-
-    // Paso 2: Escena del crimen + PJs
     const escena = caso.escena_crimen;
     const inicio = caso.punto_inicio;
     let htmlEscena = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Escena y posiciones iniciales</p>`;
     if (escena) htmlEscena += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0 0 .75rem;">Colocad el token de cadáver en: <strong style="color:var(--oro2);">${nom(escena)}</strong></p>`;
     if (inicio) htmlEscena += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Todos los jugadores comienzan en: <strong style="color:var(--oro2);">${nom(inicio)}</strong></p>`;
     pasos.push(htmlEscena);
-
-    // Paso 3: PNJs
     const pnjsConPos = pnjs.filter(p => p.posicion_inicial);
     if (pnjsConPos.length > 0) {
-      let htmlPnj = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Posición inicial de los PNJ</p>`;
-      htmlPnj += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0;padding-left:1.2rem;">`;
-      pnjsConPos.forEach(p => {
-        htmlPnj += `<li><strong style="color:var(--txt);">${p.nombre}</strong> — ${nom(p.posicion_inicial)}</li>`;
-      });
+      let htmlPnj = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Posición inicial de los PNJ</p><ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0;padding-left:1.2rem;">`;
+      pnjsConPos.forEach(p => { htmlPnj += `<li><strong style="color:var(--txt);">${p.nombre}</strong> — ${nom(p.posicion_inicial)}</li>`; });
       htmlPnj += `</ul>`;
       pasos.push(htmlPnj);
     }
-
-    // Paso 4: Cerraduras + Herramienta
     const cerraduras = caso.losetas_cerradas_inicial || [];
     const herramienta = caso.herramienta_ganzua;
     let htmlCerr = `<p style="font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .75rem;">Cerraduras y herramienta</p>`;
     if (cerraduras.length > 0) {
-      htmlCerr += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);margin:0 0 .5rem;">Colocad un token de cerradura en:</p>`;
-      htmlCerr += `<ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0 0 .75rem;padding-left:1.2rem;">`;
-      cerraduras.forEach(c => {
-        htmlCerr += `<li><strong style="color:var(--txt);">${nom(c.id)}</strong> (FOR ${c.dificultad_for} para forzar)</li>`;
-      });
+      htmlCerr += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);margin:0 0 .5rem;">Colocad un token de cerradura en:</p><ul style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.9;margin:0 0 .75rem;padding-left:1.2rem;">`;
+      cerraduras.forEach(c => { htmlCerr += `<li><strong style="color:var(--txt);">${nom(c.id)}</strong> (FOR ${c.dificultad_for} para forzar)</li>`; });
       htmlCerr += `</ul>`;
     }
     if (herramienta) htmlCerr += `<p style="font-family:var(--f3);font-size:.95rem;color:var(--txt2);line-height:1.7;margin:0;">Colocad el token de herramienta en: <strong style="color:var(--oro2);">${nom(herramienta)}</strong></p>`;
     pasos.push(htmlCerr);
-
-    // Mostrar pasos secuencialmente
-    this._mostrarColocacionTablero(() => {
-      this._montajePasos = pasos;
-      this._montajePasoActual = 0;
-      this._mostrarPasoMontaje();
-    });
-    return;
+    this._montajePasos = pasos;
+    this._mostrarColocacionTablero();
   },
 
-  _mostrarColocacionTablero(onFin) {
+  _mostrarColocacionTablero() {
     this._modoSetup = true;
     this.irAPartida();
-
     setTimeout(() => {
       const hudTop = document.getElementById('hud-top');
       const hudPanel = document.getElementById('hud-panel');
@@ -117,14 +77,6 @@ const UI = {
       if (hudTop) hudTop.style.display = 'none';
       if (hudPanel) hudPanel.style.display = 'none';
       if (btnFinFase) btnFinFase.style.display = 'none';
-
-      // Ocultar leyenda del mapa (buscar por texto o posición)
-      document.querySelectorAll('div').forEach(div => {
-        if (div.textContent.includes('= Investigador') && div.textContent.includes('= PNJ')) {
-          div.style.display = 'none';
-        }
-      });
-
       let overlay = document.getElementById('overlay-colocacion');
       if (!overlay) {
         overlay = document.createElement('div');
@@ -134,12 +86,10 @@ const UI = {
       }
       overlay.innerHTML = '';
       overlay.style.display = 'flex';
-
       const tit = document.createElement('p');
       tit.style.cssText = 'font-family:var(--f2);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;pointer-events:none;text-shadow:0 1px 4px #000;';
       tit.textContent = 'COLOCAD LAS LOSETAS SEGÚN ESTE DIAGRAMA';
       overlay.appendChild(tit);
-
       const btn = document.createElement('button');
       btn.className = 'btn btn-principal';
       btn.style.cssText = 'pointer-events:all;';
@@ -147,20 +97,13 @@ const UI = {
       btn.addEventListener('click', () => {
         overlay.style.display = 'none';
         this._modoSetup = false;
-        const hudTop = document.getElementById('hud-top');
-        const hudPanel = document.getElementById('hud-panel');
-        const btnFinFase = document.getElementById('btn-fin-fase');
         if (hudTop) hudTop.style.display = '';
         if (hudPanel) hudPanel.style.display = '';
         if (btnFinFase) btnFinFase.style.display = '';
-        this._onFinColocacion = onFin;
         this._mostrarPortadaCaso();
       });
       overlay.appendChild(btn);
-
-      setTimeout(() => {
-        Mapa.renderizarSetup();
-      }, 300);
+      setTimeout(() => Mapa.renderizarSetup(), 300);
     }, 800);
   },
 
