@@ -123,6 +123,16 @@ const UI = {
       setTimeout(() => {
         Mapa.renderizar();
         console.log('[Setup-render] ejecutando renderizar');
+
+        const svgEl = document.getElementById('mapa-svg');
+        if (svgEl) {
+          svgEl.style.cssText = 'display:block;max-width:100%;max-height:calc(100vh - 80px);width:auto;height:auto;';
+          const wrapper = document.getElementById('mapa-wrapper');
+          if (wrapper) wrapper.style.cssText = 'position:relative;transform-origin:0 0;';
+          const cont = document.getElementById('mapa-container');
+          if (cont) cont.style.cssText = 'position:relative;overflow:auto;background:#0a0806;cursor:default;flex:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%;';
+        }
+
         const svg = document.getElementById('mapa-svg');
         if (!svg) return;
 
