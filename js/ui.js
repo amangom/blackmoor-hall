@@ -73,6 +73,7 @@ const UI = {
   },
 
   _mostrarColocacionTablero(onFin) {
+    this._modoSetup = true;
     this.irAPartida();
 
     setTimeout(() => {
@@ -114,6 +115,7 @@ const UI = {
         if (hudTop) hudTop.style.display = '';
         if (hudPanel) hudPanel.style.display = '';
         if (btnFinFase) btnFinFase.style.display = '';
+        this._modoSetup = false;
         onFin();
       });
       overlay.appendChild(btn);
@@ -306,7 +308,7 @@ const UI = {
       typeof cargarCartasExploracion === 'function' ? cargarCartasExploracion(estado?.caso_id) : Promise.resolve()
     ]).then(() => {
       this.renderizarPartida();
-      setTimeout(() => Mapa.renderizar(), 80);
+      if (!this._modoSetup) setTimeout(() => Mapa.renderizar(), 80);
     });
   },
 
