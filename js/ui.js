@@ -130,10 +130,9 @@ const UI = {
         const btnCentrar = document.getElementById('btn-centrar') || document.querySelector('button[onclick*="centrar"]');
         if (leyenda) leyenda.style.display = 'none';
         if (btnCentrar) btnCentrar.style.display = 'none';
-        svg.querySelectorAll('g').forEach(g => {
-          const imgs = g.querySelectorAll('image');
-          const tieneDataImage = Array.from(imgs).some(img => (img.getAttribute('href') || '').startsWith('data:image'));
-          if (tieneDataImage) g.style.display = 'none';
+        svg.querySelectorAll('image').forEach(img => {
+          const href = img.getAttribute('href') || '';
+          if (href.startsWith('data:image')) img.style.display = 'none';
         });
 
         const losetas = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
