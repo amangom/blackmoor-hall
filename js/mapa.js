@@ -1207,7 +1207,14 @@ const Mapa = {
     container.addEventListener('mouseleave', () => { this._drag=false; container.style.cursor='grab'; });
     container.addEventListener('wheel', e => {
       e.preventDefault();
-      this._sc = Math.max(0.35, Math.min(3.5, this._sc * (e.deltaY<0?1.1:0.9)));
+      const rect = container.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) / this._sc - this._tx;
+      const mouseY = (e.clientY - rect.top)  / this._sc - this._ty;
+      const factor = e.deltaY < 0 ? 1.1 : 0.9;
+      const newSc  = Math.max(0.35, Math.min(3.5, this._sc * factor));
+      this._tx = (e.clientX - rect.left) / newSc - mouseX;
+      this._ty = (e.clientY - rect.top)  / newSc - mouseY;
+      this._sc = newSc;
       this._aplicarTransform();
     }, {passive:false});
 
