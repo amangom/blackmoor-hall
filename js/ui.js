@@ -10,7 +10,7 @@ const UI = {
     const portada = document.getElementById('overlay-portada');
     const portadaImg = document.getElementById('portada-img');
     if (portada && portadaImg) {
-      portadaImg.src = `assets/Caso_${d.casoNum}.png`;
+      portadaImg.src = `assets/Portada_Caso_${d.casoNum}.png`;
       portadaImg.onerror = () => { portadaImg.onerror = null; this.mostrarPremisa(); };
       portada.style.display = 'flex';
     } else {
