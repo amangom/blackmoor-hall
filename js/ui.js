@@ -128,6 +128,27 @@ const UI = {
       }
     };
 
+    // Botón volver
+    let btnVolver = document.getElementById('montaje-btn-volver');
+    if (!btnVolver) {
+      btnVolver = document.createElement('button');
+      btnVolver.id = 'montaje-btn-volver';
+      btnVolver.className = 'btn btn-secundario';
+      btnVolver.style.cssText = 'margin-top:.5rem;';
+      btn.parentNode.insertBefore(btnVolver, btn);
+    }
+    if (idx === 0) {
+      btnVolver.textContent = '← Volver al diagrama';
+      btnVolver.onclick = () => {
+        document.getElementById('overlay-montaje').classList.remove('activo');
+        document.getElementById('overlay-montaje').style.display = '';
+        this._mostrarColocacionTablero();
+      };
+    } else {
+      btnVolver.textContent = '← Anterior';
+      btnVolver.onclick = () => { this._montajePasoActual--; this._mostrarPasoMontaje(); };
+    }
+
     // Indicador de paso
     const ind = document.getElementById('montaje-indicador');
     if (ind) ind.textContent = `${idx + 1} / ${pasos.length}`;
@@ -178,6 +199,28 @@ const UI = {
         this._mostrarPasoPrep();
       }
     };
+
+    // Botón volver
+    let btnVolverPrep = document.getElementById('prep-btn-volver');
+    if (!btnVolverPrep) {
+      btnVolverPrep = document.createElement('button');
+      btnVolverPrep.id = 'prep-btn-volver';
+      btnVolverPrep.className = 'btn btn-secundario';
+      btnVolverPrep.style.cssText = 'margin-top:.5rem;';
+      btn.parentNode.insertBefore(btnVolverPrep, btn);
+    }
+    if (idx === 0) {
+      btnVolverPrep.textContent = '← Volver al montaje';
+      btnVolverPrep.onclick = () => {
+        document.getElementById('overlay-prep-cartas').classList.remove('activo');
+        document.getElementById('overlay-prep-cartas').style.display = '';
+        this._montajePasoActual = (this._montajePasos?.length || 1) - 1;
+        this._mostrarPasoMontaje();
+      };
+    } else {
+      btnVolverPrep.textContent = '← Anterior';
+      btnVolverPrep.onclick = () => { this._prepPasoActual--; this._mostrarPasoPrep(); };
+    }
 
     document.getElementById('overlay-prep-cartas').classList.add('activo');
   },
