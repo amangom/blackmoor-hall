@@ -60,10 +60,11 @@ const Config = {
     // Cargar datos del caso para mostrar premisa
     try {
       await cargarDatosBase();
+      const resp = await fetch(`data/${id}.json`);
+      console.log('[seleccionarCaso] fetch status:', resp.status, resp.url);
       await cargarDatosCaso(id);
-      console.log('[seleccionarCaso] datosCaso tras carga:', datosCaso?.comun?.titulo, '| error si undefined arriba');
     } catch(e) {
-      console.error('[seleccionarCaso] error cargando:', e);
+      console.error('[seleccionarCaso] error:', e);
       this._notif('Error cargando datos del caso.'); return;
     }
 
