@@ -61,8 +61,9 @@ const Config = {
     try {
       await cargarDatosBase();
       await cargarDatosCaso(id);
-      console.log('[seleccionarCaso] datosCaso:', datosCaso?.comun?.titulo, datosCaso?.comun?.premisa?.substring(0,50));
+      console.log('[seleccionarCaso] datosCaso tras carga:', datosCaso?.comun?.titulo, '| error si undefined arriba');
     } catch(e) {
+      console.error('[seleccionarCaso] error cargando:', e);
       this._notif('Error cargando datos del caso.'); return;
     }
 
