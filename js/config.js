@@ -61,6 +61,7 @@ const Config = {
     try {
       await cargarDatosBase();
       await cargarDatosCaso(id);
+      console.log('[seleccionarCaso] datosCaso:', datosCaso?.comun?.titulo, datosCaso?.comun?.premisa?.substring(0,50));
     } catch(e) {
       this._notif('Error cargando datos del caso.'); return;
     }
