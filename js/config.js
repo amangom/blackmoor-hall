@@ -63,6 +63,8 @@ const Config = {
       const resp = await fetch(`data/${id}.json`);
       console.log('[seleccionarCaso] fetch status:', resp.status, resp.url);
       await cargarDatosCaso(id);
+      console.log('[seleccionarCaso] datosCaso keys:', datosCaso ? Object.keys(datosCaso) : 'NULL');
+      console.log('[seleccionarCaso] datosCaso.comun:', datosCaso?.comun ? Object.keys(datosCaso.comun) : 'NULL');
     } catch(e) {
       console.error('[seleccionarCaso] error:', e);
       this._notif('Error cargando datos del caso.'); return;
