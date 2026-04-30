@@ -174,16 +174,12 @@ const UI = {
             if (href.includes('tokens/')) g.style.display = 'none';
           });
         });
-      }, 300);
-
-      const svg = document.getElementById('mapa-svg');
-      if (svg) {
         svg.querySelectorAll('g').forEach(g => {
           if (g.textContent.includes('= Investigador') || g.textContent.includes('= PNJ')) {
             g.style.display = 'none';
           }
         });
-      }
+      }, 300);
     }, 800);
   },
 
