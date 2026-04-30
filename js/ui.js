@@ -14,19 +14,38 @@ const UI = {
       portadaImg.src = `assets/Caso_${casoNum}.png`;
       portadaImg.onerror = () => { this.mostrarPremisa(); };
       portada.style.display = 'flex';
+      const btnPremisa = portada.querySelector('button, [onclick*="mostrarPremisa"]');
+      if (btnPremisa) {
+        const oldOnclick = btnPremisa.onclick;
+        btnPremisa.onclick = () => { if (oldOnclick) oldOnclick(); this._ejecutarTrasPortada(); };
+      }
     } else {
       this.mostrarPremisa();
     }
+  },
+
+  _ejecutarTrasPortada() {
+    this.mostrarPremisa();
   },
 
   mostrarPremisa() {
     document.getElementById('overlay-portada').style.display = 'none';
     const d = this._premisaPendiente;
     if (!d) { this.irAPartida(); return; }
+    const _onFin = this._onFinColocacion;
+    this._onFinColocacion = null;
     document.getElementById('premisa-caso-num').textContent = d.casoNum;
     document.getElementById('premisa-titulo').textContent   = d.titulo;
     document.getElementById('premisa-texto').textContent    = d.premisa;
     document.getElementById('overlay-premisa').style.display = 'flex';
+
+    if (_onFin) {
+      const btnPrem = document.querySelector('#overlay-premisa button');
+      if (btnPrem) {
+        const oldClick = btnPrem.onclick;
+        btnPrem.onclick = () => { if (oldClick) oldClick.call(btnPrem); _onFin(); };
+      }
+    }
   },
 
   mostrarMontajeTablero() {
@@ -127,11 +146,15 @@ const UI = {
       btn.textContent = 'Leer premisa →';
       btn.addEventListener('click', () => {
         overlay.style.display = 'none';
+        this._modoSetup = false;
+        const hudTop = document.getElementById('hud-top');
+        const hudPanel = document.getElementById('hud-panel');
+        const btnFinFase = document.getElementById('btn-fin-fase');
         if (hudTop) hudTop.style.display = '';
         if (hudPanel) hudPanel.style.display = '';
         if (btnFinFase) btnFinFase.style.display = '';
-        this._modoSetup = false;
-        onFin();
+        this._onFinColocacion = onFin;
+        this._mostrarPortadaCaso();
       });
       overlay.appendChild(btn);
 
@@ -206,7 +229,7 @@ const UI = {
       if (esUltimo) {
         document.getElementById('overlay-prep-cartas').classList.remove('activo');
         document.getElementById('overlay-prep-cartas').style.display = '';
-        this._mostrarPortadaCaso();
+        this.irAPartida();
       } else {
         this._prepPasoActual++;
         this._mostrarPasoPrep();
