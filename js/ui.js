@@ -73,46 +73,47 @@ const UI = {
   },
 
   _mostrarColocacionTablero(onFin) {
-    // Crear overlay si no existe
-    let overlay = document.getElementById('overlay-colocacion');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'overlay-colocacion';
-      overlay.style.cssText = 'position:fixed;inset:0;background:#0a0806;z-index:200;display:flex;flex-direction:column;align-items:center;overflow:hidden;width:100%;height:100%;';
-      document.body.appendChild(overlay);
-    }
-    overlay.innerHTML = '';
-    overlay.style.display = 'flex';
+    // Ir a la pantalla de partida real (donde el mapa-container ya tiene tamaño correcto)
+    this.irAPartida();
 
-    // Título
-    const tit = document.createElement('p');
-    tit.style.cssText = 'font-family:var(--f2);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:1rem 0 .5rem;flex-shrink:0;';
-    tit.textContent = 'Colocad las losetas según este diagrama';
-    overlay.appendChild(tit);
-
-    // Contenedor del mapa
-    const mapaDiv = document.createElement('div');
-    mapaDiv.id = 'mapa-container';
-    mapaDiv.style.cssText = 'width:100%;height:calc(100vh - 100px);overflow:auto;position:relative;display:flex;align-items:center;justify-content:center;';
-    overlay.appendChild(mapaDiv);
-
-    // Botón
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-principal';
-    btn.style.cssText = 'margin:1rem;flex-shrink:0;';
-    btn.textContent = 'Leer premisa →';
-    btn.addEventListener('click', () => {
-      overlay.style.display = 'none';
-      onFin();
-    });
-    overlay.appendChild(btn);
-
-    // Renderizar mapa en modo setup (con nombres)
-    setTimeout(() => { if (typeof Mapa !== 'undefined') Mapa.renderizarSetup(); }, 50);
+    // Ocultar HUD y controles para que solo se vea el mapa
     setTimeout(() => {
-      const cont = document.getElementById('mapa-container');
-      console.log('[Colocacion] mapa-container:', cont, 'offsetWidth:', cont?.offsetWidth, 'offsetHeight:', cont?.offsetHeight, 'SVG hijos:', cont?.querySelectorAll('svg').length);
-    }, 200);
+      const hud = document.getElementById('hud');
+      const hudAcc = document.getElementById('hud-acc');
+      if (hud) hud.style.display = 'none';
+      if (hudAcc) hudAcc.style.display = 'none';
+
+      // Añadir overlay con título y botón encima del mapa
+      let overlay = document.getElementById('overlay-colocacion');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'overlay-colocacion';
+        overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:50;display:flex;flex-direction:column;align-items:center;padding:.75rem;pointer-events:none;';
+        document.body.appendChild(overlay);
+      }
+      overlay.innerHTML = '';
+      overlay.style.display = 'flex';
+
+      const tit = document.createElement('p');
+      tit.style.cssText = 'font-family:var(--f2);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;pointer-events:none;text-shadow:0 1px 4px #000;';
+      tit.textContent = 'Colocad las losetas según este diagrama';
+      overlay.appendChild(tit);
+
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-principal';
+      btn.style.cssText = 'pointer-events:all;';
+      btn.textContent = 'Leer premisa →';
+      btn.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        if (hud) hud.style.display = '';
+        if (hudAcc) hudAcc.style.display = '';
+        onFin();
+      });
+      overlay.appendChild(btn);
+
+      // Renderizar mapa en modo setup (sin PJs, sin PNJs, con nombres)
+      Mapa.renderizarSetup();
+    }, 100);
   },
 
   _mostrarPasoMontaje() {
