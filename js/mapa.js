@@ -312,34 +312,30 @@ const Mapa = {
 
       // Las imágenes _P.png ya incluyen el nombre — no sobreimprimir
 
-      // Escena crimen
-      if (esEscena) {
-        this._el(g, 'rect', { x:cx-34, y:y+CELDA-18, width:68, height:16, rx:3, fill:'rgba(140,0,0,0.92)' });
-        this._txt(g, '✝ ESCENA', cx, y+CELDA-7, { anchor:'middle', size:10, fill:'#ffcccc', family:'Cinzel,serif', weight:'bold' });
-        const imgCad = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-        imgCad.setAttribute('href', 'assets/tokens/Cadaver.png');
-        imgCad.setAttribute('x', x + 6); imgCad.setAttribute('y', y + 6);
-        imgCad.setAttribute('width', 28); imgCad.setAttribute('height', 28);
-        g.appendChild(imgCad);
-      }
       const bloqueada = typeof isLosetaBloqueada === 'function' && isLosetaBloqueada(l.id);
       if (bloqueada) {
         rect.setAttribute('stroke', '#8b4513');
         rect.setAttribute('stroke-width', '3');
         rect.setAttribute('stroke-dasharray', '6,3');
-        const imgBlq = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-        imgBlq.setAttribute('href', 'assets/tokens/Bloqueada.png');
-        imgBlq.setAttribute('x', x + 6); imgBlq.setAttribute('y', y + CELDA - 34);
-        imgBlq.setAttribute('width', 28); imgBlq.setAttribute('height', 28);
-        g.appendChild(imgBlq);
       }
-      if (cerrada) {
-        const imgCerrada = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-        imgCerrada.setAttribute('href', 'assets/tokens/Cerrada.png');
-        imgCerrada.setAttribute('x', x + CELDA - 34); imgCerrada.setAttribute('y', y + CELDA - 34);
-        imgCerrada.setAttribute('width', 28); imgCerrada.setAttribute('height', 28);
-        g.appendChild(imgCerrada);
-      }
+      const cobertizo = l.id === 'cobertizo';
+
+      // ── TOKENS: apilados en columna derecha ──────────────────────────────
+      const tokensLoseta = [];
+      if (esEscena) tokensLoseta.push('assets/tokens/Cadaver.png');
+      if (bloqueada) tokensLoseta.push('assets/tokens/Bloqueada.png');
+      if (cerrada) tokensLoseta.push('assets/tokens/Cerrada.png');
+      if (cobertizo && !estado.herramienta_recogida) tokensLoseta.push('assets/tokens/Herramientas.png');
+
+      tokensLoseta.forEach((href, i) => {
+        const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        img.setAttribute('href', href);
+        img.setAttribute('x', x + CELDA - 34);
+        img.setAttribute('y', y + 6 + i * 32);
+        img.setAttribute('width', 28);
+        img.setAttribute('height', 28);
+        g.appendChild(img);
+      });
 
       // Destino: flecha pulsante
       if (esDestino) {
@@ -348,20 +344,6 @@ const Mapa = {
 
       svg.appendChild(g);
     });
-
-    // ── HERRAMIENTAS COBERTIZO ────────────────────────────────────────────────
-    const cobertizo = losetas.find(l => l.id === 'cobertizo');
-    if (cobertizo && !estado.herramienta_recogida) {
-      const { x, y } = pos(cobertizo);
-      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      this._el(g, 'rect', { x:x+CELDA-28, y:y+6, width:23, height:23, rx:4, fill:'rgba(180,130,40,0.2)', stroke:'#d4a840', 'stroke-width':1 });
-        const imgHerr = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-        imgHerr.setAttribute('href', 'assets/tokens/Herramientas.png');
-        imgHerr.setAttribute('x', x + CELDA - 34); imgHerr.setAttribute('y', y + 6);
-        imgHerr.setAttribute('width', 28); imgHerr.setAttribute('height', 28);
-        g.appendChild(imgHerr);
-      svg.appendChild(g);
-    }
 
     // ── TOKENS PNJ ────────────────────────────────────────────────────────────
     datosCaso.comun.pnj.forEach(pnj => {
@@ -452,7 +434,7 @@ const Mapa = {
         const gL = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         const imgLlave = document.createElementNS('http://www.w3.org/2000/svg', 'image');
         imgLlave.setAttribute('href', 'assets/tokens/Llave.png');
-        imgLlave.setAttribute('x', x + 6); imgLlave.setAttribute('y', y + 6);
+        imgLlave.setAttribute('x', x + CELDA - 34); imgLlave.setAttribute('y', y + 6);
         imgLlave.setAttribute('width', 28); imgLlave.setAttribute('height', 28);
         gL.appendChild(imgLlave);
         svg.appendChild(gL);
