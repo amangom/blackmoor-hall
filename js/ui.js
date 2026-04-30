@@ -130,9 +130,13 @@ const UI = {
         const btnCentrar = document.getElementById('btn-centrar') || document.querySelector('button[onclick*="centrar"]');
         if (leyenda) leyenda.style.display = 'none';
         if (btnCentrar) btnCentrar.style.display = 'none';
-        svg.querySelectorAll('image').forEach(img => {
-          const href = img.getAttribute('href') || '';
-          if (href.startsWith('data:image')) img.style.display = 'none';
+        svg.querySelectorAll('g').forEach(g => {
+          const imgs = Array.from(g.querySelectorAll('image'));
+          const tieneLosetaImg = imgs.some(img => (img.getAttribute('href') || '').includes('assets/losetas/'));
+          const tieneTokenImg  = imgs.some(img => (img.getAttribute('href') || '').includes('assets/tokens/'));
+          const tieneDataImg   = imgs.some(img => (img.getAttribute('href') || '').startsWith('data:image'));
+          if (!tieneLosetaImg && !tieneTokenImg && tieneDataImg) g.style.display = 'none';
+          if (!tieneLosetaImg && !tieneTokenImg && !tieneDataImg && g.textContent.trim() && !g.querySelector('rect')) g.style.display = 'none';
         });
 
         const losetas = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
