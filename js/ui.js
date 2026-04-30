@@ -78,7 +78,7 @@ const UI = {
     if (!overlay) {
       overlay = document.createElement('div');
       overlay.id = 'overlay-colocacion';
-      overlay.style.cssText = 'position:fixed;inset:0;background:#0a0806;z-index:200;display:flex;flex-direction:column;align-items:center;overflow:hidden;';
+      overlay.style.cssText = 'position:fixed;inset:0;background:#0a0806;z-index:200;display:flex;flex-direction:column;align-items:center;overflow:hidden;width:100%;height:100%;';
       document.body.appendChild(overlay);
     }
     overlay.innerHTML = '';
@@ -93,7 +93,7 @@ const UI = {
     // Contenedor del mapa
     const mapaDiv = document.createElement('div');
     mapaDiv.id = 'mapa-container';
-    mapaDiv.style.cssText = 'flex:1;width:100%;min-height:0;overflow:auto;position:relative;display:flex;align-items:center;justify-content:center;';
+    mapaDiv.style.cssText = 'width:100%;height:calc(100vh - 100px);overflow:auto;position:relative;display:flex;align-items:center;justify-content:center;';
     overlay.appendChild(mapaDiv);
 
     // Botón
