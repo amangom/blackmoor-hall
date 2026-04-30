@@ -77,6 +77,7 @@ const UI = {
 
     setTimeout(() => {
       const hud = document.getElementById('hud');
+      console.log('[Setup-500] hud:', hud, 'hud-acc:', document.getElementById('hud-acc'), 'leyenda:', document.querySelector('.mapa-leyenda'));
       const hudAcc = document.getElementById('hud-acc');
       const leyenda = document.querySelector('.mapa-leyenda');
       if (hud) hud.style.display = 'none';
@@ -112,6 +113,7 @@ const UI = {
 
       setTimeout(() => {
         Mapa.renderizar();
+        console.log('[Setup-render] ejecutando renderizar');
         const svg = document.getElementById('mapa-svg');
         if (!svg) return;
 
@@ -156,8 +158,8 @@ const UI = {
             svg.appendChild(txt);
           });
         });
-      }, 150);
-    }, 100);
+      }, 300);
+    }, 500);
   },
 
   _mostrarPasoMontaje() {
