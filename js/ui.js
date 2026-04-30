@@ -73,17 +73,16 @@ const UI = {
   },
 
   _mostrarColocacionTablero(onFin) {
-    // Ir a la pantalla de partida real (donde el mapa-container ya tiene tamaño correcto)
     this.irAPartida();
 
-    // Ocultar HUD y controles para que solo se vea el mapa
     setTimeout(() => {
       const hud = document.getElementById('hud');
       const hudAcc = document.getElementById('hud-acc');
+      const leyenda = document.querySelector('.mapa-leyenda');
       if (hud) hud.style.display = 'none';
       if (hudAcc) hudAcc.style.display = 'none';
+      if (leyenda) leyenda.style.display = 'none';
 
-      // Añadir overlay con título y botón encima del mapa
       let overlay = document.getElementById('overlay-colocacion');
       if (!overlay) {
         overlay = document.createElement('div');
@@ -96,7 +95,7 @@ const UI = {
 
       const tit = document.createElement('p');
       tit.style.cssText = 'font-family:var(--f2);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);margin:0 0 .5rem;pointer-events:none;text-shadow:0 1px 4px #000;';
-      tit.textContent = 'Colocad las losetas según este diagrama';
+      tit.textContent = 'COLOCAD LAS LOSETAS SEGÚN ESTE DIAGRAMA';
       overlay.appendChild(tit);
 
       const btn = document.createElement('button');
@@ -107,44 +106,43 @@ const UI = {
         overlay.style.display = 'none';
         if (hud) hud.style.display = '';
         if (hudAcc) hudAcc.style.display = '';
-        if (hud) hud.style.visibility = '';
-        if (hudAcc) hudAcc.style.visibility = '';
-        const leyenda = document.querySelector('.mapa-leyenda');
-        if (leyenda) leyenda.style.display = '';
         onFin();
       });
       overlay.appendChild(btn);
 
-      // Renderizar mapa en modo setup (sin PJs, sin PNJs, con nombres)
-      Mapa.renderizar();
-      // Ocultar PJs y PNJs del SVG tras renderizar
       setTimeout(() => {
+        Mapa.renderizar();
         const svg = document.getElementById('mapa-svg');
         if (!svg) return;
-        // Ocultar avatares de PJs y PNJs (círculos con imágenes)
-        svg.querySelectorAll('image[href*="personajes"], image[href*="avatar"], image[href*="pnj"]').forEach(el => {
-          el.closest('g')?.setAttribute('opacity', '0');
+
+        const NOMBRES_PJ_PNJ = ['doctor', 'inspector', 'medium', 'mayordomo', 'institutriz', 'periodista', 'catherine', 'hobbes', 'harold', 'marsh', 'whitfield', 'pemberton'];
+        svg.querySelectorAll('g').forEach(g => {
+          for (const img of g.querySelectorAll('image')) {
+            const href = img.getAttribute('href') || '';
+            if (NOMBRES_PJ_PNJ.some(n => href.includes(n))) {
+              g.style.display = 'none';
+              return;
+            }
+          }
         });
-        // Mostrar nombres de losetas
+
         const losetas = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
+        const { CELDA, GAP, PAD } = Mapa;
         losetas.forEach(l => {
           const losInfo = typeof getLoseta === 'function' ? getLoseta(l.id) : null;
           if (!losInfo) return;
-          const { CELDA, GAP, PAD } = Mapa;
           const x = PAD + l.col * (CELDA + GAP);
           const y = PAD + l.fila * (CELDA + GAP);
           const cx = x + CELDA / 2;
           const nombre = losInfo.nombre || l.id;
-          const palabras = nombre.split(' ');
           const lineas = [];
           let linea = '';
-          palabras.forEach(p => {
+          nombre.split(' ').forEach(p => {
             if ((linea + ' ' + p).trim().length > 12) { lineas.push(linea.trim()); linea = p; }
             else linea = (linea + ' ' + p).trim();
           });
           if (linea) lineas.push(linea);
-          const totalH = lineas.length * 13;
-          const startY = y + CELDA / 2 - totalH / 2 + 6;
+          const startY = y + CELDA / 2 - (lineas.length * 13) / 2 + 6;
           lineas.forEach((ln, i) => {
             const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             txt.setAttribute('x', cx);
@@ -157,30 +155,6 @@ const UI = {
             txt.setAttribute('filter', 'url(#fs)');
             txt.textContent = ln;
             svg.appendChild(txt);
-          });
-        });
-        // Ocultar HUD
-        const hud = document.getElementById('hud');
-        const hudAcc = document.getElementById('hud-acc');
-        const leyenda = document.querySelector('.mapa-leyenda');
-        const centrar = document.getElementById('btn-centrar') || document.querySelector('[id*="centrar"]');
-        if (hud) hud.style.visibility = 'hidden';
-        if (hudAcc) hudAcc.style.visibility = 'hidden';
-        if (leyenda) leyenda.style.display = 'none';
-        if (centrar) centrar.style.display = 'none';
-
-        // Ocultar grupos de PJs y PNJs del SVG (svg ya declarado arriba)
-        svg.querySelectorAll('g').forEach(g => {
-          const imgs = g.querySelectorAll('image');
-          imgs.forEach(img => {
-            const href = img.getAttribute('href') || '';
-            if (href.includes('personajes') || href.includes('pnj') || href.includes('avatar') ||
-                href.includes('doctor') || href.includes('inspector') || href.includes('medium') ||
-                href.includes('mayordomo') || href.includes('institutriz') || href.includes('periodista') ||
-                href.includes('catherine') || href.includes('hobbes') || href.includes('harold') ||
-                href.includes('marsh') || href.includes('whitfield') || href.includes('pemberton')) {
-              g.style.display = 'none';
-            }
           });
         });
       }, 150);
