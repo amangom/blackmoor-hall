@@ -97,17 +97,9 @@
       "tipo": "generica",
       "caso": null,
       "narrativa": "Uno de los sospechosos no puede más con la presión. Entra en pánico y huye de los investigadores.",
-      "mecanica": "El PNJ con mayor Sospecha entra en pánico y huye a la loseta más alejada de los jugadores. Si un jugador está en la misma loseta que el PNJ: puede hacer FOR dif. 3 para impedirlo (no gasta acción).",
-      "texto_completo": "Uno de los sospechosos no puede más con la presión. Entra en pánico y huye de los investigadores. El PNJ con mayor Sospecha entra en pánico y huye a la loseta más alejada de los jugadores. Si un jugador está en la misma loseta que el PNJ: puede hacer FOR dif. 3 para impedirlo (no gasta acción).",
-      "efectos": [
-        {
-          "tipo": "pnj_huida_mayor_sospecha",
-          "prueba_impedirlo": {
-            "atributo": "FOR",
-            "dificultad": 3
-          }
-        }
-      ]
+      "mecanica": "El PNJ activado sube 1 punto de Sospecha y huye: la app lo mueve a la loseta accesible más alejada del jugador más cercano.",
+      "texto_completo": "Uno de los sospechosos no puede más con la presión. El PNJ activado sube 1 punto de Sospecha y huye: la app lo mueve a la loseta accesible más alejada del jugador más cercano.",
+      "efectos": [{"tipo": "pnj_nervioso_huye"}]
     },
     {
       "id": "sospecha_cruzada",

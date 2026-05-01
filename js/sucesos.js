@@ -190,6 +190,63 @@ function calcularResultadosSuceso(carta) {
           nomHasta: destino ? (getLos(destino)?.nombre || destino) : null
         };
       }
+    } else if (ef.tipo === 'pnj_nervioso_huye') {
+      // PNJ con mayor sospecha (aleatorio en empate)
+      const pnjId = _mayorSospecha();
+      if (pnjId) {
+        const pnjDef = getPNJ(pnjId);
+        const conexiones = getConexionesDistribucion();
+        const losetas = getLosetasDistribucion();
+        const actual = estado.pnj?.[pnjId]?.loseta_actual || pnjDef?.posicion_inicial;
+
+        // BFS para calcular distancia desde cada loseta hasta el jugador más cercano
+        const jugadoresActivos = estado.jugadores.filter(j => !j.incapacitado && j.loseta_actual);
+        const distDesdeJugadores = {};
+        const cola = [];
+        jugadoresActivos.forEach(j => {
+          if (!distDesdeJugadores[j.loseta_actual]) {
+            distDesdeJugadores[j.loseta_actual] = 0;
+            cola.push(j.loseta_actual);
+          }
+        });
+        while (cola.length) {
+          const cur = cola.shift();
+          const vecinos = conexiones
+            .filter(c => c.desde === cur || c.hasta === cur)
+            .map(c => c.desde === cur ? c.hasta : c.desde);
+          vecinos.forEach(v => {
+            if (distDesdeJugadores[v] == null) {
+              distDesdeJugadores[v] = distDesdeJugadores[cur] + 1;
+              cola.push(v);
+            }
+          });
+        }
+
+        // Losetas accesibles desde la posición actual del PNJ (adyacentes, no cerradas)
+        const vecinos = conexiones
+          .filter(c => c.desde === actual || c.hasta === actual)
+          .map(c => c.desde === actual ? c.hasta : c.desde)
+          .filter(id => !isCerrada(id));
+
+        // Elegir la más alejada del jugador más cercano
+        let maxDist = -1;
+        vecinos.forEach(id => {
+          const d = distDesdeJugadores[id] ?? 99;
+          if (d > maxDist) maxDist = d;
+        });
+        const candidatas = vecinos.filter(id => (distDesdeJugadores[id] ?? 99) === maxDist);
+        const destino = candidatas.length ? candidatas[Math.floor(Math.random() * candidatas.length)] : null;
+
+        const getLos = id => losetas.find(l => l.id === id);
+        carta._resultado_pnj_nervioso = {
+          pnjId,
+          pnjNombre: pnjDef?.nombre || pnjId,
+          desde: actual,
+          nomDesde: getLos(actual)?.nombre || actual,
+          hasta: destino,
+          nomHasta: destino ? (getLos(destino)?.nombre || destino) : null
+        };
+      }
     } else if (ef.tipo === 'pnj_movimiento_aleatorio') {
       // Calcular destino (sin mover aún)
       const pnjsActivos = datosCaso.comun.pnj.filter(p => !estado.pnj?.[p.id]?.retirado);
@@ -544,6 +601,12 @@ function aplicarEfectosSuceso(carta) {
     } else if (ef.tipo === 'activar_pnj_mayor_sospecha') {
       if (carta._resultado_activar_pnj?.hasta) {
         moverPNJ(carta._resultado_activar_pnj.pnjId, carta._resultado_activar_pnj.hasta);
+      }
+    } else if (ef.tipo === 'pnj_nervioso_huye') {
+      const r = carta._resultado_pnj_nervioso;
+      if (r?.pnjId) {
+        subirSospecha(r.pnjId, 1);
+        if (r.hasta) moverPNJ(r.pnjId, r.hasta);
       }
     } else if (ef.tipo === 'pnj_movimiento_aleatorio') {
       // Usar resultado ya calculado

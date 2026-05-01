@@ -1520,6 +1520,15 @@ const UI = {
         logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;"><strong>${r.pnjNombre}</strong> no puede moverse (sin salida disponible).</p>`;
       }
 
+    } else if (carta._resultado_pnj_nervioso) {
+      const r = carta._resultado_pnj_nervioso;
+      logEl.style.display = 'block';
+      if (r.hasta) {
+        logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;"><strong>${r.pnjNombre}</strong> huye de <em>${r.nomDesde}</em> a <em>${r.nomHasta}</em>.</p>`;
+      } else {
+        logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;"><strong>${r.pnjNombre}</strong> no puede huir (sin salida disponible).</p>`;
+      }
+
     } else if (carta._resultado_viento) {
       const mov = carta._resultado_viento;
       logEl.style.display = 'block';
