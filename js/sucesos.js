@@ -438,6 +438,59 @@ function calcularResultadosSuceso(carta) {
       } else {
         carta._resultado_hobbes = { afecta: false };
       }
+    } else if (ef.tipo === 'robar_carta_resolucion_todos') {
+      carta._resultado_momento_claridad = true;
+
+    } else if (ef.tipo === 'destruir_carta_exploracion') {
+      const losetas = getLosetasDistribucion();
+      const jugadas = estado.exploraciones_jugadas || [];
+      const pnjsPos = {};
+      datosCaso?.comun?.pnj?.forEach(p => {
+        const pos = estado.pnj?.[p.id]?.loseta_actual || p.posicion_inicial;
+        if (!pnjsPos[pos]) pnjsPos[pos] = 0;
+        pnjsPos[pos]++;
+      });
+      const jugadoresPos = {};
+      estado.jugadores?.forEach(j => {
+        if (!jugadoresPos[j.loseta_actual]) jugadoresPos[j.loseta_actual] = 0;
+        jugadoresPos[j.loseta_actual]++;
+      });
+      const candidatas = losetas.filter(l =>
+        !pnjsPos[l.id] && !jugadoresPos[l.id]
+      );
+      let cartaElegida = null;
+      if (candidatas.length) {
+        const elegida = candidatas[Math.floor(Math.random() * candidatas.length)];
+        const cartasLoseta = (typeof getCartasExploracionCaso === 'function'
+          ? getCartasExploracionCaso(estado.caso_id)
+          : []).filter(c => c.loseta_id === elegida.id && !jugadas.includes(c.id));
+        cartasLoseta.sort((a, b) => (a.numero || 0) - (b.numero || 0));
+        if (cartasLoseta.length) {
+          cartaElegida = cartasLoseta[0];
+          carta._resultado_destruir_carta = {
+            cartaId: cartaElegida.id,
+            numero: cartaElegida.numero || '?',
+            losetaId: elegida.id,
+            losetaNom: getNombreConArticulo(elegida.id)
+          };
+        }
+      }
+      if (!cartaElegida) carta._resultado_destruir_carta = null;
+
+    } else if (ef.tipo === 'carta_resolucion_todos') {
+      carta._resultado_carta_resolucion = { valor: ef.valor };
+
+    } else if (ef.tipo === 'bloquear_losetas_pnj_alta_sospecha') {
+      const umbral = ef.umbral_sospecha || 3;
+      const losetasBloqueadas = [];
+      datosCaso?.comun?.pnj?.forEach(p => {
+        const sosp = estado.pnj?.[p.id]?.sospecha || 0;
+        if (sosp >= umbral) {
+          const pos = estado.pnj?.[p.id]?.loseta_actual || p.posicion_inicial;
+          if (pos && !losetasBloqueadas.includes(pos)) losetasBloqueadas.push(pos);
+        }
+      });
+      carta._resultado_bloqueo_nervios = losetasBloqueadas;
     }
   });
 }
@@ -682,6 +735,32 @@ function aplicarEfectosSuceso(carta) {
       } else if (r) {
         log.push('Ningún personaje estaba en el Jardín');
       }
+    } else if (ef.tipo === 'robar_carta_resolucion_todos') {
+      // Solo notificación — los jugadores roban físicamente
+      if (typeof registrarCambio === 'function') {
+        registrarCambio('info', { lineas: ['Todos los jugadores roban 1 carta de Resolución.'] });
+      }
+
+    } else if (ef.tipo === 'destruir_carta_exploracion') {
+      const r = carta._resultado_destruir_carta;
+      if (r?.cartaId) {
+        if (!estado.exploraciones_jugadas) estado.exploraciones_jugadas = [];
+        estado.exploraciones_jugadas.push(r.cartaId);
+        guardarEstado();
+      }
+
+    } else if (ef.tipo === 'carta_resolucion_todos') {
+      if (typeof registrarCambio === 'function') {
+        registrarCambio('info', { lineas: ['Todos los jugadores descartan 1 carta de Resolución al azar.'] });
+      }
+
+    } else if (ef.tipo === 'bloquear_losetas_pnj_alta_sospecha') {
+      const losetas = carta._resultado_bloqueo_nervios || [];
+      losetas.forEach(id => {
+        if (typeof bloquearLoseta === 'function') {
+          bloquearLoseta(id, estado.ronda + 1, 'Nervios');
+        }
+      });
     }
     // loseta_mas_jugadores se gestiona aparte vía _pendiente_loseta
   });

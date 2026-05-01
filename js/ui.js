@@ -1520,6 +1520,20 @@ const UI = {
         logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;"><strong>${r.pnjNombre}</strong> no puede moverse (sin salida disponible).</p>`;
       }
 
+    } else if (carta._resultado_destruir_carta !== undefined) {
+      const r = carta._resultado_destruir_carta;
+      logEl.style.display = 'block';
+      if (r) {
+        logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;">🔥 La carta de Exploración #${r.numero} de <em>${r.losetaNom}</em> queda descartada boca abajo.</p>`;
+      } else {
+        logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;">🔥 No queda nada que destruir.</p>`;
+      }
+
+    } else if (carta._resultado_bloqueo_nervios?.length) {
+      const noms = carta._resultado_bloqueo_nervios.map(id => getNombreConArticulo(id)).join(', ');
+      logEl.style.display = 'block';
+      logEl.innerHTML = `<p style="font-family:var(--f3);font-size:1.05rem;color:#e8dcc8;line-height:1.7;">🚫 ${noms} quedan bloqueadas hasta el final de la próxima ronda.</p>`;
+
     } else if (carta._resultado_pnj_nervioso) {
       const r = carta._resultado_pnj_nervioso;
       logEl.style.display = 'block';

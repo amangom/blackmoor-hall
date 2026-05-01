@@ -51,6 +51,35 @@ const LOSETA_IMAGEN = {
   sala_utileria:    'assets/losetas/Sala_de_Utileria_P.png',
 };
 
+const LOSETA_ARTICULO = {
+  salon_principal:  'El',
+  vestibulo:        'El',
+  biblioteca:       'La',
+  despacho:         'El',
+  cocina:           'La',
+  hab_invitados:    'La',
+  hab_servicio:     'La',
+  galeria_retratos: 'La',
+  salon_musica:     'El',
+  capilla:          'La',
+  jardin:           'El',
+  cobertizo:        'El',
+  pasadizos:        'Los',
+  sotano:           'El',
+  sala_relojeria:   'La',
+  escenario:        'El',
+  bambalinas:       'Las',
+  camerinos:        'Los',
+  sala_utileria:    'La',
+};
+
+function getNombreConArticulo(loseta_id) {
+  const loseta = getLoseta(loseta_id);
+  const nombre = loseta?.nombre || loseta_id;
+  const art = LOSETA_ARTICULO[loseta_id] || '';
+  return art ? `${art} ${nombre}` : nombre;
+}
+
 let estado = null;
 let datosCaso     = null;
 let datosVariante = null;
