@@ -1348,6 +1348,199 @@ const UI = {
 
   // ─── SUCESO ────────────────────────────────────────────────────────────────
 
+  _construirNarrativaSuceso(carta) {
+    let txt = carta.narrativa || '';
+
+    // Helper
+    const nom = id => getNombreConArticulo(id);
+    const pnjNom = id => datosCaso?.comun?.pnj?.find(p => p.id === id)?.nombre || id;
+    const pjNom = idx => {
+      const j = estado.jugadores[idx];
+      if (!j) return '';
+      return (typeof PERSONAJES !== 'undefined' ? PERSONAJES[j.personaje]?.nombre : null) || j.personaje;
+    };
+
+    // corriente_de_aire / cerrojo_echado / puerta_bloqueada
+    if (carta._resultado_bloqueo?.losetaId) {
+      txt = txt.replace('{{loseta}}', nom(carta._resultado_bloqueo.losetaId));
+    }
+
+    // crujido_sospechoso / relampago / apagon
+    if (carta._resultado_loseta?.losetaNom) {
+      txt = txt.replace('{{loseta}}', carta._resultado_loseta.losetaNom);
+    }
+
+    // lluvia_intensa
+    if (carta._resultado_lluvia) {
+      const r = carta._resultado_lluvia;
+      if (r.pnjs.length === 0) {
+        txt = 'La tormenta arrecia con fuerza. El agua golpea los cristales y el viento aúlla entre los árboles. Las pruebas en el Jardín tienen +1 de dificultad hasta el final de la próxima ronda. No había PNJ en el Jardín.';
+      } else {
+        txt = txt.replace('{{loseta}}', r.nomDest || '');
+      }
+    }
+
+    // hobbes_hace_ronda
+    if (carta.id === 'hobbes_hace_ronda') {
+      if (carta._resultado_hobbes?.afecta) {
+        const jugadores = estado.jugadores
+          .filter(j => getLoseta(j.loseta_actual)?.tipo === 'P')
+          .map((j, idx) => pjNom(estado.jugadores.indexOf(j)));
+        const losetasP = [...new Set(estado.jugadores
+          .filter(j => getLoseta(j.loseta_actual)?.tipo === 'P')
+          .map(j => nom(j.loseta_actual)))];
+        txt = `Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Hobbes descubre a ${jugadores.join(' y ')} en ${losetasP.join(' y ')}. +1 Alerta.`;
+      } else {
+        txt = 'Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Todo está en orden. Nadie en zona indebida.';
+      }
+    }
+
+    // miradas_acusadoras / el_viento_azota / pnj_movimiento_aleatorio
+    if (carta._resultado_activar_pnj) {
+      const r = carta._resultado_activar_pnj;
+      txt = txt.replace('{{pnj}}', r.pnjNombre).replace('{{loseta}}', r.nomHasta || 'una loseta adyacente');
+    }
+    if (carta._resultado_viento) {
+      const r = carta._resultado_viento;
+      txt = txt.replace('{{pnj}}', r.pnjNombre).replace('{{loseta}}', r.nomHasta || 'una loseta adyacente');
+    }
+
+    // pnj_nervioso
+    if (carta._resultado_pnj_nervioso) {
+      const r = carta._resultado_pnj_nervioso;
+      if (r.hasta) {
+        txt = txt.replace('{{pnj}}', r.pnjNombre).replace('{{loseta}}', r.nomHasta);
+      } else {
+        txt = `${r.pnjNombre} entra en pánico pero no encuentra por dónde huir.`;
+      }
+    }
+
+    // sospecha_cruzada
+    if (carta._resultado_sospecha_cruzada) {
+      const r = carta._resultado_sospecha_cruzada;
+      txt = txt.replace('{{pnj_acusador}}', pnjNom(r.acusadorId)).replace('{{pnj_acusado}}', pnjNom(r.acusadoId));
+    }
+
+    // movimiento_general
+    if (carta._resultado_movimiento_general) {
+      const movs = carta._resultado_movimiento_general
+        .map(m => `${m.pnjNombre}: ${m.nomDesde} → ${m.nomHasta}`)
+        .join('. ');
+      txt = txt.replace('{{movimientos}}', movs || 'nadie se movió');
+    }
+
+    // rumores_en_la_oscuridad
+    if (carta._resultado_rumores_oscuridad) {
+      const r = carta._resultado_rumores_oscuridad;
+      txt = txt
+        .replace('{{pnj}}', r.acusadorNom)
+        .replace('{{pnj_destino}}', r.acusadoNom)
+        .replace('{{loseta}}', r.nomHasta || 'una loseta')
+        .replace('{{alerta}}', r.alerta ? '+1 Alerta.' : '');
+    }
+
+    // confesion_parcial
+    if (carta._resultado_confesion_parcial) {
+      const r = carta._resultado_confesion_parcial;
+      if (r.pnjId) {
+        txt = txt.replace('{{pnj}}', r.pnjNombre);
+      } else {
+        txt = 'La presión de la noche hace efecto. Pero nadie parece dispuesto a hablar.';
+      }
+    }
+
+    // evidencia_alterada
+    if (carta.id === 'evidencia_alterada') {
+      if (!carta._resultado_evidencia_alterada) {
+        txt = 'Alguien ha manipulado la escena durante la noche. Pero ya no queda nada que alterar.';
+      }
+    }
+
+    // ultimo_recurso
+    if (carta._resultado_ultimo_recurso) {
+      const r = carta._resultado_ultimo_recurso;
+      if (r.activa) {
+        txt = txt.replace('{{pnj}}', r.pnjNombre).replace('{{personaje}}', r.pjNombre);
+      } else {
+        txt = 'La desesperación se apodera de la mansión. Pero nadie da un paso al frente.';
+      }
+    }
+
+    // destruir_carta_exploracion
+    if (carta._resultado_destruir_carta) {
+      const r = carta._resultado_destruir_carta;
+      txt = txt.replace('{{numero}}', r.numero).replace('{{loseta}}', r.losetaNom);
+    } else if (carta._resultado_destruir_carta === null) {
+      txt = 'La noche interminable pasa factura. Pero ya no queda nada que destruir.';
+    }
+
+    // catherine_investiga
+    if (carta._resultado_catherine) {
+      const r = carta._resultado_catherine;
+      if (r.cartaId) {
+        txt = txt
+          .replace('{{loseta}}', nom(r.losetaId))
+          .replace('{{numero}}', r.numero)
+          .replace('{{pista}}', r.pista_id ? 'Una pista ha sido hallada y queda pendiente de interpretar.' : '');
+      } else {
+        txt = 'Catherine recorre la mansión con la mirada, pero no encuentra nada nuevo que investigar.';
+      }
+    }
+
+    // marsh_examina_al_lord
+    if (carta.id === 'marsh_examina_al_lord') {
+      const hayAlguien = estado.jugadores.some(j => j.loseta_actual === 'despacho') ||
+        datosCaso?.comun?.pnj?.some(p => estado.pnj?.[p.id]?.loseta_actual === 'despacho');
+      if (hayAlguien) {
+        txt = 'El Dr. Marsh insiste en examinar de nuevo el cuerpo del Lord. Con testigos presentes, realiza un examen rutinario y se retira.';
+      }
+    }
+
+    // una_visita_urgente
+    if (carta.id === 'una_visita_urgente') {
+      const hayAlguien = estado.jugadores.some(j => j.loseta_actual === 'despacho') ||
+        datosCaso?.comun?.pnj?.some(p => estado.pnj?.[p.id]?.loseta_actual === 'despacho');
+      if (hayAlguien || (estado.pistas_descubiertas || []).includes('pista_3')) {
+        txt = 'Harold se dirige al Despacho con paso decidido. Pero no está solo.';
+      }
+    }
+
+    // hobbes_confiesa
+    if (carta._resultado_hobbes_confiesa) {
+      const r = carta._resultado_hobbes_confiesa;
+      if (r.activa) {
+        txt = txt.replace('{{personaje}}', r.pjNombre).replace('{{loseta}}', nom(r.losetaId));
+      } else {
+        txt = 'Hobbes busca al investigador más cercano con expresión grave. Tiene algo que decir, pero parece que ya lo sabéis.';
+      }
+    }
+
+    // el_reloj_da_las_cinco
+    if (carta.id === 'el_reloj_da_las_cinco') {
+      if ((estado.alerta || 0) >= 6) {
+        txt = 'Las campanadas del reloj de péndulo retumban en la mansión. El amanecer está cada vez más cerca. +1 Alerta. Los nervios hacen mella: todos los jugadores pierden −1 Temple.';
+      }
+    }
+
+    // nervios — bloqueo losetas
+    if (carta._resultado_bloqueo_nervios?.length) {
+      const noms = carta._resultado_bloqueo_nervios.map(id => nom(id)).join(', ');
+      txt += ` ${noms} quedan bloqueadas hasta el final de la próxima ronda. Nadie puede entrar ni salir. Colocad los tokens de bloqueo.`;
+    }
+
+    // confesion_nocturna
+    if (carta._resultado_confesion_nocturna) {
+      const r = carta._resultado_confesion_nocturna;
+      txt = txt.replace('{{pnj}}', r.pnjNombre).replace('{{personaje}}', r.pjNombre).replace('{{loseta}}', nom(r.losetaId));
+    }
+
+    // harold_bebe — sin variables dinámicas, texto fijo OK
+
+    // amanecer_cercano — sin variables
+
+    return txt;
+  },
+
   abrirSuceso() {
     const carta = robarSuceso();
     if (!carta) {
@@ -1369,7 +1562,7 @@ const UI = {
 
     document.getElementById('suc-titulo').textContent     = carta.titulo;
     document.getElementById('suc-fase-badge').textContent = faseNom[carta.fase] || carta.fase;
-    document.getElementById('suc-narrativa').textContent  = carta.narrativa || '';
+    document.getElementById('suc-narrativa').textContent = this._construirNarrativaSuceso(carta);
 
     // Texto de mecánica: construido dinámicamente cuando hay resultado calculado
     let mecaTexto = carta.mecanica || carta.texto_completo || '';
@@ -1406,7 +1599,8 @@ const UI = {
       const r = carta._resultado_puerta_bloqueada;
       mecaTexto = `${r.losetaNombre} queda bloqueada hasta final de la próxima ronda. +1 Alerta.`;
     }
-    document.getElementById('suc-mecanica').textContent = mecaTexto;
+    const mecaEl = document.getElementById('suc-mecanica');
+    if (mecaEl) mecaEl.style.display = 'none';
 
     const logEl = document.getElementById('suc-efectos-log');
     this._montarLogSuceso(carta, logEl);
