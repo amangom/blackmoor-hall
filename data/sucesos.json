@@ -6,9 +6,9 @@
       "fase": "anochecer",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros.",
-      "mecanica": "La app elige aleatoriamente una loseta en juego y la bloquea hasta el final de la próxima ronda: nadie puede entrar ni salir de ella.",
-      "texto_completo": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros. La app elige aleatoriamente una loseta en juego y la bloquea hasta el final de la próxima ronda: nadie puede entrar ni salir de ella. Colocad un token de bloqueo como recordatorio.",
+      "narrativa": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros. {{loseta}} queda bloqueada hasta el final de la próxima ronda: nadie puede entrar ni salir de ella. Colocad un token de bloqueo como recordatorio.",
+      "mecanica": "La app elige aleatoriamente una loseta en juego, la bloquea hasta el final de la próxima ronda y muestra el token de bloqueo en esa loseta. Sustituye {{loseta}} por el nombre con artículo de la loseta elegida.",
+      "texto_completo": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros. {{loseta}} queda bloqueada hasta el final de la próxima ronda: nadie puede entrar ni salir de ella. Colocad un token de bloqueo como recordatorio.",
       "efectos": [
         {
           "tipo": "bloqueo_loseta_adyacente",
@@ -22,9 +22,9 @@
       "fase": "anochecer",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "Un crujido inquietante en las tablas del suelo. Todos se sobresaltan y miran a su alrededor.",
-      "mecanica": "+1 Alerta. Todos los jugadores en la loseta con más jugadores deben descartar 1 carta de Resolución al azar.",
-      "texto_completo": "Un crujido inquietante en las tablas del suelo. Todos se sobresaltan y miran a su alrededor. +1 Alerta. Todos los jugadores en la loseta con más jugadores deben descartar 1 carta de Resolución al azar.",
+      "narrativa": "Un crujido inquietante en las tablas del suelo. Todos se sobresaltan y miran a su alrededor. +1 Alerta. Los jugadores en {{loseta}} deben descartar 1 carta de Resolución al azar.",
+      "mecanica": "La app sube +1 Alerta y determina la loseta con más jugadores. Los jugadores presentes en esa loseta descartan 1 carta de Resolución al azar. Sustituye {{loseta}} por el nombre con artículo de la loseta elegida.",
+      "texto_completo": "Un crujido inquietante en las tablas del suelo. Todos se sobresaltan y miran a su alrededor. +1 Alerta. Los jugadores en {{loseta}} deben descartar 1 carta de Resolución al azar.",
       "efectos": [
         {
           "tipo": "alerta",
@@ -49,9 +49,9 @@
       "fase": "anochecer",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "La tormenta arrecia con fuerza. El agua golpea los cristales y el viento aúlla entre los árboles.",
-      "mecanica": "+1 dificultad a todas las pruebas en el Jardín hasta final de la próxima ronda. Los PNJ en el Jardín se refugian: se mueven a la loseta adyacente más cercana al Salón Principal.",
-      "texto_completo": "La tormenta arrecia con fuerza. El agua golpea los cristales y el viento aúlla entre los árboles. +1 dificultad a todas las pruebas en el Jardín hasta final de la próxima ronda. Los PNJ en el Jardín se refugian: se mueven a la loseta adyacente más cercana al Salón Principal.",
+      "narrativa": "La tormenta arrecia con fuerza. El agua golpea los cristales y el viento aúlla entre los árboles. Las pruebas en el Jardín tienen +1 de dificultad hasta el final de la próxima ronda. Los PNJ que estaban en el Jardín se refugian en {{loseta}}.",
+      "mecanica": "La app aplica +1 dificultad a todas las pruebas en el Jardín hasta final de la próxima ronda. Los PNJ presentes en el Jardín se mueven a la loseta adyacente más cercana al Salón Principal. Sustituye {{loseta}} por el nombre con artículo de la loseta a la que se mueven.",
+      "texto_completo": "La tormenta arrecia con fuerza. El agua golpea los cristales y el viento aúlla entre los árboles. Las pruebas en el Jardín tienen +1 de dificultad hasta el final de la próxima ronda. Los PNJ que estaban en el Jardín se refugian en {{loseta}}.",
       "efectos": [
         {
           "tipo": "pnj_refugio_exterior",
@@ -66,9 +66,9 @@
       "fase": "anochecer",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "",
-      "mecanica": "Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Si algún jugador está en una loseta Privada (P): +1 Alerta (Hobbes desaprueba la intrusión). Si nadie está en zona privada: sin efecto.",
-      "texto_completo": "Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Si algún jugador está en una loseta Privada (P): +1 Alerta (Hobbes desaprueba la intrusión). Si nadie está en zona privada: sin efecto.",
+      "narrativa": "Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional.",
+      "mecanica": "La app comprueba si algún jugador está en una loseta de tipo P. Si es así, sube +1 Alerta e identifica qué jugadores y en qué loseta. Narrativa con jugadores en zona P: 'Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Hobbes descubre a {{personajes}} en {{loseta}}. +1 Alerta.' Sin jugadores: 'Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Todo está en orden. Nadie en zona indebida.' Sustituye {{personajes}} y {{loseta}}.",
+      "texto_completo": "La app comprueba si algún jugador está en una loseta de tipo P. Si es así, sube +1 Alerta e identifica qué jugadores y en qué loseta. Narrativa con jugadores en zona P: 'Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Hobbes descubre a {{personajes}} en {{loseta}}. +1 Alerta.' Sin jugadores: 'Hobbes recorre la mansión con un candelabro, comprobando cada habitación con celo profesional. Todo está en orden. Nadie en zona indebida.' Sustituye {{personajes}} y {{loseta}}.",
       "efectos": [
         {
           "tipo": "alerta_si_zona_privada"
@@ -81,9 +81,9 @@
       "fase": "anochecer",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables.",
-      "mecanica": "El PNJ con mayor Sospecha se activa: la app lo mueve a una loseta adyacente aleatoria. En caso de empate, la app elige aleatoriamente entre los empatados. Si no hay salida disponible, el PNJ no se mueve.",
-      "texto_completo": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables. El PNJ con mayor Sospecha se activa: la app lo mueve a una loseta adyacente aleatoria. En caso de empate, la app elige aleatoriamente entre los empatados. Si no hay salida disponible, el PNJ no se mueve.",
+      "narrativa": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables. {{pnj}} se aleja nervioso hacia {{loseta}}.",
+      "mecanica": "La app selecciona el PNJ con mayor Sospecha (aleatorio en empate) y lo mueve a una loseta adyacente aleatoria. Sustituye {{pnj}} por el nombre del PNJ y {{loseta}} por el nombre con artículo de la loseta destino.",
+      "texto_completo": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables. {{pnj}} se aleja nervioso hacia {{loseta}}.",
       "efectos": [
         {
           "tipo": "activar_pnj_mayor_sospecha"
@@ -96,9 +96,9 @@
       "fase": "medianoche",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "Uno de los sospechosos no puede más con la presión. Entra en pánico y huye de los investigadores.",
-      "mecanica": "El PNJ activado sube 1 punto de Sospecha y huye: la app lo mueve a la loseta accesible más alejada del jugador más cercano.",
-      "texto_completo": "Uno de los sospechosos no puede más con la presión. El PNJ activado sube 1 punto de Sospecha y huye: la app lo mueve a la loseta accesible más alejada del jugador más cercano.",
+      "narrativa": "Uno de los sospechosos no puede más con la presión. {{pnj}} entra en pánico y huye hacia {{loseta}}.",
+      "mecanica": "La app selecciona el PNJ con mayor Sospecha (aleatorio en empate), le sube +1 Sospecha y lo mueve a la loseta accesible más alejada del jugador más cercano. Si no hay salida: narrativa alternativa '{{pnj}} entra en pánico pero no encuentra por dónde huir.' Sustituye {{pnj}} y {{loseta}}.",
+      "texto_completo": "Uno de los sospechosos no puede más con la presión. {{pnj}} entra en pánico y huye hacia {{loseta}}.",
       "efectos": [{"tipo": "pnj_nervioso_huye"}]
     },
     {
@@ -107,9 +107,9 @@
       "fase": "medianoche",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "La tensión entre los sospechosos estalla. Uno señala a otro con el dedo y le acusa abiertamente.",
-      "mecanica": "El PNJ con mayor Sospecha acusa públicamente al PNJ con menor Sospecha: +1 Sospecha al acusado. Si hay empate en cualquiera de los dos, los jugadores eligen.",
-      "texto_completo": "La tensión entre los sospechosos estalla. Uno señala a otro con el dedo y le acusa abiertamente. El PNJ con mayor Sospecha acusa públicamente al PNJ con menor Sospecha: +1 Sospecha al acusado. Si hay empate en cualquiera de los dos, los jugadores eligen.",
+      "narrativa": "La tensión entre los sospechosos estalla. {{pnj_acusador}} señala a {{pnj_acusado}} con el dedo y le acusa abiertamente. +1 Sospecha para {{pnj_acusado}}.",
+      "mecanica": "La app selecciona el PNJ con mayor Sospecha como acusador y el de menor Sospecha como acusado (aleatorio en empate en cualquiera). Sube +1 Sospecha al acusado. Sustituye {{pnj_acusador}} y {{pnj_acusado}}.",
+      "texto_completo": "La tensión entre los sospechosos estalla. {{pnj_acusador}} señala a {{pnj_acusado}} con el dedo y le acusa abiertamente. +1 Sospecha para {{pnj_acusado}}.",
       "efectos": [
         {
           "tipo": "sospecha_cruzada"
@@ -122,9 +122,9 @@
       "fase": "medianoche",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "Las velas se apagan de golpe en una habitación. La oscuridad envuelve a quien esté dentro.",
-      "mecanica": "El jugador con menos Temple elige cuál. Hasta final de la próxima ronda: +1 dificultad INT y −1 dificultad FOR en esa loseta (la oscuridad favorece la acción física).",
-      "texto_completo": "Las velas se apagan de golpe en una habitación. La oscuridad envuelve a quien esté dentro. El jugador con menos Temple elige cuál. Hasta final de la próxima ronda: +1 dificultad INT y −1 dificultad FOR en esa loseta (la oscuridad favorece la acción física).",
+      "narrativa": "Las velas se apagan de golpe en {{loseta}}. La oscuridad envuelve a quien esté dentro. Hasta el final de la próxima ronda: +1 dificultad INT y −1 dificultad FOR en esa loseta.",
+      "mecanica": "La app determina la loseta con más jugadores y aplica +1 dificultad INT y −1 dificultad FOR hasta final de la próxima ronda. Sustituye {{loseta}}.",
+      "texto_completo": "Las velas se apagan de golpe en {{loseta}}. La oscuridad envuelve a quien esté dentro. Hasta el final de la próxima ronda: +1 dificultad INT y −1 dificultad FOR en esa loseta.",
       "efectos": [
         {
           "tipo": "loseta_mas_jugadores",
@@ -150,9 +150,9 @@
       "fase": "medianoche",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "Un ruido alarmante desde el Salón Principal pone en alerta a todos los habitantes de la mansión.",
-      "mecanica": "Todos los PNJ se mueven 1 loseta hacia el Salón (por el camino más corto). Si un PNJ ya está en el Salón, no se mueve.",
-      "texto_completo": "Un ruido alarmante desde el Salón Principal pone en alerta a todos los habitantes de la mansión. Todos los PNJ se mueven 1 loseta hacia el Salón (por el camino más corto). Si un PNJ ya está en el Salón, no se mueve.",
+      "narrativa": "Un ruido alarmante desde el Salón Principal pone en alerta a todos los habitantes de la mansión. Todos los sospechosos se dirigen hacia allí: {{movimientos}}.",
+      "mecanica": "La app mueve cada PNJ 1 loseta hacia el Salón Principal por el camino más corto. Los PNJ ya en el Salón no se mueven. Sustituye {{movimientos}} por la lista de movimientos, ej: 'Hobbes: Biblioteca → Vestíbulo. Marsh: Despacho → Salón Principal.'",
+      "texto_completo": "Un ruido alarmante desde el Salón Principal pone en alerta a todos los habitantes de la mansión. Todos los sospechosos se dirigen hacia allí: {{movimientos}}.",
       "efectos": [
         {
           "tipo": "mover_todos_hacia",
@@ -166,9 +166,9 @@
       "fase": "medianoche",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "Se oye un portazo lejano seguido del chasquido de un cerrojo. Alguien no quiere visitas.",
-      "mecanica": "La loseta con PNJ más alejada de los jugadores queda CERRADA (se coloca token de cerradura). FOR 4 para forzar (+1 Alerta). Se puede usar Herramienta para abrir sin Alerta.",
-      "texto_completo": "Se oye un portazo lejano seguido del chasquido de un cerrojo. Alguien no quiere visitas. La loseta con PNJ más alejada de los jugadores queda CERRADA (se coloca token de cerradura). FOR 4 para forzar (+1 Alerta). Se puede usar Herramienta para abrir sin Alerta.",
+      "narrativa": "Se oye un portazo lejano seguido del chasquido de un cerrojo. {{loseta}} queda cerrada con llave. Para abrirla: usad una llave, la Herramienta (sin Alerta), o forzad la cerradura con FOR 4 (+1 Alerta).",
+      "mecanica": "La app determina la loseta con PNJ que tenga más jugadores en losetas adyacentes (aleatorio en empate) y la cierra con token de cerradura. Sustituye {{loseta}}.",
+      "texto_completo": "Se oye un portazo lejano seguido del chasquido de un cerrojo. {{loseta}} queda cerrada con llave. Para abrirla: usad una llave, la Herramienta (sin Alerta), o forzad la cerradura con FOR 4 (+1 Alerta).",
       "efectos": [
         {
           "tipo": "alerta",
@@ -182,9 +182,9 @@
       "fase": "medianoche",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "Se oyen cuchicheos entre los sospechosos. Alguien está acusando a alguien, pero no podéis distinguir las voces.",
-      "mecanica": "Se activa 1 PNJ: +1 Sospecha. Si ese PNJ tiene Sospecha ≥2: además +1 Alerta.",
-      "texto_completo": "Se oyen cuchicheos entre los sospechosos. Alguien está acusando a alguien, pero no podéis distinguir las voces. Se activa 1 PNJ: +1 Sospecha. Si ese PNJ tiene Sospecha ≥2: además +1 Alerta.",
+      "narrativa": "Se oyen cuchicheos entre los sospechosos. Alguien está acusando a alguien, pero no podéis distinguir las voces. {{pnj}} se dirige hacia donde está {{pnj_destino}}, en {{loseta}}. {{alerta}}",
+      "mecanica": "La app selecciona el PNJ con mayor Sospecha (aleatorio en empate) como acusador y lo mueve a una loseta donde haya al menos otro PNJ. Si no existe, se mueve a adyacente aleatoria. Si el PNJ acusado ({{pnj_destino}}) tiene Sospecha ≥2, sube +1 Alerta y sustituye {{alerta}} por '+1 Alerta.' Si no, {{alerta}} queda vacío. Sustituye {{pnj}}, {{pnj_destino}} y {{loseta}}.",
+      "texto_completo": "Se oyen cuchicheos entre los sospechosos. Alguien está acusando a alguien, pero no podéis distinguir las voces. {{pnj}} se dirige hacia donde está {{pnj_destino}}, en {{loseta}}. {{alerta}}",
       "efectos": [
         {
           "tipo": "sospecha_activar",
@@ -198,14 +198,25 @@
       ]
     },
     {
+      "id": "momento_de_claridad",
+      "titulo": "Momento de claridad",
+      "fase": "medianoche",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "En medio del caos, algo encaja. Una conexión inesperada despeja la mente de los investigadores. Todos los jugadores roban 1 carta de Resolución.",
+      "mecanica": "La app indica a todos los jugadores que roban 1 carta de Resolución.",
+      "texto_completo": "En medio del caos, algo encaja. Una conexión inesperada despeja la mente de los investigadores. Todos los jugadores roban 1 carta de Resolución.",
+      "efectos": [{"tipo": "robar_carta_resolucion_todos"}]
+    },
+    {
       "id": "confesion_parcial",
       "titulo": "Confesión parcial",
       "fase": "madrugada",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "La presión de la noche hace efecto. Un sospechoso busca a los investigadores con la mirada.",
-      "mecanica": "El PNJ con Sospecha ≥3 ofrece su siguiente interrogatorio con pista a dificultad −2. A cambio: −1 Sospecha. Si ningún PNJ tiene Sospecha ≥3: sin efecto.",
-      "texto_completo": "La presión de la noche hace efecto. Un sospechoso busca a los investigadores con la mirada. El PNJ con Sospecha ≥3 ofrece su siguiente interrogatorio con pista a dificultad −2. A cambio: −1 Sospecha. Si ningún PNJ tiene Sospecha ≥3: sin efecto.",
+      "narrativa": "La presión de la noche hace efecto. {{pnj}} busca a los investigadores con la mirada. Su próximo interrogatorio con pista tendrá −2 de dificultad.",
+      "mecanica": "La app selecciona el PNJ con Sospecha ≥3 más alta (aleatorio en empate), aplica −1 Sospecha y −2 dificultad al próximo interrogatorio con pista. Si ningún PNJ tiene Sospecha ≥3: narrativa alternativa 'La presión de la noche hace efecto. Pero nadie parece dispuesto a hablar.' Sustituye {{pnj}}.",
+      "texto_completo": "La presión de la noche hace efecto. {{pnj}} busca a los investigadores con la mirada. Su próximo interrogatorio con pista tendrá −2 de dificultad.",
       "efectos": [
         {
           "tipo": "sospecha_bajar",
@@ -219,9 +230,9 @@
       "fase": "madrugada",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "Alguien ha manipulado la escena durante la noche. Algo no está como lo dejasteis.",
-      "mecanica": "Si quedan cartas de Secreto sin descubrir: la próxima exploración en cualquier loseta tiene +1 dificultad. Si no quedan cartas: sin efecto.",
-      "texto_completo": "Alguien ha manipulado la escena durante la noche. Algo no está como lo dejasteis. Si quedan cartas de Secreto sin descubrir: la próxima exploración en cualquier loseta tiene +1 dificultad. Si no quedan cartas: sin efecto.",
+      "narrativa": "Alguien ha manipulado la escena durante la noche. Algo no está como lo dejasteis. La próxima exploración tendrá +1 de dificultad.",
+      "mecanica": "La app comprueba si quedan cartas de Exploración sin descubrir. Si es así, aplica +1 dificultad a la próxima exploración. Si no quedan: narrativa alternativa 'Alguien ha manipulado la escena durante la noche. Pero ya no queda nada que alterar.'",
+      "texto_completo": "Alguien ha manipulado la escena durante la noche. Algo no está como lo dejasteis. La próxima exploración tendrá +1 de dificultad.",
       "efectos": [
         {
           "tipo": "dificultad_exploracion_global",
@@ -236,9 +247,9 @@
       "fase": "madrugada",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "La desesperación se apodera de la mansión. Un sospechoso se acerca ofreciendo su ayuda.",
-      "mecanica": "Si Alerta ≥8: el PNJ con menor Sospecha ofrece ayuda activa. Acompaña a 1 jugador hasta final de ronda: +1 a todas sus pruebas. Si Alerta <8: sin efecto.",
-      "texto_completo": "La desesperación se apodera de la mansión. Un sospechoso se acerca ofreciendo su ayuda. Si Alerta ≥8: el PNJ con menor Sospecha ofrece ayuda activa. Acompaña a 1 jugador hasta final de ronda: +1 a todas sus pruebas. Si Alerta <8: sin efecto.",
+      "narrativa": "La desesperación se apodera de la mansión. {{pnj}} se acerca a {{personaje}} ofreciendo su ayuda. Hasta el final de la próxima ronda: +1 a todas sus pruebas.",
+      "mecanica": "La app comprueba si Alerta ≥8. Si es así, selecciona el PNJ con menor Sospecha y el jugador con menor TEM (aleatorio en empate). El PNJ se mueve a la loseta del jugador y aplica +1 a todas sus pruebas hasta final de la próxima ronda. Si Alerta <8: narrativa alternativa 'La desesperación se apodera de la mansión. Pero nadie da un paso al frente.' Sustituye {{pnj}} y {{personaje}}.",
+      "texto_completo": "La desesperación se apodera de la mansión. {{pnj}} se acerca a {{personaje}} ofreciendo su ayuda. Hasta el final de la próxima ronda: +1 a todas sus pruebas.",
       "efectos": [
         {
           "tipo": "ayuda_pnj_menor_sospecha",
@@ -252,51 +263,31 @@
       "fase": "madrugada",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "El cielo empieza a clarear por el este. El tiempo se agota y la policía llegará pronto.",
-      "mecanica": "Todos los jugadores −1 Temple. Si ningún jugador formula acusación en la próxima ronda: +2 Alerta adicional.",
-      "texto_completo": "El cielo empieza a clarear por el este. El tiempo se agota y la policía llegará pronto. Todos los jugadores −1 Temple. Si ningún jugador formula acusación en la próxima ronda: +2 Alerta adicional.",
-      "efectos": [
-        {
-          "tipo": "alerta",
-          "valor": 2
-        },
-        {
-          "tipo": "atributo_jugadores",
-          "atributo": "TEM",
-          "valor": -1
-        }
-      ]
+      "narrativa": "El cielo empieza a clarear por el este. El tiempo se agota y la policía llegará pronto. +1 Alerta.",
+      "mecanica": "La app sube +1 Alerta.",
+      "texto_completo": "El cielo empieza a clarear por el este. El tiempo se agota y la policía llegará pronto. +1 Alerta.",
+      "efectos": [{"tipo": "alerta", "valor": 1}]
     },
     {
       "id": "la_presion_estalla",
-      "titulo": "La presión estalla",
+      "titulo": "Prueba destruida",
       "fase": "madrugada",
       "tipo": "generica",
       "caso": null,
-      "narrativa": "La noche interminable pasa factura. Uno de los sospechosos pierde la compostura y monta una escena.",
-      "mecanica": "Se activa 1 PNJ: +1 Sospecha. Además, todos los jugadores en la loseta de ese PNJ: −1 Temple.",
-      "texto_completo": "La noche interminable pasa factura. Uno de los sospechosos pierde la compostura y monta una escena. Se activa 1 PNJ: +1 Sospecha. Además, todos los jugadores en la loseta de ese PNJ: −1 Temple.",
-      "efectos": [
-        {
-          "tipo": "sospecha_activar",
-          "valor": 1
-        },
-        {
-          "tipo": "atributo_jugadores",
-          "atributo": "TEM",
-          "valor": -1
-        }
-      ]
+      "narrativa": "La noche interminable pasa factura. La carta de Exploración #{{numero}} de {{loseta}} queda descartada boca abajo.",
+      "mecanica": "La app elige aleatoriamente una loseta sin PJs ni PNJs con al menos una carta de Exploración no descubierta. Descarta la carta de menor número disponible añadiéndola a exploraciones_jugadas. Si no existe ninguna loseta que cumpla la condición: narrativa alternativa 'La noche interminable pasa factura. Pero ya no queda nada que destruir.' Sustituye {{numero}} y {{loseta}}.",
+      "texto_completo": "La noche interminable pasa factura. La carta de Exploración #{{numero}} de {{loseta}} queda descartada boca abajo.",
+      "efectos": [{"tipo": "destruir_carta_exploracion"}]
     },
     {
       "id": "relampago",
       "titulo": "Relámpago",
       "fase": "anochecer",
-      "tipo": "caso_1",
-      "caso": 1,
-      "narrativa": "Un rayo ilumina la mansión y se apagan las velas en la habitación más concurrida.",
-      "mecanica": "La loseta con más jugadores pierde la luz. Hasta final de la próxima ronda: −1 dificultad FOR y +1 dificultad INT en esa loseta.",
-      "texto_completo": "Un rayo ilumina la mansión y se apagan las velas en la habitación más concurrida. La loseta con más jugadores (empate: los jugadores eligen) pierde la luz. Hasta final de la próxima ronda: −1 dificultad FOR y +1 dificultad INT en esa loseta.",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Un rayo ilumina la mansión y se apagan las velas en {{loseta}}. Hasta el final de la próxima ronda: −1 dificultad FOR y +1 dificultad INT en esa loseta.",
+      "mecanica": "La app determina la loseta con más jugadores (aleatorio en empate) y aplica −1 dificultad FOR y +1 dificultad INT hasta final de la próxima ronda. Sustituye {{loseta}} por el nombre con artículo de la loseta elegida.",
+      "texto_completo": "Un rayo ilumina la mansión y se apagan las velas en {{loseta}}. Hasta el final de la próxima ronda: −1 dificultad FOR y +1 dificultad INT en esa loseta.",
       "efectos": [
         {
           "tipo": "loseta_mas_jugadores",
@@ -322,9 +313,9 @@
       "fase": "anochecer",
       "tipo": "caso_1",
       "caso": 1,
-      "narrativa": "",
-      "mecanica": "Harold se sirve otro whisky con mano temblorosa. El alcohol le está soltando la lengua. Hasta final de la próxima ronda: −1 dificultad TEM para interrogar a Harold. Si un jugador fracasa al interrogarle en este periodo: +1 Alerta.",
-      "texto_completo": "Harold se sirve otro whisky con mano temblorosa. El alcohol le está soltando la lengua. Hasta final de la próxima ronda: −1 dificultad TEM para interrogar a Harold. Si un jugador fracasa al interrogarle en este periodo: +1 Alerta.",
+      "narrativa": "Harold se sirve otro whisky con mano temblorosa. El alcohol le está soltando la lengua. Hasta el final de la próxima ronda: −1 dificultad TEM para interrogar a Harold. Cuidado: un fracaso en el interrogatorio subirá +1 Alerta.",
+      "mecanica": "La app aplica −1 dificultad TEM a los interrogatorios de Harold durante la próxima ronda. Si algún jugador fracasa al interrogarle, sube +1 Alerta.",
+      "texto_completo": "Harold se sirve otro whisky con mano temblorosa. El alcohol le está soltando la lengua. Hasta el final de la próxima ronda: −1 dificultad TEM para interrogar a Harold. Cuidado: un fracaso en el interrogatorio subirá +1 Alerta.",
       "efectos": [
         {
           "tipo": "buff_interrogacion",
@@ -341,11 +332,11 @@
       "id": "el_viento_azota",
       "titulo": "El viento azota",
       "fase": "anochecer",
-      "tipo": "caso_1",
-      "caso": 1,
-      "narrativa": "Una puerta se cierra de golpe por la fuerza del viento. El estruendo sobresalta a todos.",
-      "mecanica": "+1 Alerta. La app elige al azar un PNJ activo y lo mueve a una loseta adyacente aleatoria.",
-      "texto_completo": "Una puerta se cierra de golpe por la fuerza del viento. El estruendo sobresalta a todos. +1 Alerta. La app elige al azar un PNJ activo y lo mueve a una loseta adyacente aleatoria.",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Una puerta se cierra de golpe por la fuerza del viento. El estruendo sobresalta a todos. +1 Alerta. {{pnj}} se desplaza hacia {{loseta}}.",
+      "mecanica": "La app sube +1 Alerta y elige aleatoriamente un PNJ activo, moviéndolo a una loseta adyacente aleatoria. Sustituye {{pnj}} por el nombre del PNJ y {{loseta}} por el nombre con artículo de la loseta destino.",
+      "texto_completo": "Una puerta se cierra de golpe por la fuerza del viento. El estruendo sobresalta a todos. +1 Alerta. {{pnj}} se desplaza hacia {{loseta}}.",
       "efectos": [
         {
           "tipo": "alerta",
@@ -362,9 +353,9 @@
       "fase": "medianoche",
       "tipo": "caso_1",
       "caso": 1,
-      "narrativa": "",
-      "mecanica": "Catherine se mueve con determinación hacia una habitación que esconde secretos. Catherine se mueve a una loseta con carta de Exploración no descubierta. La carta queda DESCUBIERTA (sin prueba). Si otorga Pista, se coloca como DESCUBIERTA sin interpretar.",
-      "texto_completo": "Catherine se mueve con determinación hacia una habitación que esconde secretos. Catherine se mueve a una loseta con carta de Exploración no descubierta. La carta queda DESCUBIERTA (sin prueba). Si otorga Pista, se coloca como DESCUBIERTA sin interpretar.",
+      "narrativa": "Catherine se mueve con determinación hacia {{loseta}}. Algo ha llamado su atención. La carta de Exploración #{{numero}} queda descubierta. {{pista}}",
+      "mecanica": "La app elige aleatoriamente una loseta con carta de Exploración no descubierta y mueve a Catherine allí. Descubre la carta de menor número sin prueba. Si tiene pista_id, la registra como descubierta sin interpretar y {{pista}} = 'Una pista ha sido hallada y queda pendiente de interpretar.' Si no tiene pista_id, {{pista}} queda vacío. Si no hay cartas disponibles: narrativa alternativa 'Catherine recorre la mansión con la mirada, pero no encuentra nada nuevo que investigar.' Sustituye {{loseta}}, {{numero}} y {{pista}}.",
+      "texto_completo": "Catherine se mueve con determinación hacia {{loseta}}. Algo ha llamado su atención. La carta de Exploración #{{numero}} queda descubierta. {{pista}}",
       "efectos": [
         {
           "tipo": "pnj_descubre_secreto",
@@ -378,9 +369,9 @@
       "fase": "medianoche",
       "tipo": "caso_1",
       "caso": 1,
-      "narrativa": "El Dr. Marsh insiste en examinar de nuevo el cuerpo del Lord. ¿Busca algo o intenta ocultar algo?",
-      "mecanica": "Si ningún jugador está en el Despacho: Marsh altera el cuerpo. +1 dificultad a las pistas #9 y #10 si no están descubiertas. Si hay jugador en el Despacho: sin efecto (Marsh finge un examen rutinario).",
-      "texto_completo": "El Dr. Marsh insiste en examinar de nuevo el cuerpo del Lord. ¿Busca algo o intenta ocultar algo? Si ningún jugador está en el Despacho: Marsh altera el cuerpo. +1 dificultad a las pistas #9 y #10 si no están descubiertas. Si hay jugador en el Despacho: sin efecto (Marsh finge un examen rutinario).",
+      "narrativa": "El Dr. Marsh insiste en examinar de nuevo el cuerpo del Lord. Nadie le vigila.",
+      "mecanica": "La app mueve a Marsh al Despacho. Si no hay ni PJs ni PNJs en el Despacho en el momento del suceso, aplica +1 dificultad a las pistas #9 y #10 que no estén aún descubiertas (silenciosamente, sin notificar). Si hay alguien: narrativa alternativa 'El Dr. Marsh insiste en examinar de nuevo el cuerpo del Lord. Con testigos presentes, realiza un examen rutinario y se retira.'",
+      "texto_completo": "El Dr. Marsh insiste en examinar de nuevo el cuerpo del Lord. Nadie le vigila.",
       "efectos": [
         {
           "tipo": "marsh_altera_cuerpo",
@@ -397,11 +388,11 @@
       "id": "puerta_bloqueada",
       "titulo": "Puerta bloqueada",
       "fase": "medianoche",
-      "tipo": "caso_1",
-      "caso": 1,
-      "narrativa": "Se oye un crujido seco. Una puerta se ha atascado, impidiendo el paso.",
-      "mecanica": "La loseta con PNJ más cercana a un jugador queda bloqueada: nadie puede entrar ni salir hasta final de la próxima ronda. Colocad un token de bloqueo. FOR 3 para despejar (+1 Alerta si falla). Se puede usar Herramienta.",
-      "texto_completo": "Se oye un crujido seco. Una puerta se ha atascado, impidiendo el paso. La loseta con PNJ más cercana a un jugador queda bloqueada: nadie puede entrar ni salir hasta final de la próxima ronda. Colocad un token de bloqueo. FOR 3 para despejar (+1 Alerta si falla). Se puede usar Herramienta.",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "Se oye un crujido seco. Una puerta se ha atascado, impidiendo el paso. {{loseta}} queda bloqueada hasta el final de la próxima ronda: nadie puede entrar ni salir. Colocad un token de bloqueo.",
+      "mecanica": "La app determina la loseta con PNJ que tenga más jugadores en losetas adyacentes (aleatorio en empate) y la bloquea hasta final de la próxima ronda. Sustituye {{loseta}}.",
+      "texto_completo": "Se oye un crujido seco. Una puerta se ha atascado, impidiendo el paso. {{loseta}} queda bloqueada hasta el final de la próxima ronda: nadie puede entrar ni salir. Colocad un token de bloqueo.",
       "efectos": [
         {
           "tipo": "bloqueo_loseta_pnj_cercano"
@@ -416,11 +407,11 @@
       "id": "confesion_nocturna",
       "titulo": "Confesión nocturna",
       "fase": "medianoche",
-      "tipo": "caso_1",
-      "caso": 1,
-      "narrativa": "En la quietud de la noche, uno de los sospechosos busca a alguien en quien confiar.",
-      "mecanica": "El PNJ con mayor Sospecha busca al jugador más cercano. −1 Sospecha de ese PNJ. A cambio, el PNJ da su siguiente respuesta de interrogatorio a −2 dificultad.",
-      "texto_completo": "En la quietud de la noche, uno de los sospechosos busca a alguien en quien confiar. El PNJ con mayor Sospecha busca al jugador más cercano. −1 Sospecha de ese PNJ. A cambio, el PNJ da su siguiente respuesta de interrogatorio a −2 dificultad.",
+      "tipo": "generica",
+      "caso": null,
+      "narrativa": "En la quietud de la noche, {{pnj}} busca a {{personaje}} en quien confiar y se dirige hacia {{loseta}}. Su próximo interrogatorio con pista tendrá −2 de dificultad.",
+      "mecanica": "La app selecciona el PNJ con mayor Sospecha (aleatorio en empate) y lo mueve a la loseta del jugador más cercano (aleatorio en empate). Aplica −1 Sospecha y −2 dificultad al próximo interrogatorio con pista. Sustituye {{pnj}}, {{personaje}} y {{loseta}}.",
+      "texto_completo": "En la quietud de la noche, {{pnj}} busca a {{personaje}} en quien confiar y se dirige hacia {{loseta}}. Su próximo interrogatorio con pista tendrá −2 de dificultad.",
       "efectos": [
         {
           "tipo": "sospecha_bajar",
@@ -429,14 +420,14 @@
       ]
     },
     {
-      "id": "harold_destruye_pruebas",
-      "titulo": "Harold destruye pruebas",
+      "id": "una_visita_urgente",
+      "titulo": "Una visita urgente",
       "fase": "madrugada",
       "tipo": "caso_1",
       "caso": 1,
-      "narrativa": "",
-      "mecanica": "Harold va al Despacho con paso decidido. Parece que quiere destruir algo antes de que amanezca. Harold va al Despacho a quemar el testamento. Si ningún jugador está allí y la pista #3 no está descubierta: pista #3 destruida permanentemente. Si hay jugador: FOR dif. 4 para detenerle.",
-      "texto_completo": "Harold va al Despacho con paso decidido. Parece que quiere destruir algo antes de que amanezca. Harold va al Despacho a quemar el testamento. Si ningún jugador está allí y la pista #3 no está descubierta: pista #3 destruida permanentemente. Si hay jugador: FOR dif. 4 para detenerle.",
+      "narrativa": "Harold se dirige al Despacho con paso decidido. Nadie le vigila.",
+      "mecanica": "La app mueve a Harold al Despacho. Si no hay ni PJs ni PNJs en el Despacho y la pista #3 no está descubierta, la descarta permanentemente (silenciosamente, sin notificar). Si hay alguien o la pista ya está descubierta: narrativa alternativa 'Harold se dirige al Despacho con paso decidido. Pero no está solo.'",
+      "texto_completo": "Harold se dirige al Despacho con paso decidido. Nadie le vigila.",
       "efectos": [
         {
           "tipo": "harold_destruye_testamento",
@@ -455,9 +446,9 @@
       "fase": "madrugada",
       "tipo": "caso_1",
       "caso": 1,
-      "narrativa": "",
-      "mecanica": "Hobbes busca al investigador más cercano con expresión grave. Tiene algo que decir. Hobbes busca al jugador más cercano. Revela: «El Lord cambió la cerradura del Despacho la semana pasada.» −1 dificultad para interpretar pista #12. Si #12 ya está interpretada: sin efecto.",
-      "texto_completo": "Hobbes busca al investigador más cercano con expresión grave. Tiene algo que decir. Hobbes busca al jugador más cercano. Revela: «El Lord cambió la cerradura del Despacho la semana pasada.» −1 dificultad para interpretar pista #12. Si #12 ya está interpretada: sin efecto.",
+      "narrativa": "Hobbes busca al investigador más cercano con expresión grave. Se acerca a {{personaje}} en {{loseta}} y le susurra algo al oído. Sus palabras os ayudarán: la interpretación de una de las pistas tendrá −1 de dificultad.",
+      "mecanica": "La app mueve a Hobbes a la loseta del jugador más cercano (aleatorio en empate). Si la pista #12 no está aún interpretada, aplica −1 dificultad a su interpretación. Si ya está interpretada: narrativa alternativa 'Hobbes busca al investigador más cercano con expresión grave. Tiene algo que decir, pero parece que ya lo sabéis.' Sustituye {{personaje}} y {{loseta}}.",
+      "texto_completo": "Hobbes busca al investigador más cercano con expresión grave. Se acerca a {{personaje}} en {{loseta}} y le susurra algo al oído. Sus palabras os ayudarán: la interpretación de una de las pistas tendrá −1 de dificultad.",
       "efectos": [
         {
           "tipo": "hobbes_revela_cerradura",
@@ -472,9 +463,9 @@
       "fase": "madrugada",
       "tipo": "caso_1",
       "caso": 1,
-      "narrativa": "Las campanadas del reloj de péndulo retumban en la mansión. El amanecer está cada vez más cerca.",
-      "mecanica": "+1 Alerta. Si la Alerta ya es ≥7: además, todos los jugadores −1 Temple. Última oportunidad para formular acusación.",
-      "texto_completo": "Las campanadas del reloj de péndulo retumban en la mansión. El amanecer está cada vez más cerca. +1 Alerta. Si la Alerta ya es ≥7: además, todos los jugadores −1 Temple. Última oportunidad para formular acusación.",
+      "narrativa": "Las campanadas del reloj de péndulo retumban en la mansión. El amanecer está cada vez más cerca. +1 Alerta.",
+      "mecanica": "La app sube +1 Alerta. Si la Alerta resultante es ≥7: narrativa extendida 'Las campanadas del reloj de péndulo retumban en la mansión. El amanecer está cada vez más cerca. +1 Alerta. Los nervios hacen mella: todos los jugadores pierden −1 Temple.' y aplica −1 TEM a todos los jugadores.",
+      "texto_completo": "Las campanadas del reloj de péndulo retumban en la mansión. El amanecer está cada vez más cerca. +1 Alerta.",
       "efectos": [
         {
           "tipo": "alerta",
@@ -493,16 +484,10 @@
       "fase": "madrugada",
       "tipo": "caso_1",
       "caso": 1,
-      "narrativa": "La tensión es insoportable. Todos sienten el peso de la noche y la urgencia del amanecer.",
-      "mecanica": "Todos los jugadores −1 Temple. Los PNJ con Sospecha 3+ se encierran en su loseta actual: TEM dificultad igual al TEM del PNJ para convencerles de hablar.",
-      "texto_completo": "La tensión es insoportable. Todos sienten el peso de la noche y la urgencia del amanecer. Todos los jugadores −1 Temple. Los PNJ con Sospecha 3+ se encierran en su loseta actual: TEM dificultad igual al TEM del PNJ para convencerles de hablar.",
-      "efectos": [
-        {
-          "tipo": "atributo_jugadores",
-          "atributo": "TEM",
-          "valor": -1
-        }
-      ]
+      "narrativa": "La tensión es insoportable. Todos sienten el peso de la noche y la urgencia del amanecer. Todos los jugadores descartan 1 carta de Resolución al azar.",
+      "mecanica": "La app indica a cada jugador descartar 1 carta de Resolución al azar. Bloquea las losetas donde se encuentren PNJs con Sospecha ≥3 hasta final de la próxima ronda y muestra los tokens de bloqueo. Si hay losetas bloqueadas, añade a la narrativa: '{{lista_losetas}} quedan bloqueadas hasta el final de la próxima ronda. Nadie puede entrar ni salir. Colocad los tokens de bloqueo.' Sustituye {{lista_losetas}}.",
+      "texto_completo": "La tensión es insoportable. Todos sienten el peso de la noche y la urgencia del amanecer. Todos los jugadores descartan 1 carta de Resolución al azar.",
+      "efectos": [{"tipo": "carta_resolucion_todos", "valor": -1}, {"tipo": "bloquear_losetas_pnj_alta_sospecha", "umbral_sospecha": 3}]
     },
     {
       "id": "apagon_2",
