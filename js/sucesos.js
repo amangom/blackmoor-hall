@@ -268,44 +268,49 @@ function calcularResultadosSuceso(carta) {
         nomHasta: hasta ? (getLos(hasta)?.nombre || hasta) : null
       };
     } else if (ef.tipo === 'mover_todos_hacia') {
-      // Pre-calcular un paso hacia el destino para cada PNJ activo
-      const conexiones = typeof getConexionesDistribucion === 'function' ? getConexionesDistribucion() : [];
       const destino = ef.destino;
-      // BFS desde destino para calcular distancias
-      const dist = {}; const cola = [destino]; dist[destino] = 0;
-      while (cola.length) {
-        const curr = cola.shift();
-        conexiones.forEach(c => {
-          const v = c.desde === curr ? c.hasta : c.hasta === curr ? c.desde : null;
-          if (v && dist[v] === undefined) { dist[v] = dist[curr] + 1; cola.push(v); }
-        });
-      }
-      const getLos = id => typeof getLoseta === 'function' ? getLoseta(id) : null;
-      const movs = [];
-      (datosCaso?.comun?.pnj || []).forEach(pnjDef => {
-        const actual = estado.pnj?.[pnjDef.id]?.loseta_actual || pnjDef.posicion_inicial;
-        if (actual === destino) { movs.push({ id: pnjDef.id, nombre: pnjDef.nombre, desde: actual, hasta: null, yaEstaba: true }); return; }
-        // Vecino más cercano al destino
-        const vecinos = conexiones.flatMap(c => {
-          if (c.desde === actual) return [c.hasta];
-          if (c.hasta === actual) return [c.desde];
-          return [];
-        });
-        vecinos.sort((a,b) => (dist[a]??99) - (dist[b]??99));
-        const hasta = vecinos[0] || null;
-        movs.push({ id: pnjDef.id, nombre: pnjDef.nombre, desde: actual, nomDesde: getLos(actual)?.nombre || actual, hasta, nomHasta: hasta ? (getLos(hasta)?.nombre || hasta) : null, yaEstaba: false });
+      const conexiones = getConexionesDistribucion();
+      const losetas = getLosetasDistribucion();
+      const getLos = id => losetas.find(l => l.id === id);
+      const movimientos = [];
+      datosCaso?.comun?.pnj?.forEach(p => {
+        if (estado.pnj?.[p.id]?.retirado) return;
+        const actual = estado.pnj?.[p.id]?.loseta_actual || p.posicion_inicial;
+        if (actual === destino) return;
+        // BFS para encontrar siguiente paso hacia destino
+        const visitado = { [actual]: null };
+        const cola = [actual];
+        while (cola.length) {
+          const cur = cola.shift();
+          if (cur === destino) break;
+          conexiones.filter(c => c.desde === cur || c.hasta === cur)
+            .map(c => c.desde === cur ? c.hasta : c.desde)
+            .forEach(v => { if (!visitado.hasOwnProperty(v)) { visitado[v] = cur; cola.push(v); } });
+        }
+        // Reconstruir primer paso
+        let paso = destino;
+        while (visitado[paso] !== actual && visitado[paso] !== null) paso = visitado[paso];
+        if (visitado[paso] === actual) {
+          movimientos.push({ pnjId: p.id, pnjNombre: p.nombre, desde: actual, hasta: paso, nomDesde: getLos(actual)?.nombre || actual, nomHasta: getLos(paso)?.nombre || paso });
+        }
       });
-      carta._resultado_movimiento_general = { destino, nomDestino: getLos(destino)?.nombre || destino, movs };
+      carta._resultado_movimiento_general = movimientos;
 
     } else if (ef.tipo === 'sospecha_cruzada') {
-      const acusadorId = _mayorSospecha();
-      const acusadoId  = acusadorId ? _menorSospecha(acusadorId) : null;
-      const getPNJNom = id => datosCaso?.comun?.pnj?.find(p => p.id === id)?.nombre || id;
-      carta._resultado_sospecha_cruzada = {
-        acusadorId, acusadoId,
-        acusadorNombre: acusadorId ? getPNJNom(acusadorId) : '?',
-        acusadoNombre:  acusadoId  ? getPNJNom(acusadoId)  : '?'
-      };
+      const pnjsActivos = datosCaso?.comun?.pnj?.filter(p => !estado.pnj?.[p.id]?.retirado) || [];
+      if (pnjsActivos.length >= 2) {
+        let maxS = -1, minS = 99;
+        pnjsActivos.forEach(p => {
+          const s = estado.pnj?.[p.id]?.sospecha || 0;
+          if (s > maxS) maxS = s;
+          if (s < minS) minS = s;
+        });
+        const acusadores = pnjsActivos.filter(p => (estado.pnj?.[p.id]?.sospecha || 0) === maxS);
+        const acusados   = pnjsActivos.filter(p => (estado.pnj?.[p.id]?.sospecha || 0) === minS && !acusadores.includes(p));
+        const acusador = acusadores[Math.floor(Math.random() * acusadores.length)];
+        const acusado  = acusados.length ? acusados[Math.floor(Math.random() * acusados.length)] : pnjsActivos.find(p => p !== acusador);
+        carta._resultado_sospecha_cruzada = { acusadorId: acusador?.id, acusadoId: acusado?.id };
+      }
 
     } else if (ef.tipo === 'pnj_huida_mayor_sospecha') {
       const pnjId = _mayorSospecha();
@@ -332,10 +337,23 @@ function calcularResultadosSuceso(carta) {
       }
 
     } else if (ef.tipo === 'ayuda_pnj_menor_sospecha') {
-      const activo = (estado.alerta || 0) >= (ef.condicion_alerta_min || 8);
-      const pnjId = activo ? _menorSospecha() : null;
-      const pnjDef = pnjId ? datosCaso?.comun?.pnj?.find(p => p.id === pnjId) : null;
-      carta._resultado_ultimo_recurso = { activo, pnjId, pnjNombre: pnjDef?.nombre || pnjId };
+      const condAlerta = ef.condicion_alerta_min || 8;
+      if ((estado.alerta || 0) >= condAlerta) {
+        const pnjsActivos = datosCaso?.comun?.pnj?.filter(p => !estado.pnj?.[p.id]?.retirado) || [];
+        let minS = 99;
+        pnjsActivos.forEach(p => { const s = estado.pnj?.[p.id]?.sospecha || 0; if (s < minS) minS = s; });
+        const cands = pnjsActivos.filter(p => (estado.pnj?.[p.id]?.sospecha || 0) === minS);
+        const pnjElegido = cands[Math.floor(Math.random() * cands.length)];
+        let minTEM = 99;
+        estado.jugadores.forEach(j => { const t = j.atributos?.TEM || 0; if (t < minTEM) minTEM = t; });
+        const jugsCands = estado.jugadores.filter(j => (j.atributos?.TEM || 0) === minTEM);
+        const jugElegido = jugsCands[Math.floor(Math.random() * jugsCands.length)];
+        const jugIdx = estado.jugadores.indexOf(jugElegido);
+        const pjNom = (typeof PERSONAJES !== 'undefined' ? PERSONAJES[jugElegido?.personaje]?.nombre : null) || jugElegido?.personaje || '';
+        carta._resultado_ultimo_recurso = { activa: true, pnjId: pnjElegido?.id, pnjNombre: pnjElegido?.nombre || '', pjIdx: jugIdx, pjNombre: pjNom, losetaId: jugElegido?.loseta_actual };
+      } else {
+        carta._resultado_ultimo_recurso = { activa: false };
+      }
 
     } else if (ef.tipo === 'pnj_descubre_secreto') {
       // Buscar loseta con carta de Secreto no descubierta
@@ -491,6 +509,65 @@ function calcularResultadosSuceso(carta) {
         }
       });
       carta._resultado_bloqueo_nervios = losetasBloqueadas;
+
+    } else if (ef.tipo === 'buff_interrogacion') {
+      // Sin resultado visual adicional necesario — el texto narrativo es fijo
+
+    } else if (ef.tipo === 'rumores_oscuridad' || carta.id === 'rumores_en_la_oscuridad') {
+      const pnjsActivos = datosCaso?.comun?.pnj?.filter(p => !estado.pnj?.[p.id]?.retirado) || [];
+      if (pnjsActivos.length >= 1) {
+        let maxS = -1;
+        pnjsActivos.forEach(p => { const s = estado.pnj?.[p.id]?.sospecha || 0; if (s > maxS) maxS = s; });
+        const candidatos = pnjsActivos.filter(p => (estado.pnj?.[p.id]?.sospecha || 0) === maxS);
+        const acusador = candidatos[Math.floor(Math.random() * candidatos.length)];
+        const conexiones = getConexionesDistribucion();
+        const losetas = getLosetasDistribucion();
+        const getLos = id => losetas.find(l => l.id === id);
+        // Buscar loseta con otro PNJ
+        const losetasConPNJ = {};
+        pnjsActivos.forEach(p => {
+          if (p.id === acusador.id) return;
+          const pos = estado.pnj?.[p.id]?.loseta_actual || p.posicion_inicial;
+          if (!losetasConPNJ[pos]) losetasConPNJ[pos] = [];
+          losetasConPNJ[pos].push(p);
+        });
+        const actual = estado.pnj?.[acusador.id]?.loseta_actual || acusador.posicion_inicial;
+        const vecinos = conexiones.filter(c => c.desde === actual || c.hasta === actual).map(c => c.desde === actual ? c.hasta : c.desde);
+        const destinosConPNJ = vecinos.filter(id => losetasConPNJ[id]);
+        let destino, acusadoPNJ;
+        if (destinosConPNJ.length) {
+          destino = destinosConPNJ[Math.floor(Math.random() * destinosConPNJ.length)];
+          acusadoPNJ = losetasConPNJ[destino][Math.floor(Math.random() * losetasConPNJ[destino].length)];
+        } else {
+          destino = vecinos.length ? vecinos[Math.floor(Math.random() * vecinos.length)] : actual;
+          acusadoPNJ = pnjsActivos.find(p => p.id !== acusador.id);
+        }
+        const sospAcusado = estado.pnj?.[acusadoPNJ?.id]?.sospecha || 0;
+        carta._resultado_rumores_oscuridad = {
+          acusadorId: acusador.id, acusadorNom: acusador.nombre,
+          acusadoId: acusadoPNJ?.id, acusadoNom: acusadoPNJ?.nombre || '',
+          hasta: destino, nomHasta: getLos(destino)?.nombre || destino,
+          alerta: sospAcusado >= 2
+        };
+      }
+
+    } else if (ef.tipo === 'sospecha_bajar' && carta.id === 'confesion_parcial') {
+      const pnjsActivos = datosCaso?.comun?.pnj?.filter(p => !estado.pnj?.[p.id]?.retirado) || [];
+      const elegible = pnjsActivos.filter(p => (estado.pnj?.[p.id]?.sospecha || 0) >= 3);
+      if (elegible.length) {
+        let maxS = Math.max(...elegible.map(p => estado.pnj?.[p.id]?.sospecha || 0));
+        const cands = elegible.filter(p => (estado.pnj?.[p.id]?.sospecha || 0) === maxS);
+        const elegido = cands[Math.floor(Math.random() * cands.length)];
+        carta._resultado_confesion_parcial = { pnjId: elegido.id, pnjNombre: elegido.nombre };
+      } else {
+        carta._resultado_confesion_parcial = { pnjId: null };
+      }
+
+    } else if (ef.tipo === 'dificultad_exploracion_global') {
+      const hayCartas = (typeof getCartasExploracionCaso === 'function'
+        ? getCartasExploracionCaso(estado.caso_id) : [])
+        .some(c => !(estado.exploraciones_jugadas || []).includes(c.id));
+      carta._resultado_evidencia_alterada = hayCartas;
     }
   });
 }
@@ -531,15 +608,8 @@ function aplicarEfectosSuceso(carta) {
     // ── NUEVOS TIPOS C1 ───────────────────────────────────────────────────────
 
     } else if (ef.tipo === 'sospecha_cruzada') {
-      // Mayor Sospecha acusa al de menor Sospecha: +1 al acusado
-      const acusador = carta._resultado_sospecha_cruzada?.acusadorId;
-      const acusado  = carta._resultado_sospecha_cruzada?.acusadoId;
-      if (acusado) {
-        subirSospecha(acusado, 1);
-        const nomA = carta._resultado_sospecha_cruzada.acusadorNombre;
-        const nomB = carta._resultado_sospecha_cruzada.acusadoNombre;
-        log.push(`${nomA} acusa a ${nomB}: +1 Sospecha`);
-      }
+      const r = carta._resultado_sospecha_cruzada;
+      if (r?.acusadoId) subirSospecha(r.acusadoId, 1);
 
     } else if (ef.tipo === 'pnj_huida_mayor_sospecha') {
       const r = carta._resultado_huida;
@@ -549,25 +619,19 @@ function aplicarEfectosSuceso(carta) {
       }
 
     } else if (ef.tipo === 'dificultad_exploracion_global') {
-      // +N dificultad a todas las exploraciones si quedan secretos sin descubrir
-      const haySecretosPendientes = Object.values(estado.cartas_secreto || {})
-        .some(c => !c.descubierta);
-      if (haySecretosPendientes) {
-        estado.dificultad_exploracion_global = (estado.dificultad_exploracion_global || 0) + ef.valor;
+      if (carta._resultado_evidencia_alterada) {
+        if (!estado.modificadores_exploracion) estado.modificadores_exploracion = [];
+        estado.modificadores_exploracion.push({ valor: ef.valor, expira_ronda: estado.ronda + 1 });
         guardarEstado();
-        log.push(`+${ef.valor} dificultad a todas las exploraciones hasta próxima ronda`);
-      } else {
-        log.push('Sin efecto (no quedan cartas de Secreto sin descubrir)');
       }
 
     } else if (ef.tipo === 'ayuda_pnj_menor_sospecha') {
       const r = carta._resultado_ultimo_recurso;
-      if (r?.activo && r.pnjId) {
-        estado.buff_pnj_ayuda = { pnjId: r.pnjId, pnjNombre: r.pnjNombre, hasta_ronda: estado.ronda };
+      if (r?.activa && r.pnjId && r.losetaId) {
+        moverPNJ(r.pnjId, r.losetaId);
+        if (!estado.buffs_interrogacion) estado.buffs_interrogacion = [];
+        estado.buffs_interrogacion.push({ pnj: null, atributo: null, mod_dif: -1, expira_ronda: estado.ronda + 2, jugIdx: r.pjIdx, tipo: 'ayuda_pnj' });
         guardarEstado();
-        log.push(`${r.pnjNombre} ofrece ayuda: +1 a todas las pruebas esta ronda`);
-      } else {
-        log.push('Alerta < 8: sin efecto');
       }
 
     } else if (ef.tipo === 'pnj_descubre_secreto') {
@@ -685,45 +749,7 @@ function aplicarEfectosSuceso(carta) {
         lineas: [`${ef.pnj ? ef.pnj.charAt(0).toUpperCase() + ef.pnj.slice(1) : 'PNJ'}: −1 dif ${ef.atributo} para interrogar hasta fin de ronda ${estado.ronda + (ef.duracion_rondas||1)}`]
       });
     } else if (ef.tipo === 'mover_todos_hacia') {
-      // Pre-calcular un paso hacia el destino para cada PNJ activo
-      const conexiones = typeof getConexionesDistribucion === 'function' ? getConexionesDistribucion() : [];
-      const destino = ef.destino;
-      // BFS desde destino para calcular distancias
-      const dist = {}; const cola = [destino]; dist[destino] = 0;
-      while (cola.length) {
-        const curr = cola.shift();
-        conexiones.forEach(c => {
-          const v = c.desde === curr ? c.hasta : c.hasta === curr ? c.desde : null;
-          if (v && dist[v] === undefined) { dist[v] = dist[curr] + 1; cola.push(v); }
-        });
-      }
-      const getLos = id => typeof getLoseta === 'function' ? getLoseta(id) : null;
-      const movs = [];
-      (datosCaso?.comun?.pnj || []).forEach(pnjDef => {
-        const actual = estado.pnj?.[pnjDef.id]?.loseta_actual || pnjDef.posicion_inicial;
-        if (actual === destino) { movs.push({ id: pnjDef.id, nombre: pnjDef.nombre, desde: actual, hasta: null, yaEstaba: true }); return; }
-        // Vecino más cercano al destino
-        const vecinos = conexiones.flatMap(c => {
-          if (c.desde === actual) return [c.hasta];
-          if (c.hasta === actual) return [c.desde];
-          return [];
-        });
-        vecinos.sort((a,b) => (dist[a]??99) - (dist[b]??99));
-        const hasta = vecinos[0] || null;
-        movs.push({ id: pnjDef.id, nombre: pnjDef.nombre, desde: actual, nomDesde: getLos(actual)?.nombre || actual, hasta, nomHasta: hasta ? (getLos(hasta)?.nombre || hasta) : null, yaEstaba: false });
-      });
-      carta._resultado_movimiento_general = { destino, nomDestino: getLos(destino)?.nombre || destino, movs };
-
-    } else if (ef.tipo === 'mover_todos_hacia') {
-      const r = carta._resultado_movimiento_general;
-      if (r) {
-        r.movs.forEach(m => {
-          if (!m.yaEstaba && m.hasta) {
-            if (typeof moverPNJ === 'function') moverPNJ(m.id, m.hasta);
-            log.push(`${m.nombre}: ${m.nomDesde} → ${m.nomHasta}`);
-          }
-        });
-      }
+      (carta._resultado_movimiento_general || []).forEach(m => moverPNJ(m.pnjId, m.hasta));
     } else if (ef.tipo === 'pnj_refugio_exterior') {
       // Usar resultado ya calculado en calcularResultadosSuceso
       const r = carta._resultado_lluvia;
