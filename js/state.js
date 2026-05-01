@@ -274,6 +274,20 @@ function subirSospecha(pnj_id, valor = 1, silencioso = false) {
   if (anterior < 4 && nuevo >= 4) subirAlerta(1);
   if (anterior < 5 && nuevo >= 5) subirAlerta(1);
 
+  // Sospecha 2: mover PNJ a loseta adyacente aleatoria
+  if (anterior < 2 && nuevo >= 2) {
+    const conexiones = getConexionesDistribucion();
+    const actual = estPNJ.loseta_actual || pnjDef.posicion_inicial;
+    const vecinos = conexiones
+      .filter(c => c.desde === actual || c.hasta === actual)
+      .map(c => c.desde === actual ? c.hasta : c.desde)
+      .filter(id => !isCerrada(id));
+    if (vecinos.length) {
+      const destino = vecinos[Math.floor(Math.random() * vecinos.length)];
+      moverPNJ(pnj_id, destino);
+    }
+  }
+
   const reaccionesNuevas = [];
   for (let nivel = anterior + 1; nivel <= nuevo; nivel++) {
     const reaccionDef = pnjDef.reacciones?.[nivel.toString()];

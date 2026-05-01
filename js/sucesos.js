@@ -169,6 +169,27 @@ function calcularResultadosSuceso(carta) {
           sosp_despues: sosp_actual + ef.valor
         };
       }
+    } else if (ef.tipo === 'activar_pnj_mayor_sospecha') {
+      const pnjId = _mayorSospecha();
+      if (pnjId) {
+        const conexiones = getConexionesDistribucion();
+        const actual = estado.pnj?.[pnjId]?.loseta_actual || getPNJ(pnjId)?.posicion_inicial;
+        const vecinos = conexiones
+          .filter(c => c.desde === actual || c.hasta === actual)
+          .map(c => c.desde === actual ? c.hasta : c.desde)
+          .filter(id => !isCerrada(id));
+        const destino = vecinos.length ? vecinos[Math.floor(Math.random() * vecinos.length)] : null;
+        const pnjDef = getPNJ(pnjId);
+        const getLos = id => getLosetasDistribucion().find(l => l.id === id);
+        carta._resultado_activar_pnj = {
+          pnjId,
+          pnjNombre: pnjDef?.nombre || pnjId,
+          desde: actual,
+          nomDesde: getLos(actual)?.nombre || actual,
+          hasta: destino,
+          nomHasta: destino ? (getLos(destino)?.nombre || destino) : null
+        };
+      }
     } else if (ef.tipo === 'pnj_movimiento_aleatorio') {
       // Calcular destino (sin mover aún)
       const pnjsActivos = datosCaso.comun.pnj.filter(p => !estado.pnj?.[p.id]?.retirado);
@@ -519,6 +540,10 @@ function aplicarEfectosSuceso(carta) {
           sosp_antes: sosp_actual,
           sosp_despues: sosp_actual + ef.valor
         };
+      }
+    } else if (ef.tipo === 'activar_pnj_mayor_sospecha') {
+      if (carta._resultado_activar_pnj?.hasta) {
+        moverPNJ(carta._resultado_activar_pnj.pnjId, carta._resultado_activar_pnj.hasta);
       }
     } else if (ef.tipo === 'pnj_movimiento_aleatorio') {
       // Usar resultado ya calculado

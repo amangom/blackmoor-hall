@@ -82,12 +82,11 @@
       "tipo": "generica",
       "caso": null,
       "narrativa": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables.",
-      "mecanica": "Se activa 1 PNJ: +1 Sospecha.",
-      "texto_completo": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables. Se activa 1 PNJ: +1 Sospecha.",
+      "mecanica": "El PNJ con mayor Sospecha se activa: la app lo mueve a una loseta adyacente aleatoria. En caso de empate, la app elige aleatoriamente entre los empatados. Si no hay salida disponible, el PNJ no se mueve.",
+      "texto_completo": "La tensión entre los sospechosos crece visiblemente. Se lanzan miradas furtivas unos a otros, buscando culpables. El PNJ con mayor Sospecha se activa: la app lo mueve a una loseta adyacente aleatoria. En caso de empate, la app elige aleatoriamente entre los empatados. Si no hay salida disponible, el PNJ no se mueve.",
       "efectos": [
         {
-          "tipo": "sospecha_activar",
-          "valor": 1
+          "tipo": "activar_pnj_mayor_sospecha"
         }
       ]
     },
