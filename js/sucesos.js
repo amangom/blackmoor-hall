@@ -128,6 +128,24 @@ function aplicarEfectoLosetaJugadores(losetaId, efecto, motivo) {
 // Aplicar efectos automáticos de la carta (los que no requieren decisión de jugador)
 // ── Fase 1: calcular resultados (sin modificar estado) ───────────────────────
 // Rellena carta._resultado_* para que el overlay los muestre antes de confirmar
+function calcularDistancia(desde, hasta, conexiones) {
+  if (desde === hasta) return 0;
+  const visitado = { [desde]: 0 };
+  const cola = [desde];
+  while (cola.length) {
+    const cur = cola.shift();
+    const vecinos = conexiones.filter(c => c.desde === cur || c.hasta === cur).map(c => c.desde === cur ? c.hasta : c.desde);
+    for (const v of vecinos) {
+      if (!visitado.hasOwnProperty(v)) {
+        visitado[v] = visitado[cur] + 1;
+        if (v === hasta) return visitado[v];
+        cola.push(v);
+      }
+    }
+  }
+  return 99;
+}
+
 function calcularResultadosSuceso(carta) {
   if (!carta?.efectos) return;
   carta.efectos.forEach(ef => {
@@ -356,29 +374,47 @@ function calcularResultadosSuceso(carta) {
       }
 
     } else if (ef.tipo === 'pnj_descubre_secreto') {
-      // Buscar loseta con carta de Secreto no descubierta
-      const cartas = Object.entries(estado.cartas_secreto || {});
-      const pendientes = cartas.filter(([id, c]) => !c.descubierta);
-      const elegida = pendientes.length ? pendientes[Math.floor(Math.random() * pendientes.length)] : null;
-      const getLos = id => typeof getLoseta === 'function' ? getLoseta(id) : null;
-      if (elegida) {
-        // Buscar nombre de la carta en el JSON de exploración (simplificado: usar el id)
-        carta._resultado_catherine = { pista_id: elegida[0], pista_nombre: elegida[0], loseta_nombre: elegida[1].loseta || '?' };
+      // catherine_investiga
+      const caso_id = estado.caso_id || 'caso_1';
+      const todasCartas = typeof getCartasExploracionCaso === 'function' ? getCartasExploracionCaso(caso_id) : [];
+      const jugadas = estado.exploraciones_jugadas || [];
+      const disponibles = todasCartas.filter(c => !jugadas.includes(c.id));
+      if (disponibles.length) {
+        const losetas = [...new Set(disponibles.map(c => c.loseta_id))];
+        const losetaElegida = losetas[Math.floor(Math.random() * losetas.length)];
+        const cartasLoseta = disponibles.filter(c => c.loseta_id === losetaElegida).sort((a, b) => (a.numero || 0) - (b.numero || 0));
+        const cartaElegida = cartasLoseta[0];
+        carta._resultado_catherine = { cartaId: cartaElegida.id, losetaId: losetaElegida, numero: cartaElegida.numero || '?', pista_id: cartaElegida.pista_id || null };
       } else {
-        carta._resultado_catherine = null;
+        carta._resultado_catherine = { cartaId: null };
       }
 
     } else if (ef.tipo === 'marsh_altera_cuerpo') {
-      const jugPresente = estado.jugadores.some(j => j.loseta_actual === ef.loseta_condicion && !j.incapacitado);
-      carta._resultado_marsh = { jugadorPresente: jugPresente };
+      const hayAlguien = estado.jugadores.some(j => j.loseta_actual === 'despacho') ||
+        datosCaso?.comun?.pnj?.some(p => estado.pnj?.[p.id]?.loseta_actual === 'despacho');
+      carta._resultado_marsh = { hayAlguien };
 
     } else if (ef.tipo === 'harold_destruye_testamento') {
-      const jugPresente = estado.jugadores.some(j => j.loseta_actual === ef.destino && !j.incapacitado);
-      const pistaDescubierta = estado.pistas_descubiertas?.includes(ef.pista_objetivo);
-      carta._resultado_harold = { jugadorPresente: jugPresente, pistaYaDescubierta: pistaDescubierta };
+      const hayAlguien = estado.jugadores.some(j => j.loseta_actual === 'despacho') ||
+        datosCaso?.comun?.pnj?.some(p => estado.pnj?.[p.id]?.loseta_actual === 'despacho');
+      const pistaDescubierta = (estado.pistas_descubiertas || []).includes(ef.pista_objetivo || 'pista_3');
+      carta._resultado_harold = { hayAlguien, pistaDescubierta };
 
     } else if (ef.tipo === 'hobbes_revela_cerradura') {
-      // Solo pre-cálculo trivial (se maneja en aplicar)
+      const pistaInterpretada = (estado.pistas_interpretadas || []).includes(ef.pista_afectada || 'pista_12');
+      const jugadoresActivos = estado.jugadores.filter(j => !j.incapacitado && j.loseta_actual);
+      if (jugadoresActivos.length) {
+        const conexiones = getConexionesDistribucion();
+        const hobbesPos = estado.pnj?.['hobbes']?.loseta_actual || getPNJ('hobbes')?.posicion_inicial;
+        let minDist = 99, jugCercano = jugadoresActivos[0];
+        jugadoresActivos.forEach(j => {
+          const dist = calcularDistancia(hobbesPos, j.loseta_actual, conexiones);
+          if (dist < minDist) { minDist = dist; jugCercano = j; }
+        });
+        const jugIdx = estado.jugadores.indexOf(jugCercano);
+        const pjNom = (typeof PERSONAJES !== 'undefined' ? PERSONAJES[jugCercano.personaje]?.nombre : null) || jugCercano.personaje;
+        carta._resultado_hobbes_confiesa = { activa: !pistaInterpretada, pjIdx: jugIdx, pjNombre: pjNom, losetaId: jugCercano.loseta_actual };
+      }
 
     } else if (ef.tipo === 'bloqueo_loseta_pnj_cercano') {
       // Loseta con PNJ activo más cercana a cualquier jugador
@@ -568,6 +604,24 @@ function calcularResultadosSuceso(carta) {
         ? getCartasExploracionCaso(estado.caso_id) : [])
         .some(c => !(estado.exploraciones_jugadas || []).includes(c.id));
       carta._resultado_evidencia_alterada = hayCartas;
+
+    } else if (ef.tipo === 'sospecha_bajar' && carta.id === 'confesion_nocturna') {
+      const pnjsActivos = datosCaso?.comun?.pnj?.filter(p => !estado.pnj?.[p.id]?.retirado) || [];
+      let maxS = -1;
+      pnjsActivos.forEach(p => { const s = estado.pnj?.[p.id]?.sospecha || 0; if (s > maxS) maxS = s; });
+      const cands = pnjsActivos.filter(p => (estado.pnj?.[p.id]?.sospecha || 0) === maxS);
+      const pnjElegido = cands[Math.floor(Math.random() * cands.length)];
+      const jugadoresActivos = estado.jugadores.filter(j => !j.incapacitado && j.loseta_actual);
+      const conexiones = getConexionesDistribucion();
+      const pnjPos = estado.pnj?.[pnjElegido?.id]?.loseta_actual || pnjElegido?.posicion_inicial;
+      let minDist = 99, jugCercano = jugadoresActivos[0];
+      jugadoresActivos.forEach(j => {
+        const dist = calcularDistancia(pnjPos, j.loseta_actual, conexiones);
+        if (dist < minDist) { minDist = dist; jugCercano = j; }
+      });
+      const jugIdx = estado.jugadores.indexOf(jugCercano);
+      const pjNom = (typeof PERSONAJES !== 'undefined' ? PERSONAJES[jugCercano?.personaje]?.nombre : null) || jugCercano?.personaje || '';
+      carta._resultado_confesion_nocturna = { pnjId: pnjElegido?.id, pnjNombre: pnjElegido?.nombre || '', pjIdx: jugIdx, pjNombre: pjNom, losetaId: jugCercano?.loseta_actual };
     }
   });
 }
@@ -636,61 +690,63 @@ function aplicarEfectosSuceso(carta) {
 
     } else if (ef.tipo === 'pnj_descubre_secreto') {
       const r = carta._resultado_catherine;
-      if (r?.pista_id) {
-        // Marcar la carta como descubierta
-        if (!estado.cartas_secreto) estado.cartas_secreto = {};
-        if (!estado.cartas_secreto[r.pista_id]) estado.cartas_secreto[r.pista_id] = {};
-        estado.cartas_secreto[r.pista_id].descubierta = true;
+      if (r?.cartaId) {
+        if (!estado.exploraciones_jugadas) estado.exploraciones_jugadas = [];
+        estado.exploraciones_jugadas.push(r.cartaId);
+        moverPNJ(ef.pnj || 'catherine', r.losetaId);
+        if (r.pista_id) descubrirPista(r.pista_id);
         guardarEstado();
-        log.push(`Catherine descubre: ${r.pista_nombre} (${r.loseta_nombre}) — carta DESCUBIERTA`);
-      } else {
-        log.push('No quedan cartas de Secreto sin descubrir');
       }
 
     } else if (ef.tipo === 'marsh_altera_cuerpo') {
       const r = carta._resultado_marsh;
-      if (r?.jugadorPresente) {
-        log.push('Jugador en el Despacho: Marsh finge un examen rutinario. Sin efecto.');
-      } else {
-        const afectadas = ef.pistas_afectadas || [];
-        afectadas.forEach(pid => {
-          if (!estado.dificultad_pista_extra) estado.dificultad_pista_extra = {};
-          if (!estado.pistas_descubiertas?.includes(pid)) {
-            estado.dificultad_pista_extra[pid] = (estado.dificultad_pista_extra[pid] || 0) + ef.dificultad_extra;
+      if (!r?.hayAlguien) {
+        moverPNJ('marsh', 'despacho');
+        if (!estado.modificadores_pista) estado.modificadores_pista = {};
+        (ef.pistas_afectadas || []).forEach(pid => {
+          if (!(estado.pistas_descubiertas || []).includes(pid)) {
+            if (!estado.modificadores_pista[pid]) estado.modificadores_pista[pid] = 0;
+            estado.modificadores_pista[pid] += (ef.dificultad_mod || 1);
           }
         });
         guardarEstado();
-        log.push(`Marsh altera el cuerpo: +${ef.dificultad_extra} dificultad a pistas #9 y #10`);
+      } else {
+        moverPNJ('marsh', 'despacho');
       }
 
     } else if (ef.tipo === 'harold_destruye_testamento') {
       const r = carta._resultado_harold;
-      if (r?.jugadorPresente) {
-        // Se resuelve interactivamente (prueba FOR) — ya gestionado en calcularResultadosSuceso
-        log.push('Harold irrumpe. Se requiere prueba FOR dif. 4 para detenerle.');
-      } else if (r?.pistaYaDescubierta) {
-        log.push('Pista #3 ya descubierta: Harold llega tarde. Sin efecto.');
-      } else {
-        // Destruir pista #3
-        if (!estado.pistas_destruidas) estado.pistas_destruidas = [];
-        if (!estado.pistas_destruidas.includes('pista_3')) {
-          estado.pistas_destruidas.push('pista_3');
-          guardarEstado();
-          log.push('Harold quema el testamento. Pista #3 destruida permanentemente.');
+      moverPNJ('harold', 'despacho');
+      if (!r?.hayAlguien && !r?.pistaDescubierta) {
+        if (!estado.exploraciones_jugadas) estado.exploraciones_jugadas = [];
+        const caso_id = estado.caso_id || 'caso_1';
+        const todasCartas = typeof getCartasExploracionCaso === 'function' ? getCartasExploracionCaso(caso_id) : [];
+        const carta3 = todasCartas.find(c => c.pista_id === (ef.pista_objetivo || 'pista_3'));
+        if (carta3 && !estado.exploraciones_jugadas.includes(carta3.id)) {
+          estado.exploraciones_jugadas.push(carta3.id);
         }
-        // Mover Harold al Despacho
-        if (typeof moverPNJ === 'function') moverPNJ('harold', ef.destino);
+        guardarEstado();
       }
 
     } else if (ef.tipo === 'hobbes_revela_cerradura') {
-      const ya_interpretada = estado.pistas_interpretadas?.includes(ef.pista_afectada);
-      if (ya_interpretada) {
-        log.push('Pista #12 ya interpretada: sin efecto.');
-      } else {
-        if (!estado.dificultad_pista_extra) estado.dificultad_pista_extra = {};
-        estado.dificultad_pista_extra[ef.pista_afectada] = (estado.dificultad_pista_extra[ef.pista_afectada] || 0) + ef.dificultad_mod;
+      const r = carta._resultado_hobbes_confiesa;
+      if (r?.losetaId) moverPNJ('hobbes', r.losetaId);
+      if (r?.activa) {
+        if (!estado.modificadores_pista) estado.modificadores_pista = {};
+        const pid = ef.pista_afectada || 'pista_12';
+        if (!estado.modificadores_pista[pid]) estado.modificadores_pista[pid] = 0;
+        estado.modificadores_pista[pid] += (ef.dificultad_mod || -1);
         guardarEstado();
-        log.push('Hobbes: «El Lord cambió la cerradura del Despacho la semana pasada.» −1 dif. pista #12');
+      }
+
+    } else if (ef.tipo === 'sospecha_bajar' && carta.id === 'confesion_nocturna') {
+      const r = carta._resultado_confesion_nocturna;
+      if (r?.pnjId) {
+        bajarSospecha(r.pnjId, 1, 'Confesión nocturna');
+        moverPNJ(r.pnjId, r.losetaId);
+        if (!estado.buffs_interrogacion) estado.buffs_interrogacion = [];
+        estado.buffs_interrogacion.push({ pnj: r.pnjId, atributo: null, mod_dif: -2, expira_ronda: estado.ronda + 1 });
+        guardarEstado();
       }
 
     } else if (ef.tipo === 'bloqueo_loseta_pnj_cercano') {
