@@ -132,22 +132,15 @@ function calcularResultadosSuceso(carta) {
   if (!carta?.efectos) return;
   carta.efectos.forEach(ef => {
     if (ef.tipo === 'bloqueo_loseta_adyacente') {
-      // Elegir la loseta con más jugadores (excluyendo cerradas y ya bloqueadas)
-      const conteo = {};
-      estado.jugadores.forEach(j => {
-        if (!j.incapacitado && j.loseta_actual) {
-          conteo[j.loseta_actual] = (conteo[j.loseta_actual] || 0) + 1;
-        }
-      });
-      const candidatas = Object.entries(conteo)
-        .filter(([id]) => !isCerrada(id) && !(typeof isLosetaBloqueada === 'function' && isLosetaBloqueada(id)))
-        .sort((a, b) => b[1] - a[1]);
+      // Elegir una loseta aleatoria de entre todas las en juego (no cerradas, no ya bloqueadas)
+      const losetas = typeof getLosetasDistribucion === 'function' ? getLosetasDistribucion() : [];
+      const candidatas = losetas
+        .map(l => l.id)
+        .filter(id => !isCerrada(id) && !(typeof isLosetaBloqueada === 'function' && isLosetaBloqueada(id)));
       if (candidatas.length) {
-        const maxVal = candidatas[0][1];
-        const empatadas = candidatas.filter(([,v]) => v === maxVal).map(([id]) => id);
-        const elegida = empatadas[Math.floor(Math.random() * empatadas.length)];
+        const elegida = candidatas[Math.floor(Math.random() * candidatas.length)];
         const nom = typeof getLoseta === 'function' ? (getLoseta(elegida)?.nombre || elegida) : elegida;
-        carta._resultado_bloqueo = { losetaId: elegida, losetaNom: nom, jugadores: conteo[elegida], empate: empatadas.length > 1 };
+        carta._resultado_bloqueo = { losetaId: elegida, losetaNom: nom };
       }
     } else if (ef.tipo === 'loseta_mas_jugadores') {
       if (!carta._pendiente_loseta) carta._pendiente_loseta = ef;

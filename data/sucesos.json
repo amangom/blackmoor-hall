@@ -8,7 +8,7 @@
       "caso": null,
       "narrativa": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros.",
       "mecanica": "El jugador con más Temple elige una loseta adyacente a la suya. Nadie puede entrar ni salir de esa loseta hasta final de la próxima ronda. Colocad un token de bloqueo como recordatorio.",
-      "texto_completo": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros. El jugador con más Temple elige una loseta adyacente a la suya. Nadie puede entrar ni salir de esa loseta hasta final de la próxima ronda. Colocad un token de bloqueo como recordatorio.",
+      "texto_completo": "Una corriente helada recorre la mansión, haciendo temblar las llamas de los candelabros. La app elige aleatoriamente una loseta en juego y la bloquea hasta el final de la próxima ronda: nadie puede entrar ni salir de ella. Colocad un token de bloqueo como recordatorio.",
       "efectos": [
         {
           "tipo": "bloqueo_loseta_adyacente",
