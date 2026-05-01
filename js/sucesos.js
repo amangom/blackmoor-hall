@@ -702,11 +702,11 @@ function aplicarEfectosSuceso(carta) {
       const r = carta._resultado_marsh;
       if (!r?.hayAlguien) {
         moverPNJ('marsh', 'despacho');
-        if (!estado.modificadores_pista) estado.modificadores_pista = {};
         (ef.pistas_afectadas || []).forEach(pid => {
           if (!(estado.pistas_descubiertas || []).includes(pid)) {
-            if (!estado.modificadores_pista[pid]) estado.modificadores_pista[pid] = 0;
-            estado.modificadores_pista[pid] += (ef.dificultad_mod || 1);
+            if (!estado.modificadores_exploracion_pista) estado.modificadores_exploracion_pista = {};
+            if (!estado.modificadores_exploracion_pista[pid]) estado.modificadores_exploracion_pista[pid] = 0;
+            estado.modificadores_exploracion_pista[pid] += (ef.dificultad_mod || 1);
           }
         });
         guardarEstado();
@@ -732,10 +732,10 @@ function aplicarEfectosSuceso(carta) {
       const r = carta._resultado_hobbes_confiesa;
       if (r?.losetaId) moverPNJ('hobbes', r.losetaId);
       if (r?.activa) {
-        if (!estado.modificadores_pista) estado.modificadores_pista = {};
+        if (!estado.modificadores_interpretacion_pista) estado.modificadores_interpretacion_pista = {};
         const pid = ef.pista_afectada || 'pista_12';
-        if (!estado.modificadores_pista[pid]) estado.modificadores_pista[pid] = 0;
-        estado.modificadores_pista[pid] += (ef.dificultad_mod || -1);
+        if (!estado.modificadores_interpretacion_pista[pid]) estado.modificadores_interpretacion_pista[pid] = 0;
+        estado.modificadores_interpretacion_pista[pid] += (ef.dificultad_mod || -1);
         guardarEstado();
       }
 

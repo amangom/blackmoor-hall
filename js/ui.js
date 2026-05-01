@@ -1946,6 +1946,10 @@ const UI = {
         }
       }
 
+      if (carta.pista_id && estado.modificadores_exploracion_pista?.[carta.pista_id]) {
+        difDisplay += estado.modificadores_exploracion_pista[carta.pista_id];
+      }
+
       // Bonus de confidencia
       if (typeof getBonusConfidenciaExploracion === 'function') {
         const bonusConf = getBonusConfidenciaExploracion(jugIdxReal, loseta);

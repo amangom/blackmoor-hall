@@ -749,5 +749,10 @@ function calcularDifMetodo(metodo, jugIdx) {
     mods.push('Doctor: −1 dif');
   }
 
+  const pista_id = metodo._pista_id;
+  if (estado.modificadores_interpretacion_pista?.[pista_id]) {
+    dif += estado.modificadores_interpretacion_pista[pista_id];
+  }
+
   return { dif: Math.max(1, dif), attr, mods, automatico: false };
 }
