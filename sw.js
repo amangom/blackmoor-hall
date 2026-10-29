@@ -1,7 +1,7 @@
 /* Service worker: la app funciona sin conexión una vez cargada. Cambiad CACHE al publicar una versión nueva. */
-var CACHE = 'blackmoor-2.0.0';
+var CACHE = 'blackmoor-2.0.1';
 var FILES = [
-  './', 'index.html', 'manifest.webmanifest', 'css/app.css?v=2.0.0', 'js/app.js?v=2.0.0', 'data/casos.js?v=2.0.0', 'data/caso1.js?v=2.0.0',
+  './', 'index.html', 'manifest.webmanifest', 'css/app.css?v=2.0.1', 'js/app.js?v=2.0.1', 'data/casos.js?v=2.0.1', 'data/caso1.js?v=2.0.1',
   'fonts/cinzel-latin-600-normal.woff2', 'fonts/cinzel-latin-700-normal.woff2',
   'fonts/eb-garamond-latin-400-normal.woff2', 'fonts/eb-garamond-latin-400-italic.woff2',
   'fonts/eb-garamond-latin-600-normal.woff2', 'fonts/eb-garamond-latin-600-italic.woff2',

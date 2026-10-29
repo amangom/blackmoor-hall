@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '2.0.0';
+  var VERSION = '2.0.1';
   var LS_AUTO = 'bh2_partida';
   var LS_SAVES = 'bh2_guardadas';
   var LS_PEND = 'bh2_pendientes';
@@ -336,14 +336,13 @@
     ['A', 'B', 'C'].forEach(function (v) {
       html += '<button class="option" data-act="v:' + v + '"><div class="ot">Variante ' + v + '</div></button>';
     });
-    html += '<button class="option" data-act="v:azar"><div class="ot">Al azar</div><div class="od">La app sortea la variante y os dice cuál ha salido.</div></button>';
     html += '<button class="option" data-act="v:oculta"><div class="ot">Variante oculta</div><div class="od">La app sortea la variante y no os dice cuál es. Lo sabréis al final.</div></button>';
     return {
       title: 'Nueva partida', html: html, after: function (m) {
         bind(m, {
           v: function (v) {
             var modo = 'elegida', vv = v;
-            if (v === 'azar' || v === 'oculta') { vv = 'ABC'[rnd(3)]; modo = v; }
+            if (v === 'oculta') { vv = 'ABC'[rnd(3)]; modo = v; }
             nuevaPartida(p.caso, vv, modo);
             go('implicado');
           }
@@ -355,7 +354,6 @@
   SCREENS.implicado = function () {
     var html = '<h2>¿Jugáis con el Implicado?</h2><div class="rule"></div>' +
       '<p>Variante opcional: puede que uno de vosotros ayudara al culpable sin saberlo y quiera que no se descubra. La app reparte los papeles en secreto.</p>';
-    if (S.modoVar === 'azar') html = effect('Ha salido la variante ' + S.variante + '.', 'info') + html;
     html += btn('Sí, con el Implicado', 'si') + btn('No', 'no', 'secondary');
     return {
       title: 'Nueva partida', sub: nombreVariante(), html: html, after: function (m) {
