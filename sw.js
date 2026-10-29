@@ -1,11 +1,11 @@
 /* Service worker: la app funciona sin conexión una vez cargada. Cambiad CACHE al publicar una versión nueva. */
-var CACHE = 'blackmoor-2.0.1';
+var CACHE = 'blackmoor-2.0.2';
 var FILES = [
-  './', 'index.html', 'manifest.webmanifest', 'css/app.css?v=2.0.1', 'js/app.js?v=2.0.1', 'data/casos.js?v=2.0.1', 'data/caso1.js?v=2.0.1',
+  './', 'index.html', 'manifest.webmanifest', 'css/app.css?v=2.0.2', 'js/app.js?v=2.0.2', 'data/casos.js?v=2.0.2', 'data/caso1.js?v=2.0.2',
   'fonts/cinzel-latin-600-normal.woff2', 'fonts/cinzel-latin-700-normal.woff2',
   'fonts/eb-garamond-latin-400-normal.woff2', 'fonts/eb-garamond-latin-400-italic.woff2',
   'fonts/eb-garamond-latin-600-normal.woff2', 'fonts/eb-garamond-latin-600-italic.woff2',
-  'img/caso1_portada.webp', 'img/icon-192.png', 'img/icon-512.png', 'img/apple-touch-icon.png',
+  'img/caso1_portada.webp', 'icons/favicon-32x32.png', 'icons/apple-touch-icon.png', 'icons/icon-192x192.png', 'icons/icon-512x512.png',
   'img/pnj_marsh.webp', 'img/pnj_harold.webp', 'img/pnj_catherine.webp', 'img/pnj_hobbes.webp', 'img/pnj_pemberton.webp', 'img/pnj_whitfield.webp',
   'img/pj_doctor.webp', 'img/pj_institutriz.webp', 'img/pj_inspector.webp', 'img/pj_medium.webp', 'img/pj_mayordomo.webp', 'img/pj_periodista.webp'
 ];

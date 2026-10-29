@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '2.0.1';
+  var VERSION = '2.0.2';
   var LS_AUTO = 'bh2_partida';
   var LS_SAVES = 'bh2_guardadas';
   var LS_PEND = 'bh2_pendientes';
