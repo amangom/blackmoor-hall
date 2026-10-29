@@ -1,71 +1,32 @@
-// ── SERVICE WORKER — auto-actualización al detectar nueva versión ──────────────
-const CACHE_NAME = 'blackmoor-v112';
-const BASE = '';
-
-const ASSETS = [
-  BASE + '/',
-  BASE + '/index.html',
-  BASE + '/css/main.css',
-  BASE + '/js/app.js',
-  BASE + '/js/state.js',
-  BASE + '/js/ui.js',
-  BASE + '/js/mapa.js',
-  BASE + '/js/config.js',
-  BASE + '/js/personajes.js',
-  BASE + '/js/exploracion.js',
-  BASE + '/js/pasivas.js',
-  BASE + '/js/confidencias.js',
-  BASE + '/js/sucesos.js',
-  BASE + '/js/pistas.js',
-  BASE + '/js/notificaciones.js',
-  BASE + '/js/avatares.js',
-  BASE + '/data/blackmoor_losetas.json',
-  BASE + '/data/blackmoor_distribuciones.json',
-  BASE + '/data/caso_1.json',
-  BASE + '/data/caso_1_variante_A.json',
-  BASE + '/data/caso_1_variante_B.json',
-  BASE + '/data/caso_1_variante_C.json',
-  BASE + '/data/sucesos.json',
-  BASE + '/data/cartas_exploracion_caso_1.json',
-  BASE + '/data/pistas_caso_1.json',
-  BASE + '/manifest.json',
-  BASE + '/icons/icon-192x192.png',
-  BASE + '/icons/icon-512x512.png',
-  BASE + '/icons/apple-touch-icon.png',
-  BASE + '/icons/favicon-32x32.png',
+/* Service worker: la app funciona sin conexión una vez cargada. Cambiad CACHE al publicar una versión nueva. */
+var CACHE = 'blackmoor-2.0.0';
+var FILES = [
+  './', 'index.html', 'manifest.webmanifest', 'css/app.css?v=2.0.0', 'js/app.js?v=2.0.0', 'data/casos.js?v=2.0.0', 'data/caso1.js?v=2.0.0',
+  'fonts/cinzel-latin-600-normal.woff2', 'fonts/cinzel-latin-700-normal.woff2',
+  'fonts/eb-garamond-latin-400-normal.woff2', 'fonts/eb-garamond-latin-400-italic.woff2',
+  'fonts/eb-garamond-latin-600-normal.woff2', 'fonts/eb-garamond-latin-600-italic.woff2',
+  'img/caso1_portada.webp', 'img/icon-192.png', 'img/icon-512.png', 'img/apple-touch-icon.png',
+  'img/pnj_marsh.webp', 'img/pnj_harold.webp', 'img/pnj_catherine.webp', 'img/pnj_hobbes.webp', 'img/pnj_pemberton.webp', 'img/pnj_whitfield.webp',
+  'img/pj_doctor.webp', 'img/pj_institutriz.webp', 'img/pj_inspector.webp', 'img/pj_medium.webp', 'img/pj_mayordomo.webp', 'img/pj_periodista.webp'
 ];
-
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
-  self.skipWaiting();
+self.addEventListener('install', function (e) {
+  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));
 });
-
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    ).then(() => {
-      return self.clients.matchAll({ type: 'window' }).then(clients => {
-        clients.forEach(client => client.postMessage({ type: 'SW_UPDATED' }));
-      });
-    })
-  );
-  self.clients.claim();
+self.addEventListener('activate', function (e) {
+  e.waitUntil(caches.keys().then(function (keys) {
+    return Promise.all(keys.filter(function (k) { return k !== CACHE; }).map(function (k) { return caches.delete(k); }));
+  }).then(function () { return self.clients.claim(); }));
 });
-
-self.addEventListener('fetch', e => {
-  const url = e.request.url;
-  // Imágenes: nunca desde caché, siempre desde red/disco
-  if (url.includes('/assets/')) {
-    e.respondWith(fetch(e.request));
+self.addEventListener('fetch', function (e) {
+  if (e.request.method !== 'GET') return;
+  var url = new URL(e.request.url);
+  if (url.origin !== location.origin) return;
+  // La página principal: primero la red (para recibir versiones nuevas), y si no hay conexión, la copia guardada.
+  if (e.request.mode === 'navigate') {
+    e.respondWith(fetch(e.request).then(function (r) {
+      var copy = r.clone(); caches.open(CACHE).then(function (c) { c.put('index.html', copy); }); return r;
+    }).catch(function () { return caches.match('index.html'); }));
     return;
   }
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
-  );
-});
-
-// Forzar activación inmediata cuando se recibe SKIP_WAITING
-self.addEventListener('message', e => {
-  if (e.data?.type === 'SKIP_WAITING') self.skipWaiting();
+  e.respondWith(caches.match(e.request).then(function (hit) { return hit || fetch(e.request); }));
 });
